@@ -7,8 +7,8 @@ import {
 } from "react-router-dom";
 import { firebaseAuth } from "./auth";
 
-import LandingPage from "./LandingPage/LandingPage"
-import Login from "./Login/Login"
+import LandingPage from "./LandingPage/LandingPage";
+import Login from "./Login/Login";
 
 function PrivateRoute({ component: Component, authed, ...rest }) {
   return (
@@ -53,7 +53,6 @@ class App extends Component {
     this._isMounted = true;
     this.removeListener = firebaseAuth().onAuthStateChanged(user => {
       if (this._isMounted) {
-        console.log(user)
         if (user) {
           this.setState({
             authed: true,
