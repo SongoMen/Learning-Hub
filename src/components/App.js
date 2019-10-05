@@ -7,7 +7,8 @@ import {
 } from "react-router-dom";
 import { firebaseAuth } from "./auth";
 
-import LandingPage from "./landingPage/LandingPage"
+import LandingPage from "./LandingPage/LandingPage"
+import Login from "./Login/Login"
 
 function PrivateRoute({ component: Component, authed, ...rest }) {
   return (
@@ -31,10 +32,10 @@ function PublicRoute({ component: Component, authed, ...rest }) {
     <Route
       {...rest}
       render={props =>
-        authed === false ? (
+        authed === false || authed == null ? (
           <Component {...props} />
         ) : (
-          <Redirect to="/Dashboard" />
+          <Redirect to="/dashboard" />
         )
       }
     />
@@ -52,6 +53,7 @@ class App extends Component {
     this._isMounted = true;
     this.removeListener = firebaseAuth().onAuthStateChanged(user => {
       if (this._isMounted) {
+        console.log(user)
         if (user) {
           this.setState({
             authed: true,
@@ -85,6 +87,7 @@ class App extends Component {
         <div className="container">
           <Switch>
             <Route exact path="/" component={LandingPage} />
+            <PublicRoute path="/login" component={Login} />
           </Switch>
         </div>
       </Router>
