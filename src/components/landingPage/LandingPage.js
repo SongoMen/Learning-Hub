@@ -1,9 +1,11 @@
-import React from 'react'
+import React from "react";
+
+import NavBar from "./NavBar";
 
 const LandingPage = () => {
   return (
-    <div className="landingPage">
-
+    <div className="LandingPage">
+      <NavBar></NavBar>
     </div>
   );
 };

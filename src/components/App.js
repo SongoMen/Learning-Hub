@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { firebaseAuth } from "./auth";
 
-import LandingPage from './landingPage/LandingPage'
+import LandingPage from "./landingPage/LandingPage"
 
 function PrivateRoute({ component: Component, authed, ...rest }) {
   return (
