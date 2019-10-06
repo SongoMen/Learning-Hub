@@ -1,0 +1,37 @@
+.Rightbar
+    width: 20%
+    height: 100%
+    background-color: $accentColor1
+    border-left: 1px solid $linesColor
+    padding: 20px
+    &__logout
+        width: 100%
+        display: flex
+        justify-content: space-between
+        align-items: center
+        svg
+            stroke: $accentColor3
+            cursor: pointer
+    &__user
+        display: flex
+        justify-content: center
+        align-items: center
+        flex-direction: column
+        margin-top: 20px
+        width: 100%
+    &__image
+        position: relative
+        img
+            border-radius: 50%
+            width: 100px
+            padding: 20px
+            border: 2px solid $accentColor3
+            height: 100px
+        svg
+            position: absolute
+            bottom: 10px
+            right: 8px
+            background-color: $primaryColor
+            border-radius: 100%
+            padding: 3px
+            cursor: pointer

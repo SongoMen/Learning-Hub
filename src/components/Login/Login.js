@@ -11,7 +11,7 @@ export default class Login extends React.Component {
     super(props);
     this.state = {
       msg: "",
-      loading: ""
+      loading: false
     };
     this.handleClick = this.handleClick.bind(this);
   }

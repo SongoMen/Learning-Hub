@@ -11,7 +11,7 @@ class Register extends Component {
     super(props);
     this.state = {
       msg: "",
-      loading: ""
+      loading: false
     };
     this.handleClickRegisterUser = this.handleClickRegisterUser.bind(this);
   }

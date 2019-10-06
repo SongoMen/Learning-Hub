@@ -1,6 +1,7 @@
 .Panel
     padding: 20px 30px
-    width: 90%
+    width: 68%
+    background-color: $panelColor
     &__title
         display: flex
         justify-content: space-between
@@ -9,4 +10,17 @@
             font-weight: 500
     &__date
         color: $accentColor3
+        margin-right: 15px
+    &__search
+        stroke: $primaryColor
+        background-color: $primaryColorbg
+        padding: 10px
+        border-radius: 5px
+    &__time
+        display: flex
+        align-items: center
+        svg
+            width: 35px
+            height: 35px
+            cursor: pointer
 

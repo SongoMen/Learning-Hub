@@ -1,5 +1,5 @@
 .Leftbar
-    width: 10%
+    width: 12%
     height: 100%
     display: flex
     align-items: center
@@ -18,15 +18,24 @@
             align-items: center
             height: 30px
             position: relative
+            cursor: pointer
+            transition: all .5s
+            svg
+                transition: all .5s
+            &:hover
+                stroke: $primaryColor
+                color: white
             &.active:before
                 content: ""
                 position: absolute
-                right: -1px
-                width: 3px
+                right: -2px
+                width: 2px
                 border-radius: 3px
-                height: 100%
+                height: 70%
                 background-color: $primaryColor
             &.active
+                &:hover
+                    color: $primaryColor
                 svg
                     stroke: $primaryColor
             svg
