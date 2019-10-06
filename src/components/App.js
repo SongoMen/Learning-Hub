@@ -10,13 +10,15 @@ import { firebaseAuth } from "./auth";
 import Loader from "./elements/Loader";
 import LandingPage from "./LandingPage/LandingPage";
 import Login from "./Login/Login";
+import Register from "./Register/Register";
+import Dashboard from "./Dashboard/Dashboard"
 
 function PrivateRoute({ component: Component, authed, ...rest }) {
   return (
     <Route
       {...rest}
       render={props =>
-        authed === true ? (
+        authed === true  ? (
           <Component {...props} {...rest} />
         ) : (
           <Redirect
@@ -33,7 +35,7 @@ function PublicRoute({ component: Component, authed, ...rest }) {
     <Route
       {...rest}
       render={props =>
-        authed === false || authed == null ? (
+        authed === false ? (
           <Component {...props} />
         ) : (
           <Redirect to="/dashboard" />
@@ -81,7 +83,9 @@ class App extends Component {
         <div className="container">
           <Switch>
             <Route exact path="/" component={LandingPage} />
-            <PublicRoute path="/login" component={Login} />
+            <PublicRoute authed={this.state.authed} path="/login" component={Login} />
+            <PublicRoute authed={this.state.authed} path="/register" component={Register}/>
+            <PrivateRoute authed={this.state.authed} path="/dashboard" component={Dashboard}/>
           </Switch>
         </div>
       </Router>

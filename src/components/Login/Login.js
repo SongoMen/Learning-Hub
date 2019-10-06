@@ -17,27 +17,29 @@ export default class Login extends React.Component {
   }
   handleClick(e) {
     e.preventDefault();
-    if (this._isMounted) {
-      this.setState({
-        loading: true
-      });
+    if (this.state.loading === false) {
+      if (this._isMounted) {
+        this.setState({
+          loading: true
+        });
+      }
+      login(this.email.value, this.password.value)
+        .then(() => {
+          if (this._isMounted) {
+            this.setState({
+              loading: false
+            });
+          }
+        })
+        .catch(error => {
+          if (this._isMounted) {
+            this.setState({
+              msg: "Wrong Email or password",
+              loading: false
+            });
+          }
+        });
     }
-    login(this.email.value, this.password.value)
-      .then(() => {
-        if (this._isMounted) {
-          this.setState({
-            loading: false
-          });
-        }
-      })
-      .catch(error => {
-        if (this._isMounted) {
-          this.setState({
-            msg: "Wrong Email or password",
-            loading: false
-          });
-        }
-      });
   }
 
   componentDidMount() {
@@ -93,7 +95,6 @@ export default class Login extends React.Component {
             ) : (
               <div className="msg" />
             )}
-
             <br />
             <h4 className="underForm">Forgot your password?</h4>
           </form>
