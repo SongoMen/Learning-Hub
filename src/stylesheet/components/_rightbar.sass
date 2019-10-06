@@ -12,6 +12,9 @@
         svg
             stroke: $accentColor3
             cursor: pointer
+            transition: all .3s
+            &:hover
+                stroke: $primaryColor
     &__user
         display: flex
         justify-content: center
@@ -35,3 +38,7 @@
             border-radius: 100%
             padding: 3px
             cursor: pointer
+            transition: all .3s
+            &:hover
+                stroke: white
+                background-color: $accentColor3

@@ -5,7 +5,7 @@ import thunk from "redux-thunk";
 function configureStore() {
   return createStore(
     reducer,
-    {popup: "false"},
+    {popupAvatar: "false",rightBar:"true"},
     applyMiddleware(thunk)
   );
 }

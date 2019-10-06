@@ -1,20 +1,18 @@
 import React from "react";
 import firebase from "firebase/app";
+import "firebase/storage";
 import { logout } from "../auth";
 import "firebase/firestore";
 import Loader from "../elements/Loader";
-import {SetPopup} from "../../actions/actionsPanel"
+import {SetPopupAvatar} from "../../actions/actionsPanel";
 import { connect } from "react-redux";
-
-
-const db = firebase.firestore();
 
 const mapStateToProps = state => ({
     ...state
   });
   
   const mapDispatchToProps = dispatch => ({
-    SetPopup: () => dispatch(SetPopup(true))
+    SetPopupAvatar: () => dispatch(SetPopupAvatar(true))
   });
 
 class Rightbar extends React.Component {
@@ -27,24 +25,25 @@ class Rightbar extends React.Component {
   }
   getUserInfo() {
     let user = firebase.auth().currentUser.uid;
-
-    db.collection("users")
-      .doc(user)
-      .onSnapshot(
-        function(doc) {
-          console.log(doc);
-          if (typeof doc.data() !== "undefined" && this._isMounted) {
-            this.setState({
-              avatar: doc.data()["avatar"]
-            });
-          }
-        }.bind(this)
-      );
+    firebase.storage().ref(user).getDownloadURL()
+    .then(function (url) {
+      if(this._isMounted){
+        this.setState({
+          avatar: url
+        })
+      }
+    }.bind(this))
+    .catch(()=>{
+      if(this._isMounted){
+        this.setState({
+          avatar: "https://firebasestorage.googleapis.com/v0/b/learning-a4a51.appspot.com/o/download.png?alt=media&token=7053ef8a-57ad-4ec8-accf-1c10becd0195"
+        })
+      }
+    })
   }
 
   uploadImage(){
-    this.props.SetPopup()
-    console.log(this.props.popup)
+    this.props.SetPopupAvatar()
   }
 
   componentWillUnmount() {

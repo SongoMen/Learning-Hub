@@ -6,7 +6,6 @@ class Leftbar extends React.Component {
     return (
       <div className="Leftbar">
           <div className="Leftbar__logo">
-              logo
           </div>
         <ul>
           <li className="active">

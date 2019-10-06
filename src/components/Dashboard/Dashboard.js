@@ -1,25 +1,44 @@
 import React from "react";
-
 import "firebase/firestore";
-import firebase from "firebase/app";
+import { connect } from "react-redux";
 
 import Leftbar from "./Leftbar";
 import Panel from "./Panel";
 import Rightbar from "./Rightbar";
-const db = firebase.firestore();
+import PopupAvatar from "../elements/PopupAvatar"
+
+const mapStateToProps = state => ({
+  ...state
+});
 
 class Dashboard extends React.Component {
-  render() {
-    let user = firebase.auth().currentUser.displayName;
+  _isMounted = false;
 
+  componentWillUnmount(){
+    this._isMounted = false;
+  }
+  componentDidMount(){
+    this._isMounted = true;
+  }
+  render() {
+
+    if(!this.props.rightBar && document.getElementById("Panel")){
+      document.getElementById("Panel").style.width="90%"
+    }
+    else if(document.getElementById("Panel")){
+      document.getElementById("Panel").style.width="68%"
+    }
     return (
       <div className="Dashboard">
+        {this.props.popupAvatar === true && <PopupAvatar/>}
         <Leftbar />
         <Panel />
-        <Rightbar/>
+        {this.props.rightBar && <Rightbar/>}
       </div>
     );
   }
 }
 
-export default Dashboard;
+export default connect(
+  mapStateToProps
+)(Dashboard);
