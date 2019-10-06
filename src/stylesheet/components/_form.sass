@@ -1,0 +1,54 @@
+.input
+    border: 2px solid $accentColor1
+    padding: 15px 10px
+    color: $accentColor3
+    border-radius: 10px
+    background-color: $accentColor2
+    transition: all .5s ease-in-out
+    &:hover,&:focus
+        border: 2px solid $primaryColor
+        color: $primaryColor
+        outline: none
+.form 
+    text-align: center
+    width: 60%
+    position: relative
+    padding: 50px 0
+    .msg
+        font-weight: 500
+        min-height: 20px
+        background-color: $accentColor1
+        margin: 0
+        margin-top: 20px
+    .form-line
+        display: flex
+        flex-direction: column
+        align-items: flex-start
+        .input
+            width: 100%
+    .form-btn
+        width: 100%
+        background-color: $primaryColor
+        color: white
+        border: 0
+        font-weight: 500
+        font-family: Poppins
+        padding: 15px 5px
+        border-radius: 5px
+        cursor: pointer
+        transition: all .5s
+        display: flex
+        justify-content: center
+        align-items: center
+        min-height: 58px
+        &:hover
+            background-color: white
+            color: $primaryColor
+.underForm
+    font-weight: 500
+    color: $accentColor3
+    &.bottom
+        position: absolute
+        bottom: 30px
+    .redirect
+        color: $primaryColor

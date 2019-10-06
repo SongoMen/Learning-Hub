@@ -1,0 +1,64 @@
+// element vars
+$scale: 36px
+$speed: 2s
+
+// quick and easy complementary colors
+$angle: 25
+$color-background: hsl($angle+180,30,15)
+@keyframes loader-spin
+  0%
+    transform: rotate( 0deg )
+  100%
+    transform: rotate( 360deg )
+  
+.loader
+  position: absolute
+  margin: -#{$scale/2} 0 0 -#{$scale/2}
+  border: #{$scale*0.1} solid $primaryColor
+  box-sizing: border-box
+  overflow: hidden
+  width: $scale
+  height: $scale
+  left: 50%
+  top: 50%
+  animation: loader-spin $speed linear infinite reverse
+  // taken and tweaked from: https://css-tricks.com/gooey-effect/
+  filter: url(#goo)
+  // hides a 1px render error in some browsers that
+  // happens with transformed children inside an
+  // overflow hidden parent. only a real issue
+  // without the filter
+  box-shadow: 0 0 0 1px $primaryColor inset
+
+  &:before
+    content: ""
+    position: absolute
+    animation: loader-spin $speed cubic-bezier(.59,.25,.4,.69) infinite
+    background: $primaryColor
+    transform-origin: top center
+    border-radius: 50%
+    width: 150%
+    height: 150%
+    top: 50%
+    left: -12.5%
+.form-btn
+  .loader
+    border: #{$scale*0.1} solid white
+    box-shadow: 0 0 0 1px white inset
+    position: relative
+    width: 28px
+    height: 28px
+    margin: 0
+    left: 0
+    &:before
+      background: white
+.form-btn:hover
+  .loader
+    border: #{$scale*0.1} solid $primaryColor
+    box-shadow: 0 0 0 1px $primaryColor inset
+    position: relative
+    margin: 0
+    left: 0
+    &:before
+      background: $primaryColor
+

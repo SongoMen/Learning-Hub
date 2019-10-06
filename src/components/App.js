@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import { firebaseAuth } from "./auth";
 
+import Loader from "./elements/Loader";
 import LandingPage from "./LandingPage/LandingPage";
 import Login from "./Login/Login";
 
@@ -74,13 +75,7 @@ class App extends Component {
 
   render() {
     return this.state.loading ? (
-      <div className="loader-background">
-        <ul className="loader">
-          <li />
-          <li />
-          <li />
-        </ul>
-      </div>
+      <Loader/>
     ) : (
       <Router>
         <div className="container">
