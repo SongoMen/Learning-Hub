@@ -1,0 +1,33 @@
+.Leftbar
+    width: 10%
+    height: 100%
+    display: flex
+    align-items: center
+    flex-direction: column
+    border-right: 1px solid $linesColor
+    &__logo
+        height: 20%
+    ul
+        list-style-type: none
+        margin: 0
+        width: 100%
+        padding: 0
+        li
+            display: flex
+            justify-content: center
+            align-items: center
+            height: 30px
+            position: relative
+            &.active:before
+                content: ""
+                position: absolute
+                right: -1px
+                width: 3px
+                border-radius: 3px
+                height: 100%
+                background-color: $primaryColor
+            &.active
+                svg
+                    stroke: $primaryColor
+            svg
+                margin-right: 25px
