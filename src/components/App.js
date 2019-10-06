@@ -11,14 +11,14 @@ import Loader from "./elements/Loader";
 import LandingPage from "./LandingPage/LandingPage";
 import Login from "./Login/Login";
 import Register from "./Register/Register";
-import Dashboard from "./Dashboard/Dashboard"
+import Dashboard from "./Dashboard/Dashboard";
 
 function PrivateRoute({ component: Component, authed, ...rest }) {
   return (
     <Route
       {...rest}
       render={props =>
-        authed === true  ? (
+        authed === true ? (
           <Component {...props} {...rest} />
         ) : (
           <Redirect
@@ -77,15 +77,27 @@ class App extends Component {
 
   render() {
     return this.state.loading ? (
-      <Loader/>
+      <Loader />
     ) : (
       <Router>
         <div className="container">
           <Switch>
             <Route exact path="/" component={LandingPage} />
-            <PublicRoute authed={this.state.authed} path="/login" component={Login} />
-            <PublicRoute authed={this.state.authed} path="/register" component={Register}/>
-            <PrivateRoute authed={this.state.authed} path="/dashboard" component={Dashboard}/>
+            <PublicRoute
+              authed={this.state.authed}
+              path="/login"
+              component={Login}
+            />
+            <PublicRoute
+              authed={this.state.authed}
+              path="/register"
+              component={Register}
+            />
+            <PrivateRoute
+              authed={this.state.authed}
+              path="/dashboard"
+              component={Dashboard}
+            />
           </Switch>
         </div>
       </Router>

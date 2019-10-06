@@ -3,10 +3,21 @@ import firebase from "firebase/app";
 import { logout } from "../auth";
 import "firebase/firestore";
 import Loader from "../elements/Loader";
+import {SetPopup} from "../../actions/actionsPanel"
+import { connect } from "react-redux";
+
 
 const db = firebase.firestore();
 
-class Leftbar extends React.Component {
+const mapStateToProps = state => ({
+    ...state
+  });
+  
+  const mapDispatchToProps = dispatch => ({
+    SetPopup: () => dispatch(SetPopup(true))
+  });
+
+class Rightbar extends React.Component {
   _isMounted = false;
   constructor() {
     super();
@@ -32,7 +43,8 @@ class Leftbar extends React.Component {
   }
 
   uploadImage(){
-      
+    this.props.SetPopup()
+    console.log(this.props.popup)
   }
 
   componentWillUnmount() {
@@ -84,7 +96,7 @@ class Leftbar extends React.Component {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
-                className="feather feather-plus"
+                onClick={()=>this.uploadImage()}
                 viewBox="0 0 24 24"
               >
                 <path d="M12 5L12 19" />
@@ -100,4 +112,7 @@ class Leftbar extends React.Component {
     );
   }
 }
-export default Leftbar;
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Rightbar);

@@ -5,5 +5,14 @@ import "./stylesheet/main.sass";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+import configureStore from "./store";
+
+import { Provider } from "react-redux";
+
+ReactDOM.render(
+  <Provider store={configureStore()}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);
 serviceWorker.register();
