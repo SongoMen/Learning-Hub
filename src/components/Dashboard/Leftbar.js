@@ -6,6 +6,9 @@ class Leftbar extends React.Component {
       case "/dashboard":
         document.querySelector(".Leftbar ul li:nth-child(1)").classList =
           "active";
+        break;
+      default:
+        return "";
     }
   }
   render() {
