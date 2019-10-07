@@ -7,7 +7,7 @@
         display: flex
         justify-content: space-between
         width: 100%
-        margin-bottom: 50px
+        margin-bottom: 20px
         h3
             font-weight: 500
     &__date
@@ -24,7 +24,52 @@
             margin-right: 10px
     &__quickstart
         background-color: $accentColor1
-        width: 50%
-        height: 300px
+        width: 40%
+        height: 250px
         border-radius: 10px
+        position: relative
         transition: all .3s
+        padding: 20px
+    &__error
+        display: flex
+        justify-content: center;
+        align-items: center
+        flex-direction: column
+        width: 100%
+        height: 100%
+        svg
+            width: 15%
+            height: 15%
+            stroke: $primaryColor
+        h4
+            color: $accentColor3
+    &__notification
+        width: 100%
+        height: 100%
+        display: flex
+        justify-content: center
+        align-items: center
+        flex-direction: column
+        cursor: pointer
+        text-align: center
+        svg
+            width: 50px
+            height: 50px
+        h4
+            color: $accentColor3
+        &:hover svg
+            background-color: $primaryColor
+            stroke: white
+    &__welcome
+        width: 100%
+        height: 30%
+        background-color: $primaryColorbg
+        border-radius: 10px
+        padding: 20px 80px
+        margin-bottom: 20px
+        display: flex
+        justify-content: flex-start
+        align-items: center
+        
+        h2
+            color: $primaryColor

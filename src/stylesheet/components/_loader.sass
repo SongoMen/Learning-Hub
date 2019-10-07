@@ -52,7 +52,7 @@ $color-background: hsl($angle+180,30,15)
     left: 0
     &:before
       background: white
-.form-btn:hover,.Rightbar__user
+.form-btn:hover,.Rightbar__user,
   .loader
     border: #{$scale*0.1} solid $primaryColor
     box-shadow: 0 0 0 1px $primaryColor inset
@@ -61,3 +61,11 @@ $color-background: hsl($angle+180,30,15)
     left: 0
     &:before
       background: $primaryColor
+
+.Panel
+  .loader
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
