@@ -1,14 +1,19 @@
 import React from "react";
-
+import { withRouter } from "react-router-dom";
 class Leftbar extends React.Component {
-    
+  componentDidMount() {
+    switch (this.props.location.pathname) {
+      case "/dashboard":
+        document.querySelector(".Leftbar ul li:nth-child(1)").classList =
+          "active";
+    }
+  }
   render() {
     return (
       <div className="Leftbar">
-          <div className="Leftbar__logo">
-          </div>
+        <div className="Leftbar__logo"></div>
         <ul>
-          <li className="active">
+          <li>
             {" "}
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -33,4 +38,4 @@ class Leftbar extends React.Component {
     );
   }
 }
-export default Leftbar;
+export default withRouter(Leftbar);

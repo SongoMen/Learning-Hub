@@ -23,7 +23,6 @@ class Panel extends React.Component {
     this.props.ChangeRightBar();
   }
   render() {
-    console.log(this.props.rightBar)
     let user = firebase.auth().currentUser.displayName;
     return (
       <div className="Panel" id="Panel">
@@ -82,6 +81,9 @@ class Panel extends React.Component {
               </svg>
             )}
           </div>
+        </div>
+        <div className="Panel__quickstart">
+          
         </div>
       </div>
     );
