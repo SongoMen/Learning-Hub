@@ -8,7 +8,7 @@ class Leftbar extends React.Component {
           "active";
         break;
       default:
-        return "";
+        break;
     }
   }
   render() {
