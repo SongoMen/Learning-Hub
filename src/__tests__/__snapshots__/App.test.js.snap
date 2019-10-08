@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App renders 1`] = `
+<div
+  className="loader"
+>
+  <svg>
+    <defs>
+      <filter
+        id="goo"
+      >
+        <feGaussianBlur
+          in="SourceGraphic"
+          result="blur"
+          stdDeviation="2"
+        />
+        <feColorMatrix
+          in="blur"
+          mode="matrix"
+          result="gooey"
+          values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 5 -2"
+        />
+        <feComposite
+          in="SourceGraphic"
+          in2="gooey"
+          operator="atop"
+        />
+      </filter>
+    </defs>
+  </svg>
+</div>
+`;
