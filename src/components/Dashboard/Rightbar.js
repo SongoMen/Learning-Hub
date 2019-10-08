@@ -8,7 +8,7 @@ import { setPopupAvatar } from "../../actions/actionsPanel";
 import { connect } from "react-redux";
 
 const mapStateToProps = state => ({
-  ...state
+  rightBar: state.rightBar  
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -21,7 +21,8 @@ class Rightbar extends React.Component {
     super();
     this.state = {
       avatar: "",
-      show: false
+      show: false,
+      width: "20%"
     };
   }
   getUserInfo() {
@@ -49,6 +50,21 @@ class Rightbar extends React.Component {
       });
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.rightBar !== this.props.rightBar) {
+      let right = this.props.rightBar ? "20%" : "0";
+        if (right === "20%") {
+            this.setState({
+              width: right
+            });
+        } else {
+          this.setState({
+            width: right
+          });
+        }
+    }
+  }
+
   uploadImage() {
     this.props.setPopupAvatar();
   }
@@ -71,7 +87,11 @@ class Rightbar extends React.Component {
     let user = firebase.auth().currentUser.displayName;
     let useruid = firebase.auth().currentUser.uid;
     return (
-      <div className="Rightbar" id="RightBar">
+      <div
+        style={{ width: this.state.width }}
+        className="Rightbar"
+        id="RightBar"
+      >
         {this.state.show && (
           <div>
             <div className="Rightbar__logout">

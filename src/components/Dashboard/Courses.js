@@ -18,13 +18,12 @@ const mapDispatchToProps = dispatch => ({
   changeRightBar: () => dispatch(changeRightBar(status))
 });
 
-class Panel extends React.Component {
+class Courses extends React.Component {
   constructor() {
     super();
     this.state = {
       lastLesson: "",
-      lastLessonLoader: true,
-      width:"68%"
+      lastLessonLoader: true
     };
   }
   _isMounted = false;
@@ -74,17 +73,6 @@ class Panel extends React.Component {
     this.loadLastLesson();
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.rightBar !== this.props.rightBar) {
-      let right = this.props.rightBar ? "68%" : "88%";
-      if (this._isMounted) {
-        this.setState({
-          width: right
-        });
-      }
-    }
-  }
-
   componentWillUnmount() {
     this._isMounted = false;
   }
@@ -92,11 +80,11 @@ class Panel extends React.Component {
   render() {
     let user = firebase.auth().currentUser.displayName;
     return (
-      <div style={{ width: this.state.width }} className="Panel" id="Panel">
-        <div className="Panel__title">
+      <div className="Courses" id="Courses">
+        <div className="Courses__title">
           <h3>Dashboard</h3>
-          <div className="Panel__time">
-            <h4 className="Panel__date">{formatDate}</h4>
+          <div className="Courses__time">
+            <h4 className="Courses__date">{formatDate}</h4>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -150,7 +138,7 @@ class Panel extends React.Component {
           </div>
         </div>
         {this.state.lastLesson === "" && (
-          <div className="Panel__welcome">
+          <div className="Courses__welcome">
             <div className="left">
               <h2> Welcome, {user}!</h2>
               <h4>
@@ -161,35 +149,33 @@ class Panel extends React.Component {
             </div>
           </div>
         )}
-        <div className="Panel__quickstart">
+        <div className="Courses__quickstart">
           {this.state.lastLessonLoader ? (
             <Loader />
           ) : this.state.lastLesson !== "err" ? (
             this.state.lastLesson === "" && (
-              <div className="Panel__notification">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  className="button"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M5 3L19 12 5 21 5 3z" />
-                </svg>
+              <div className="Courses__notification">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      className="button"
+      viewBox="0 0 24 24"
+    >
+      <path d="M5 3L19 12 5 21 5 3z" />
+    </svg>
                 <h4>
-                  This is the quick start panel, from here you will be able to
-                  quickly come back to last lesson but for now click here to
-                  begin lessons.
+                This is the quick start Courses, from here you will be able to quickly come back to last lesson but for now click here to begin lessons.
                 </h4>
               </div>
             )
           ) : (
-            <div className="Panel__error">
+            <div className="Courses__error">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -218,4 +204,4 @@ class Panel extends React.Component {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Panel);
+)(Courses);

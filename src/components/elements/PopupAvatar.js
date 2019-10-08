@@ -110,7 +110,7 @@ class PopupAvatar extends React.Component {
                   <path d="M9 15L15 15" />
                 </svg>
               ) : (
-                <img className="preview" id="preview"></img>
+                <img alt="preview" className="preview" id="preview"></img>
               )}
             </div>
             <h3>Upload profile picture</h3>

@@ -14,29 +14,36 @@
         padding: 0
         li
             display: flex
-            justify-content: center
             align-items: center
             height: 30px
             position: relative
-            cursor: pointer
-            transition: all .5s
-            svg
-                transition: all .5s
-            &:hover
-                stroke: $primaryColor
-                color: white
-            &.active:before
-                content: ""
-                position: absolute
-                right: -1px
-                width: 2px
-                border-radius: 3px
-                height: 70%
-                background-color: $primaryColor
-            &.active
+            padding: 0 20px
+            transition: all .3s
+            margin: 30px 0
+            text-align: left
+            a
+                display: flex
+                justify-content: center
+                align-items: center
+                color: $accentColor3
+                transition: all .3s
+                &.active
+                    color: white
                 &:hover
-                    color: $primaryColor
-                svg
                     stroke: $primaryColor
+                    color: $primaryColor
+                &.active
+                    &:hover
+                        color: $primaryColor
+                    svg
+                        stroke: $primaryColor
+                &.active:before
+                    content: ""
+                    position: absolute
+                    right: -1px
+                    width: 2px
+                    border-radius: 3px
+                    height: 70%
+                    background-color: $primaryColor
             svg
                 margin-right: 15px

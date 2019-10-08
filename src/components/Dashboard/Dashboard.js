@@ -1,11 +1,13 @@
 import React from "react";
 import "firebase/firestore";
 import { connect } from "react-redux";
+import {withRouter} from "react-router-dom";
 
 import Leftbar from "./Leftbar";
 import Panel from "./Panel";
 import Rightbar from "./Rightbar";
 import PopupAvatar from "../elements/PopupAvatar";
+import Courses from "./Courses";
 
 const mapStateToProps = state => ({
   ...state
@@ -19,41 +21,20 @@ class Dashboard extends React.Component {
   }
   componentDidMount() {
     this._isMounted = true;
-    if (!this.props.rightBar && document.getElementById("RightBar")) {
-      document.getElementById("RightBar").style.width = "0%";
-    } else if (document.getElementById("RightBar")) {
-      document.getElementById("RightBar").style.width = "20%";
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.rightBar !== this.props.rightBar) {
-      if (!this.props.rightBar && document.getElementById("RightBar")) {
-        document.getElementById("RightBar").style.width = "0%";
-      } else if (document.getElementById("RightBar")) {
-        setTimeout(() => {
-          document.getElementById("RightBar").style.width = "20%";
-        }, 300);
       }
-
-      if (!this.props.rightBar && document.getElementById("Panel")) {
-        document.getElementById("Panel").style.width = "88%";
-      } else if (document.getElementById("Panel")) {
-        document.getElementById("Panel").style.width = "68%";
-      }
-    }
-  }
 
   render() {
     return (
       <div className="Dashboard">
         {this.props.popupAvatar === true && <PopupAvatar />}
         <Leftbar />
-        <Panel />
+        {this.props.location.pathname ==="/dashboard" && <Panel />}
+        {this.props.location.pathname ==="/courses" && <Courses />}
+
         {this.props.rightBar && <Rightbar />}
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps)(Dashboard);
+export default withRouter(connect(mapStateToProps)(Dashboard));
