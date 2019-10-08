@@ -41,11 +41,11 @@ class PopupAvatar extends React.Component {
     reader.onload = function(e) {
       document.getElementById("preview").src = e.target.result;
     };
-    reader.readAsDataURL(document.getElementById("file").files[0])
-    if(this._isMounted){
+    reader.readAsDataURL(document.getElementById("file").files[0]);
+    if (this._isMounted) {
       this.setState({
-        img:true
-      })
+        img: true
+      });
     }
   }
 
