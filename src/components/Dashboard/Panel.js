@@ -2,7 +2,7 @@ import React from "react";
 import date from "date-and-time";
 import "firebase/firestore";
 import firebase from "firebase/app";
-import { ChangeRightBar } from "../../actions/actionsPanel";
+import { changeRightBar } from "../../actions/actionsPanel";
 import { connect } from "react-redux";
 import Loader from "../elements/Loader";
 
@@ -15,7 +15,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  ChangeRightBar: () => dispatch(ChangeRightBar(status))
+  changeRightBar: () => dispatch(changeRightBar(status))
 });
 
 class Panel extends React.Component {
@@ -29,7 +29,7 @@ class Panel extends React.Component {
   _isMounted = false;
   rightBarChange() {
     status = this.props.rightBar ? false : true;
-    this.props.ChangeRightBar();
+    this.props.changeRightBar();
   }
 
   loadLastLesson() {

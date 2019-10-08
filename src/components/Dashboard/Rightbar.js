@@ -4,7 +4,7 @@ import "firebase/storage";
 import { logout } from "../auth";
 import "firebase/firestore";
 import Loader from "../elements/Loader";
-import { SetPopupAvatar } from "../../actions/actionsPanel";
+import { setPopupAvatar } from "../../actions/actionsPanel";
 import { connect } from "react-redux";
 
 const mapStateToProps = state => ({
@@ -12,7 +12,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  SetPopupAvatar: () => dispatch(SetPopupAvatar(true))
+  setPopupAvatar: () => dispatch(setPopupAvatar(true))
 });
 
 class Rightbar extends React.Component {
@@ -50,7 +50,7 @@ class Rightbar extends React.Component {
   }
 
   uploadImage() {
-    this.props.SetPopupAvatar();
+    this.props.setPopupAvatar();
   }
 
   componentWillUnmount() {
