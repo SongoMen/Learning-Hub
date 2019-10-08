@@ -19,15 +19,16 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Panel extends React.Component {
+  _isMounted = false;
+
   constructor() {
     super();
     this.state = {
       lastLesson: "",
       lastLessonLoader: true,
-      width:"68%"
+      width: "68%"
     };
   }
-  _isMounted = false;
   rightBarChange() {
     status = this.props.rightBar ? false : true;
     this.props.changeRightBar();
@@ -71,6 +72,12 @@ class Panel extends React.Component {
   }
   componentDidMount() {
     this._isMounted = true;
+    let right = this.props.rightBar ? "68%" : "88%";
+    if (this._isMounted) {
+      this.setState({
+        width: right
+      });
+    }
     this.loadLastLesson();
   }
 

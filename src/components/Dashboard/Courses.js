@@ -19,17 +19,30 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Courses extends React.Component {
+  _isMounted = false;
+
   constructor() {
     super();
     this.state = {
       lastLesson: "",
-      lastLessonLoader: true
+      lastLessonLoader: true,
+      width: "68%"
     };
   }
-  _isMounted = false;
   rightBarChange() {
     status = this.props.rightBar ? false : true;
     this.props.changeRightBar();
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.rightBar !== this.props.rightBar) {
+      let right = this.props.rightBar ? "68%" : "88%";
+      if (this._isMounted) {
+        this.setState({
+          width: right
+        });
+      }
+    }
   }
 
   loadLastLesson() {
@@ -70,7 +83,12 @@ class Courses extends React.Component {
   }
   componentDidMount() {
     this._isMounted = true;
-    this.loadLastLesson();
+    let right = this.props.rightBar ? "68%" : "88%";
+    if (this._isMounted) {
+      this.setState({
+        width: right
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -80,7 +98,7 @@ class Courses extends React.Component {
   render() {
     let user = firebase.auth().currentUser.displayName;
     return (
-      <div className="Courses" id="Courses">
+      <div style={{ width: this.state.width }} className="Courses" id="Courses">
         <div className="Courses__title">
           <h3>Dashboard</h3>
           <div className="Courses__time">
@@ -155,22 +173,24 @@ class Courses extends React.Component {
           ) : this.state.lastLesson !== "err" ? (
             this.state.lastLesson === "" && (
               <div className="Courses__notification">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      className="button"
-      viewBox="0 0 24 24"
-    >
-      <path d="M5 3L19 12 5 21 5 3z" />
-    </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="button"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M5 3L19 12 5 21 5 3z" />
+                </svg>
                 <h4>
-                This is the quick start Courses, from here you will be able to quickly come back to last lesson but for now click here to begin lessons.
+                  This is the quick start Courses, from here you will be able to
+                  quickly come back to last lesson but for now click here to
+                  begin lessons.
                 </h4>
               </div>
             )
