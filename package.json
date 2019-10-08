@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "codacy-coverage": "^3.4.0",
     "date-and-time": "^0.10.0",
     "firebase": "^7.1.0",
     "node-sass": "^4.12.0",
