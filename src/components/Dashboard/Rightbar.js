@@ -22,7 +22,7 @@ class Rightbar extends React.Component {
     this.state = {
       avatar: "",
       show: false,
-      width: "20%"
+      width: ""
     };
   }
   getUserInfo() {
@@ -78,7 +78,13 @@ class Rightbar extends React.Component {
     this.getUserInfo();
     setTimeout(() => {
       this.setState({
-        show: true
+        width: "0"
+      });
+    }, 0);
+    setTimeout(() => {
+      this.setState({
+        show: true,
+        width: "20%"
       });
     }, 300);
   }
