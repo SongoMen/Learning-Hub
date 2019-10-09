@@ -1,7 +1,41 @@
 import React from "react";
 import { withRouter, NavLink } from "react-router-dom";
-class Leftbar extends React.Component {
+import firebase from "firebase/app";
+import "firebase/firestore";
 
+const db = firebase.firestore();
+
+let admin = false;
+class Leftbar extends React.Component {
+  _isMounted = false;
+
+  constructor() {
+    super();
+    this.state = {
+      loaded: false
+    };
+  }
+  componentDidMount() {
+    this._isMounted = true;
+    let user = firebase.auth().currentUser.uid;
+
+    db.collection("users")
+      .doc(user)
+      .onSnapshot(
+        function(doc) {
+          if (typeof doc.data() !== "undefined") {
+            admin = doc.data()["admin"];
+            this.setState({
+              loaded: true
+            });
+          }
+        }.bind(this)
+      );
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   render() {
     return (
@@ -49,6 +83,28 @@ class Leftbar extends React.Component {
               <h4>Courses</h4>
             </NavLink>
           </li>
+          {admin && this.state.loaded && (
+            <li>
+              <NavLink to="/devpanel">
+                {" "}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M4 17L10 11 4 5" />
+                  <path d="M12 19L20 19" />
+                </svg>
+                <h4>Dev Panel</h4>
+              </NavLink>
+            </li>
+          )}
         </ul>
       </div>
     );

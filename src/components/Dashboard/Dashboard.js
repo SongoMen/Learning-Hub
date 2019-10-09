@@ -8,6 +8,7 @@ import Panel from "./Panel";
 import Rightbar from "./Rightbar";
 import PopupAvatar from "../elements/PopupAvatar";
 import Courses from "./Courses";
+import DevPanel from "./DevPanel";
 
 const mapStateToProps = state => ({
   ...state
@@ -30,6 +31,7 @@ class Dashboard extends React.Component {
         <Leftbar />
         {this.props.location.pathname ==="/dashboard" && <Panel />}
         {this.props.location.pathname ==="/courses" && <Courses />}
+        {this.props.location.pathname ==="/devpanel" && <DevPanel />}
 
         {this.props.rightBar && <Rightbar />}
       </div>

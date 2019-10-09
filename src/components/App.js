@@ -103,6 +103,11 @@ class App extends Component {
               path="/courses"
               component={Dashboard}
             />
+            <PrivateRoute
+              authed={this.state.authed}
+              path="/devpanel"
+              component={Dashboard}
+            />
           </Switch>
         </div>
       </Router>
