@@ -63,7 +63,8 @@ class DevPanel extends React.Component {
           }
         }
       })
-      .catch(() => {
+      .catch((er) => {
+        console.log(er)
         this.setState({
           courses: "err"
         });
@@ -146,6 +147,9 @@ class DevPanel extends React.Component {
               </svg>
             )}
           </div>
+        </div>
+        <div className="DevPanel__topNav">
+          <button type="button" className="form-btn">CREATE NEW COURSE</button>
         </div>
         {this.state.courses === 0 && (
           <div className="DevPanel__list">
