@@ -2,9 +2,10 @@ import React from "react";
 import date from "date-and-time";
 import "firebase/firestore";
 import firebase from "firebase/app";
-import { changeRightBar } from "../../actions/actionsPanel";
+import { changeRightBar, setPopupDev } from "../../actions/actionsPanel";
 import { connect } from "react-redux";
 import Loader from "../elements/Loader";
+import PopupDev from "../elements/PopupDev";
 
 const now = new Date();
 const formatDate = date.format(now, "DD MMM YYYY, dddd");
@@ -15,7 +16,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  changeRightBar: () => dispatch(changeRightBar(status))
+  changeRightBar: () => dispatch(changeRightBar(status)),
+  setPopupDev: () => dispatch(setPopupDev(true))
 });
 
 class DevPanel extends React.Component {
@@ -63,8 +65,8 @@ class DevPanel extends React.Component {
           }
         }
       })
-      .catch((er) => {
-        console.log(er)
+      .catch(er => {
+        console.log(er);
         this.setState({
           courses: "err"
         });
@@ -72,7 +74,7 @@ class DevPanel extends React.Component {
   }
   componentDidMount() {
     this._isMounted = true;
-    this.loadAllCourses()
+    this.loadAllCourses();
     let right = this.props.rightBar ? "68%" : "88%";
     if (this._isMounted) {
       this.setState({
@@ -149,13 +151,19 @@ class DevPanel extends React.Component {
           </div>
         </div>
         <div className="DevPanel__topNav">
-          <button type="button" className="form-btn">CREATE NEW COURSE</button>
+          <button
+            onClick={() => this.props.setPopupDev()}
+            type="button"
+            className="form-btn"
+          >
+            CREATE NEW COURSE
+          </button>
         </div>
-        {this.state.courses === 0 && (
-          <div className="DevPanel__list">
-            <h3>No courses available</h3>
-          </div>
-        )}
+        <div className="DevPanel__list">
+          <h2>Courses</h2>
+          {this.state.courses === 0 && <h3>No courses available.</h3>}
+        </div>
+        {this.props.popupDev === true && <PopupDev />}
       </div>
     );
   }

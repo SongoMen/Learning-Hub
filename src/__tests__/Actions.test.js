@@ -15,6 +15,14 @@ describe('Panel actions', () => {
       type: actions.SET_POPUP,
       payload: popup
     }
-    expect(actions.setPopupAvatar(popup)).toEqual(expectedAction)
+    expect(actions.setPopup(popup)).toEqual(expectedAction)
+  })
+  it('should create an action to hide/show dev popup', () => {
+    const popup = 'true'
+    const expectedAction = {
+      type: actions.SET_POPUP_DEV,
+      payload: popup
+    }
+    expect(actions.setPopupDev(popup)).toEqual(expectedAction)
   })
 })

@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { setPopupAvatar } from "../../actions/actionsPanel";
+import { setPopup } from "../../actions/actionsPanel";
 import firebase from "firebase/app";
 import "firebase/storage";
 
@@ -9,7 +9,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setPopupAvatar: () => dispatch(setPopupAvatar(false))
+  setPopup: () => dispatch(setPopup(false))
 });
 
 class PopupAvatar extends React.Component {
@@ -71,7 +71,7 @@ class PopupAvatar extends React.Component {
             strokeWidth="2"
             className="button"
             viewBox="0 0 24 24"
-            onClick={() => this.props.setPopupAvatar()}
+            onClick={() => this.props.setPopup()}
           >
             <path d="M18 6L6 18" />
             <path d="M6 6L18 18" />
