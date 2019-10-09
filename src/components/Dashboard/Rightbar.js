@@ -80,7 +80,7 @@ class Rightbar extends React.Component {
         show: true,
         width: "20%"
       });
-    }, 1000);
+    }, 300);
   }
 
   render() {
