@@ -7,6 +7,20 @@
     border-right: 1px solid $linesColor
     &__logo
         height: 20%
+    &__dev
+        h4,svg
+            color: $devColor
+            stroke: $devColor
+            transition: all .3s
+        & .active
+            svg
+                stroke: $devColor!important
+        & .active:before
+            background-color: $devColor!important
+        &:hover
+            h4,svg
+                color: $primaryColor
+                stroke: $primaryColor
     ul
         list-style-type: none
         margin: 0

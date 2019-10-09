@@ -84,7 +84,7 @@ class Leftbar extends React.Component {
             </NavLink>
           </li>
           {admin && this.state.loaded && (
-            <li>
+            <li className="Leftbar__dev">
               <NavLink to="/devpanel">
                 {" "}
                 <svg

@@ -8,7 +8,7 @@ import { setPopupAvatar } from "../../actions/actionsPanel";
 import { connect } from "react-redux";
 
 const mapStateToProps = state => ({
-  rightBar: state.rightBar  
+  rightBar: state.rightBar
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -53,15 +53,11 @@ class Rightbar extends React.Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.rightBar !== this.props.rightBar) {
       let right = this.props.rightBar ? "20%" : "0";
-        if (right === "20%") {
-            this.setState({
-              width: right
-            });
-        } else {
-          this.setState({
-            width: right
-          });
-        }
+      if (this._isMounted) {
+        this.setState({
+          width: right
+        });
+      }
     }
   }
 
@@ -76,17 +72,15 @@ class Rightbar extends React.Component {
   componentDidMount() {
     this._isMounted = true;
     this.getUserInfo();
-    setTimeout(() => {
       this.setState({
         width: "0"
       });
-    }, 0);
     setTimeout(() => {
       this.setState({
         show: true,
         width: "20%"
       });
-    }, 300);
+    }, 1000);
   }
 
   render() {

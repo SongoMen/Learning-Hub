@@ -18,15 +18,14 @@ const mapDispatchToProps = dispatch => ({
   changeRightBar: () => dispatch(changeRightBar(status))
 });
 
-class Courses extends React.Component {
+class DevPanel extends React.Component {
   _isMounted = false;
 
   constructor() {
     super();
     this.state = {
-      lastLesson: "",
-      lastLessonLoader: true,
-      width: "68%"
+      width: "68%",
+      courses: ""
     };
   }
   rightBarChange() {
@@ -45,12 +44,10 @@ class Courses extends React.Component {
     }
   }
 
-  loadLastLesson() {
+  loadAllCourses() {
     let user = firebase.auth().currentUser.uid;
     firebase
       .firestore()
-      .collection("users")
-      .doc(user)
       .collection("courses")
       .get()
       .then(snapshot => {
@@ -61,28 +58,20 @@ class Courses extends React.Component {
         } else {
           if (this._isMounted) {
             this.setState({
-              lastLesson: ""
+              courses: 0
             });
           }
         }
       })
-      .then(() => {
-        if (this._isMounted) {
-          this.setState({
-            lastLessonLoader: false
-          });
-        }
-      })
-      .catch(err => {
-        console.log(err);
+      .catch(() => {
         this.setState({
-          lastLessonLoader: false,
-          lastLesson: "err"
+          courses: "err"
         });
       });
   }
   componentDidMount() {
     this._isMounted = true;
+    this.loadAllCourses()
     let right = this.props.rightBar ? "68%" : "88%";
     if (this._isMounted) {
       this.setState({
@@ -96,13 +85,16 @@ class Courses extends React.Component {
   }
 
   render() {
-    let user = firebase.auth().currentUser.displayName;
     return (
-      <div style={{ width: this.state.width }} className="Courses" id="Courses">
-        <div className="Courses__title">
-          <h3>Dashboard</h3>
-          <div className="Courses__time">
-            <h4 className="Courses__date">{formatDate}</h4>
+      <div
+        style={{ width: this.state.width }}
+        className="DevPanel"
+        id="DevPanel"
+      >
+        <div className="DevPanel__title">
+          <h3>Dev Panel</h3>
+          <div className="DevPanel__time">
+            <h4 className="DevPanel__date">{formatDate}</h4>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -155,68 +147,11 @@ class Courses extends React.Component {
             )}
           </div>
         </div>
-        {this.state.lastLesson === "" && (
-          <div className="Courses__welcome">
-            <div className="left">
-              <h2> Welcome, {user}!</h2>
-              <h4>
-                Looks like you didn't do any lessons yet
-                <br />
-                maybe you should start?
-              </h4>
-            </div>
+        {this.state.courses === 0 && (
+          <div className="DevPanel__list">
+            <h3>No courses available</h3>
           </div>
         )}
-        <div className="Courses__quickstart">
-          {this.state.lastLessonLoader ? (
-            <Loader />
-          ) : this.state.lastLesson !== "err" ? (
-            this.state.lastLesson === "" && (
-              <div className="Courses__notification">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  className="button"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M5 3L19 12 5 21 5 3z" />
-                </svg>
-                <h4>
-                  This is the quick start Courses, from here you will be able to
-                  quickly come back to last lesson but for now click here to
-                  begin lessons.
-                </h4>
-              </div>
-            )
-          ) : (
-            <div className="Courses__error">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                className="feather feather-frown"
-                viewBox="0 0 24 24"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <path d="M16 16s-1.5-2-4-2-4 2-4 2" />
-                <path d="M9 9L9.01 9" />
-                <path d="M15 9L15.01 9" />
-              </svg>
-              <h4>Looks like we couldn't connect to servers. Sorry!</h4>
-            </div>
-          )}
-        </div>
       </div>
     );
   }
@@ -224,4 +159,4 @@ class Courses extends React.Component {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Courses);
+)(DevPanel);
