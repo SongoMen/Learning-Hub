@@ -6,7 +6,7 @@ import { changeRightBar, setPopupDev } from "../../actions/actionsPanel";
 import { connect } from "react-redux";
 import Loader from "../elements/Loader";
 import PopupDev from "../elements/PopupDev";
-
+require("firebase/functions");
 const now = new Date();
 const formatDate = date.format(now, "DD MMM YYYY, dddd");
 let status;
@@ -19,6 +19,12 @@ const mapDispatchToProps = dispatch => ({
   changeRightBar: () => dispatch(changeRightBar(status)),
   setPopupDev: () => dispatch(setPopupDev(true))
 });
+
+let courses = {
+  name: [],
+  length: [],
+  style: []
+};
 
 class DevPanel extends React.Component {
   _isMounted = false;
@@ -48,6 +54,7 @@ class DevPanel extends React.Component {
 
   loadAllCourses() {
     let user = firebase.auth().currentUser.uid;
+    let i = 0;
     firebase
       .firestore()
       .collection("courses")
@@ -55,8 +62,16 @@ class DevPanel extends React.Component {
       .then(snapshot => {
         if (snapshot.docs.length > 0) {
           snapshot.forEach(doc => {
+            i++;
+            courses.name.push(doc.data()["name"]);
+            courses.style.push(doc.data()["style"]);
             console.log(doc.data());
           });
+          if (this._isMounted) {
+            this.setState({
+              courses: i
+            });
+          }
         } else {
           if (this._isMounted) {
             this.setState({
@@ -162,6 +177,10 @@ class DevPanel extends React.Component {
         <div className="DevPanel__list">
           <h2>Courses</h2>
           {this.state.courses === 0 && <h3>No courses available.</h3>}
+          {this.state.courses > 0 &&
+            courses.name.map((val, indx) => {
+              return <div key={indx} className={courses.style[indx]}>{val}</div>;
+            })}
         </div>
         {this.props.popupDev === true && <PopupDev />}
       </div>

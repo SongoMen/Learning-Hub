@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { setPopupDev } from "../../actions/actionsPanel";
 import firebase from "firebase/app";
-import "firebase/storage";
+import "firebase/firestore";
 
 const mapStateToProps = state => ({
   ...state
@@ -30,6 +30,23 @@ class PopupDev extends React.Component {
     this._isMounted = false;
   }
 
+  newCourse() {
+    firebase
+      .firestore()
+      .collection("courses")
+      .doc(this.course.value)
+      .set({
+        name: this.course.value,
+        style: this.style.value
+      })
+      .then(function() {
+        window.location.reload(false);
+      })
+      .catch(function(error) {
+        console.error("Error writing document: ", error);
+      });
+  }
+
   render() {
     return (
       <div className="popup">
@@ -50,7 +67,34 @@ class PopupDev extends React.Component {
             <path d="M18 6L6 18" />
             <path d="M6 6L18 18" />
           </svg>
-          <div className="popupDev__content"></div>
+          <div className="popupDev__content">
+            <div className="form-line">
+              <label htmlFor="course">Course name</label>
+              <input
+                className="input"
+                name="course"
+                type="text"
+                required
+                ref={course => (this.course = course)}
+              ></input>
+              <label htmlFor="course">Style name</label>
+              <input
+                className="input"
+                name="Style"
+                type="text"
+                required
+                ref={style => (this.style = style)}
+              ></input>
+            </div>
+            <input
+              type="button"
+              className="form-btn"
+              value="CREATE"
+              onClick={() => {
+                this.newCourse();
+              }}
+            ></input>
+          </div>
         </div>
       </div>
     );
