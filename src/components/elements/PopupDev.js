@@ -37,7 +37,8 @@ class PopupDev extends React.Component {
       .doc(this.course.value)
       .set({
         name: this.course.value,
-        style: this.style.value
+        style: this.style.value,
+        svg:this.svg.value
       })
       .then(function() {
         window.location.reload(false);
@@ -77,6 +78,8 @@ class PopupDev extends React.Component {
                 required
                 ref={course => (this.course = course)}
               ></input>
+            </div>
+            <div className="form-line">
               <label htmlFor="course">Style name</label>
               <input
                 className="input"
@@ -84,6 +87,16 @@ class PopupDev extends React.Component {
                 type="text"
                 required
                 ref={style => (this.style = style)}
+              ></input>
+            </div>
+            <div className="form-line">
+              <label htmlFor="course">SVG Icon</label>
+              <input
+                className="input"
+                name="svg"
+                type="text"
+                required
+                ref={svg => (this.svg = svg)}
               ></input>
             </div>
             <input

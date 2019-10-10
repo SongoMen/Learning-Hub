@@ -6,7 +6,8 @@ import { changeRightBar, setPopupDev } from "../../actions/actionsPanel";
 import { connect } from "react-redux";
 import Loader from "../elements/Loader";
 import PopupDev from "../elements/PopupDev";
-require("firebase/functions");
+import parse from 'html-react-parser';
+
 const now = new Date();
 const formatDate = date.format(now, "DD MMM YYYY, dddd");
 let status;
@@ -23,7 +24,8 @@ const mapDispatchToProps = dispatch => ({
 let courses = {
   name: [],
   length: [],
-  style: []
+  style: [],
+  svg: []
 };
 
 class DevPanel extends React.Component {
@@ -65,7 +67,8 @@ class DevPanel extends React.Component {
             i++;
             courses.name.push(doc.data()["name"]);
             courses.style.push(doc.data()["style"]);
-            console.log(doc.data());
+            courses.svg.push(doc.data()["svg"]);
+            console.log(courses.svg)
           });
           if (this._isMounted) {
             this.setState({
@@ -179,7 +182,12 @@ class DevPanel extends React.Component {
           {this.state.courses === 0 && <h3>No courses available.</h3>}
           {this.state.courses > 0 &&
             courses.name.map((val, indx) => {
-              return <div key={indx} className={courses.style[indx]}>{val}</div>;
+              return (
+                <div key={indx} className={courses.style[indx]}>
+                  {parse(courses.svg[indx])}
+                  <h4>{val}</h4>
+                </div>
+              );
             })}
         </div>
         {this.props.popupDev === true && <PopupDev />}

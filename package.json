@@ -6,6 +6,7 @@
     "codacy-coverage": "^3.4.0",
     "date-and-time": "^0.10.0",
     "firebase": "^7.1.0",
+    "html-react-parser": "^0.9.1",
     "node-sass": "^4.12.0",
     "npm": "^6.12.0",
     "react": "^16.10.2",
