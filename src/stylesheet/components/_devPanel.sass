@@ -25,3 +25,45 @@
             margin: 20px
         .form-line
             width: 40%
+
+.courses__box
+    display: flex
+    width: 22%
+    border-radius: 15px
+    justify-content: center
+    align-items: center
+    height: 15%
+    position: relative
+    padding: 20px
+    cursor: pointer
+    &:hover
+        .courses__arrow
+            right: 5px
+.jsfun
+    background-color: #ff808b
+    svg:nth-child(1)
+        width: 20%
+        min-width: 40px
+        background-color: #ff919b
+        border-radius: 10px
+        padding: 10px
+        margin-right: 20px
+        fill: white
+    .courses__arrow
+        position: absolute
+        bottom: 10px
+        right: 15px
+        width: 20px
+        height: 20px
+        transition: all .3s
+.courses__info
+    display: flex
+    justify-content: center
+    align-items: flex-start
+    flex-direction: column
+    h5:nth-child(1)
+        color: #ffdadd
+        margin: 0
+    h4
+        margin: 0
+        color: white

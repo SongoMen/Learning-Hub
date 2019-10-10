@@ -6,7 +6,7 @@ import { changeRightBar, setPopupDev } from "../../actions/actionsPanel";
 import { connect } from "react-redux";
 import Loader from "../elements/Loader";
 import PopupDev from "../elements/PopupDev";
-import parse from 'html-react-parser';
+import parse from "html-react-parser";
 
 const now = new Date();
 const formatDate = date.format(now, "DD MMM YYYY, dddd");
@@ -68,7 +68,7 @@ class DevPanel extends React.Component {
             courses.name.push(doc.data()["name"]);
             courses.style.push(doc.data()["style"]);
             courses.svg.push(doc.data()["svg"]);
-            console.log(courses.svg)
+            console.log(courses.svg);
           });
           if (this._isMounted) {
             this.setState({
@@ -183,9 +183,27 @@ class DevPanel extends React.Component {
           {this.state.courses > 0 &&
             courses.name.map((val, indx) => {
               return (
-                <div key={indx} className={courses.style[indx]}>
+                <div key={indx} className={"courses__box " + courses.style[indx]}>
                   {parse(courses.svg[indx])}
-                  <h4>{val}</h4>
+                  <div className="courses__info">
+                    <h5>Number of lessons</h5>
+                    <h4>{val}</h4>
+                  </div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="courses__arrow"
+                  >
+                    <line x1="0" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
                 </div>
               );
             })}
