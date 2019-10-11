@@ -273,8 +273,8 @@ class Panel extends React.Component {
         {this.state.courses > 0 &&
           courses.name.map((val, indx) => {
             return (
-              <div key={indx} className={"courses__box " + courses.style[indx]}>
-                {parse(courses.svg[indx])}
+              <div key={indx} className={"courses__box " + courses.style[parseInt(indx)]}>
+                {parse(courses.svg[parseInt(indx)])}
                 <div className="courses__info">
                   <h5>Number of lessons</h5>
                   <h4>{val}</h4>

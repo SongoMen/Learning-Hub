@@ -24,5 +24,5 @@ describe("Panel actions", () => {
       payload: popup
     };
     expect(actions.setPopupDev(popup)).toEqual(expectedAction);
-  })
+  });
 });

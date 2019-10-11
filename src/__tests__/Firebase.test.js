@@ -28,13 +28,13 @@ jest.spyOn(firebase, "auth").mockImplementation(() => {
 });
 
 test("firebase.auth().getRedirectResult", async () => {
-    const result = await firebase.auth().getRedirectResult()
+    const result = await firebase.auth().getRedirectResult();
     expect(result).toEqual({
       user: {
         displayName: "redirectResultTestDisplayName",
         email: "redirectTest@test.com",
       }
-    })
+    });
     expect(firebase.auth).toHaveBeenCalled();
     expect(getRedirectResult).toHaveBeenCalled();
   });
