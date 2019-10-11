@@ -55,7 +55,6 @@ class DevPanel extends React.Component {
   }
 
   loadAllCourses() {
-    let user = firebase.auth().currentUser.uid;
     let i = 0;
     firebase
       .firestore()

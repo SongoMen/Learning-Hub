@@ -15,6 +15,11 @@ const mapDispatchToProps = dispatch => ({
   setPopup: () => dispatch(setPopup(true))
 });
 
+let courses = {
+  name: [],
+  lesson: []
+};
+
 class Rightbar extends React.Component {
   _isMounted = false;
   constructor() {
@@ -50,6 +55,26 @@ class Rightbar extends React.Component {
       });
   }
 
+  currentCourses() {
+    let user = firebase.auth().currentUser.uid;
+    firebase
+      .firestore()
+      .collection("users")
+      .doc(user)
+      .collection("courses")
+      .get()
+      .then(snapshot => {
+        if (snapshot.docs.length > 0) {
+          snapshot.forEach(doc => {
+            console.log(doc.data());
+          });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.rightBar !== this.props.rightBar) {
       let right = this.props.rightBar ? "20%" : "0";
@@ -72,9 +97,9 @@ class Rightbar extends React.Component {
   componentDidMount() {
     this._isMounted = true;
     this.getUserInfo();
-      this.setState({
-        width: "0"
-      });
+    this.setState({
+      width: "0"
+    });
     setTimeout(() => {
       this.setState({
         show: true,
@@ -138,6 +163,14 @@ class Rightbar extends React.Component {
               )}
               <h3>{user}</h3>
             </div>
+            {courses.name.length > 0 && (
+              <div className="Rightbar__currentCourses">
+                <h3>Courses in Progress</h3>
+                {courses.name.map((val, indx) => {
+                  return <div className="Rightbar__course">x</div>;
+                })}
+              </div>
+            )}
           </div>
         )}
       </div>
