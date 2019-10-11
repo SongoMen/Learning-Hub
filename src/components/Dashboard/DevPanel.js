@@ -62,6 +62,9 @@ class DevPanel extends React.Component {
       .collection("courses")
       .get()
       .then(snapshot => {
+        courses.name = [];
+        courses.style = [];
+        courses.svg = [];
         if (snapshot.docs.length > 0) {
           snapshot.forEach(doc => {
             i++;
