@@ -30,7 +30,12 @@ let courses = {
 
 let lessons = {
   name: [],
-  content: [],
+  content: []
+};
+
+let content = {
+  title: [],
+  content: []
 };
 
 class DevPanel extends React.Component {
@@ -42,7 +47,9 @@ class DevPanel extends React.Component {
       width: "68%",
       courses: "",
       edit: false,
-      lessons: ""
+      lessons: "",
+      showLesson: false,
+      courseName: ""
     };
   }
   rightBarChange() {
@@ -104,6 +111,9 @@ class DevPanel extends React.Component {
   }
 
   loadAllLessonsFromCourse(name) {
+    this.setState({
+      courseName: name
+    });
     lessons.name = [];
     lessons.content = [];
     let i = 0;
@@ -118,7 +128,6 @@ class DevPanel extends React.Component {
           snapshot.forEach(doc => {
             lessons.name.push(doc.id);
             lessons.content.push(doc.data()["content"]);
-            console.log(doc.id);
             i++;
           });
           this.setState({
@@ -161,6 +170,28 @@ class DevPanel extends React.Component {
       });
     }
     this.loadAllLessonsFromCourse(courses.name[id]);
+  }
+
+  loadLessonContent(lesson) {
+    this.setState({ showLesson: true });
+    firebase
+      .firestore()
+      .collection("courses")
+      .doc(this.state.courseName)
+      .collection("lessons")
+      .doc(lesson)
+      .get()
+      .then(doc => {
+        content.content.push(doc.data()["content"]);
+        content.title.push(doc.data()["title"]);
+      })
+      .catch(err => {
+        console.error(
+          "%c%s",
+          "color: white; background: red;padding: 3px 6px;border-radius: 5px",
+          "Error"
+        );
+      });
   }
 
   render() {
@@ -300,7 +331,11 @@ class DevPanel extends React.Component {
             </svg>
             <div className="DevPanel__lessons">
               {lessons.name.map((val, indx) => (
-                <div key={indx} className="DevPanel__lesson">
+                <div
+                  key={indx}
+                  className="DevPanel__lesson"
+                  onClick={() => this.loadLessonContent(val)}
+                >
                   <h4>{val}</h4>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
