@@ -74,8 +74,11 @@ class Courses extends React.Component {
         }
       })
       .catch(err => {
-        console.log(err);
-        this.setState({
+        console.error(
+          "%c%s",
+          "color: white; background: red;padding: 3px 6px;border-radius: 5px",
+          "Error"
+        );        this.setState({
           lastLessonLoader: false,
           lastLesson: "err"
         });

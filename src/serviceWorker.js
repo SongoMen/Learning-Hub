@@ -42,8 +42,10 @@ function checkValidServiceWorker(swUrl, config) {
       }
     })
     .catch(() => {
-      console.log(
-        "No internet connection found. App is running in offline mode."
+      console.error(
+        "%c%s",
+        "color: white; background: red;padding: 5px 10px;border-radius: 10px",
+        "Error"
       );
     });
 }
@@ -87,8 +89,12 @@ function registerValidSW(swUrl, config) {
         };
       };
     })
-    .catch(error => {
-      console.error("Error during service worker registration:", error);
+    .catch(() => {
+      console.error(
+        "%c%s",
+        "color: white; background: red;padding: 5px 10px;border-radius: 10px",
+        "Error"
+      );
     });
 }
 
@@ -120,7 +126,6 @@ export function register(config) {
     }
   });
 }
-
 
 export function unregister() {
   if ("serviceWorker" in navigator) {

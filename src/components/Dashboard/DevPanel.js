@@ -28,6 +28,12 @@ let courses = {
   svg: []
 };
 
+let lessons = {
+  name: [],
+  content: [],
+  title: []
+};
+
 class DevPanel extends React.Component {
   _isMounted = false;
 
@@ -35,7 +41,9 @@ class DevPanel extends React.Component {
     super();
     this.state = {
       width: "68%",
-      courses: ""
+      courses: "",
+      edit: false,
+      lessons: ""
     };
   }
   rightBarChange() {
@@ -66,11 +74,10 @@ class DevPanel extends React.Component {
         courses.svg = [];
         if (snapshot.docs.length > 0) {
           snapshot.forEach(doc => {
-            i++;
             courses.name.push(doc.data()["name"]);
             courses.style.push(doc.data()["style"]);
             courses.svg.push(doc.data()["svg"]);
-            console.log(courses.svg);
+            i++;
           });
           if (this._isMounted) {
             this.setState({
@@ -85,13 +92,57 @@ class DevPanel extends React.Component {
           }
         }
       })
-      .catch(er => {
-        console.log(er);
+      .catch(() => {
+        console.error(
+          "%c%s",
+          "color: white; background: red;padding: 3px 6px;border-radius: 5px",
+          "Error"
+        );
         this.setState({
           courses: "err"
         });
       });
   }
+
+  loadAllLessonsFromCourse(name) {
+    lessons.names = [];
+    lessons.content = [];
+    let i = 0;
+    firebase
+      .firestore()
+      .collection("courses")
+      .doc(name)
+      .collection("lessons")
+      .get()
+      .then(snapshot => {
+        if (snapshot.docs.length > 0 && this._isMounted) {
+          snapshot.forEach(doc => {
+            lessons.name.push(doc.id);
+            lessons.content.push(doc.data()["content"]);
+            lessons.title.push(doc.data()["title"]);
+
+            console.log(doc.id);
+            i++;
+          });
+          this.setState({
+            courses: i
+          });
+        } else if (this._isMounted) {
+          this.setState({
+            lessons: 0
+          });
+        }
+      })
+      .catch(err => {
+        console.error(
+          "%c%s",
+          "color: white; background: red;padding: 3px 6px;border-radius: 5px",
+          "Error"
+        );
+        console.error(err);
+      });
+  }
+
   componentDidMount() {
     this._isMounted = true;
     this.loadAllCourses();
@@ -106,6 +157,14 @@ class DevPanel extends React.Component {
   componentWillUnmount() {
     this._isMounted = false;
   }
+  courseView(id) {
+    if (this._isMounted) {
+      this.setState({
+        edit: true
+      });
+    }
+    this.loadAllLessonsFromCourse(courses.name[id]);
+  }
 
   render() {
     return (
@@ -114,10 +173,116 @@ class DevPanel extends React.Component {
         className="DevPanel"
         id="DevPanel"
       >
-        <div className="DevPanel__title">
-          <h3>Dev Panel</h3>
-          <div className="DevPanel__time">
-            <h4 className="DevPanel__date">{formatDate}</h4>
+        {!this.state.edit ? (
+          <div>
+            <div className="DevPanel__title">
+              <h3>Dev Panel</h3>
+              <div className="DevPanel__time">
+                <h4 className="DevPanel__date">{formatDate}</h4>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="button first"
+                  viewBox="0 0 24 24"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="M21 21L16.65 16.65" />
+                </svg>
+                {this.props.rightBar ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    className="button"
+                    viewBox="0 0 24 24"
+                    onClick={() => this.rightBarChange()}
+                  >
+                    <path d="M5 12L19 12" />
+                    <path d="M12 5L19 12 12 19" />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    className="button backwards"
+                    viewBox="0 0 24 24"
+                    onClick={() => this.rightBarChange()}
+                  >
+                    <path d="M5 12L19 12" />
+                    <path d="M12 5L19 12 12 19" />
+                  </svg>
+                )}
+              </div>
+            </div>
+            <div className="DevPanel__topNav">
+              <button
+                onClick={() => this.props.setPopupDev()}
+                type="button"
+                className="form-btn"
+              >
+                CREATE NEW COURSE
+              </button>
+            </div>
+            <div className="DevPanel__list">
+              <h2>Courses</h2>
+              {this.state.courses === 0 && <h3>No courses available.</h3>}
+              {this.state.courses > 0 &&
+                courses.name.map((val, indx) => {
+                  return (
+                    <div
+                      key={indx}
+                      className={
+                        "courses__box " + courses.style[parseInt(indx)]
+                      }
+                      onClick={() => {
+                        this.courseView(indx);
+                      }}
+                    >
+                      {parse(courses.svg[parseInt(indx)])}
+                      <div className="courses__info">
+                        <h5>Number of lessons</h5>
+                        <h4>{val}</h4>
+                      </div>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="courses__arrow"
+                      >
+                        <line x1="0" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                      </svg>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+        ) : (
+          <div className="DevPanel__edit">
+            {" "}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -127,70 +292,19 @@ class DevPanel extends React.Component {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth="2"
-              className="button first"
+              className="button arrow"
               viewBox="0 0 24 24"
+              onClick={() => {
+                if (this._isMounted) this.setState({ edit: false });
+              }}
             >
-              <circle cx="11" cy="11" r="8" />
-              <path d="M21 21L16.65 16.65" />
+              <path d="M18 6L6 18" />
+              <path d="M6 6L18 18" />
             </svg>
-            {this.props.rightBar ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                className="button"
-                viewBox="0 0 24 24"
-                onClick={() => this.rightBarChange()}
-              >
-                <path d="M5 12L19 12" />
-                <path d="M12 5L19 12 12 19" />
-              </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                className="button backwards"
-                viewBox="0 0 24 24"
-                onClick={() => this.rightBarChange()}
-              >
-                <path d="M5 12L19 12" />
-                <path d="M12 5L19 12 12 19" />
-              </svg>
-            )}
-          </div>
-        </div>
-        <div className="DevPanel__topNav">
-          <button
-            onClick={() => this.props.setPopupDev()}
-            type="button"
-            className="form-btn"
-          >
-            CREATE NEW COURSE
-          </button>
-        </div>
-        <div className="DevPanel__list">
-          <h2>Courses</h2>
-          {this.state.courses === 0 && <h3>No courses available.</h3>}
-          {this.state.courses > 0 &&
-            courses.name.map((val, indx) => {
-              return (
-                <div key={indx} className={"courses__box " + courses.style[parseInt(indx)]}>
-                  {parse(courses.svg[parseInt(indx)])}
-                  <div className="courses__info">
-                    <h5>Number of lessons</h5>
-                    <h4>{val}</h4>
-                  </div>
+            <div className="DevPanel__lessons">
+              {lessons.name.map((val, indx) => (
+                <div key={indx} className="DevPanel__lesson">
+                  <h4>{val}</h4>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -201,15 +315,19 @@ class DevPanel extends React.Component {
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="courses__arrow"
+                    className="lessons__arrow"
                   >
                     <line x1="0" y1="12" x2="19" y2="12"></line>
                     <polyline points="12 5 19 12 12 19"></polyline>
                   </svg>
                 </div>
-              );
-            })}
-        </div>
+              ))}
+              <div className="form-btn">
+                <h4>Add new Lesson</h4>
+              </div>
+            </div>
+          </div>
+        )}
         {this.props.popupDev === true && <PopupDev />}
       </div>
     );

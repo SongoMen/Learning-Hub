@@ -38,13 +38,17 @@ class PopupDev extends React.Component {
       .set({
         name: this.course.value,
         style: this.style.value,
-        svg:this.svg.value
+        svg: this.svg.value
       })
-      .then(function() {
+      .then(() => {
         window.location.reload(false);
       })
-      .catch(function(error) {
-        console.error("Error writing document: ", error);
+      .catch(() => {
+        console.error(
+          "%c%s",
+          "color: white; background: red;padding: 3px 6px;border-radius: 5px",
+          "Error"
+        );
       });
   }
 

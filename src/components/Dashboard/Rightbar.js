@@ -70,8 +70,12 @@ class Rightbar extends React.Component {
           });
         }
       })
-      .catch(err => {
-        console.log(err);
+      .catch(() => {
+        console.error(
+          "%c%s",
+          "color: white; background: red;padding: 3px 6px;border-radius: 5px",
+          "Error"
+        );
       });
   }
 

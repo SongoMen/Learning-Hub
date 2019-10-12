@@ -74,8 +74,12 @@ class Panel extends React.Component {
           }
         }
       })
-      .catch(er => {
-        console.log(er);
+      .catch(() => {
+        console.error(
+          "%c%s",
+          "color: white; background: red;padding: 3px 6px;border-radius: 5px",
+          "Error"
+        );
         this.setState({
           courses: "err"
         });
@@ -269,35 +273,38 @@ class Panel extends React.Component {
         </div>
         <div className="Panel__more">
           <h3>More courses</h3>
-        {this.state.courses === 0 && <h3>No courses available.</h3>}
-        {this.state.courses > 0 &&
-          courses.name.map((val, indx) => {
-            return (
-              <div key={indx} className={"courses__box " + courses.style[parseInt(indx)]}>
-                {parse(courses.svg[parseInt(indx)])}
-                <div className="courses__info">
-                  <h5>Number of lessons</h5>
-                  <h4>{val}</h4>
-                </div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="courses__arrow"
+          {this.state.courses === 0 && <h3>No courses available.</h3>}
+          {this.state.courses > 0 &&
+            courses.name.map((val, indx) => {
+              return (
+                <div
+                  key={indx}
+                  className={"courses__box " + courses.style[parseInt(indx)]}
                 >
-                  <line x1="0" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-              </div>
-            );
-          })}
-          </div>
+                  {parse(courses.svg[parseInt(indx)])}
+                  <div className="courses__info">
+                    <h5>Number of lessons</h5>
+                    <h4>{val}</h4>
+                  </div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="courses__arrow"
+                  >
+                    <line x1="0" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </div>
+              );
+            })}
+        </div>
       </div>
     );
   }
