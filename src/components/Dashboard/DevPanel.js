@@ -31,7 +31,6 @@ let courses = {
 let lessons = {
   name: [],
   content: [],
-  title: []
 };
 
 class DevPanel extends React.Component {
@@ -105,7 +104,7 @@ class DevPanel extends React.Component {
   }
 
   loadAllLessonsFromCourse(name) {
-    lessons.names = [];
+    lessons.name = [];
     lessons.content = [];
     let i = 0;
     firebase
@@ -119,8 +118,6 @@ class DevPanel extends React.Component {
           snapshot.forEach(doc => {
             lessons.name.push(doc.id);
             lessons.content.push(doc.data()["content"]);
-            lessons.title.push(doc.data()["title"]);
-
             console.log(doc.id);
             i++;
           });
