@@ -20,12 +20,17 @@
         float: right
         width: 30px
         height: 30px
+    .refresh
+        float: left
+        width: 30px
+        height: 30px
     &__lessonContent
         display: flex
         justify-content: center
         align-items: center
         height: 100%
         position: relative
+        flex-direction: column
         .x
             position: absolute
             top: 0
@@ -34,6 +39,22 @@
         background-color: $accentColor1
         width: 80%
         border-radius: 10px
+        &.new 
+            display: flex
+            flex-direction: column
+            input:nth-child(1)
+                font-weight: bold
+                font-size: 30px
+                color: $primaryColor
+            input,textarea
+                background-color: transparent
+                border: 0
+                padding: 10px 20px
+                font-family: Poppins
+                color: white
+            textarea
+                height: 200px
+                resize: vertical
     &__lessons
         width: 100%
         height: 100%
@@ -51,7 +72,7 @@
         border-radius: 10px
         transition: all .3s
         cursor: pointer
-        margin: 20px 0 
+        margin: 10px 0 
         svg
             margin-right: 10px
             transition: all .3s

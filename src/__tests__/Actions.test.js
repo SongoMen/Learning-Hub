@@ -16,7 +16,7 @@ describe("Panel actions", () => {
       payload: popup
     };
     expect(actions.setPopup(popup)).toEqual(expectedAction);
-  })
+  });
   it("should create an action to hide/show dev popup", () => {
     const popup = "true";
     const expectedAction = {
