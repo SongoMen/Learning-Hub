@@ -49,7 +49,8 @@ class DevPanel extends React.Component {
       edit: false,
       lessons: "",
       showLesson: false,
-      courseName: ""
+      courseName: "",
+      lessonId: ""
     };
   }
   rightBarChange() {
@@ -169,11 +170,11 @@ class DevPanel extends React.Component {
         edit: true
       });
     }
-    this.loadAllLessonsFromCourse(courses.name[id]);
+    this.loadAllLessonsFromCourse(courses.name[parseInt(id)]);
   }
 
-  loadLessonContent(lesson) {
-    this.setState({ showLesson: true });
+  loadLessonContent(lesson, id) {
+    this.setState({ showLesson: true, edit: false });
     firebase
       .firestore()
       .collection("courses")
@@ -184,8 +185,9 @@ class DevPanel extends React.Component {
       .then(doc => {
         content.content.push(doc.data()["content"]);
         content.title.push(doc.data()["title"]);
+        if (this._isMounted) this.setState({ lessonId: id });
       })
-      .catch(err => {
+      .catch(() => {
         console.error(
           "%c%s",
           "color: white; background: red;padding: 3px 6px;border-radius: 5px",
@@ -201,7 +203,7 @@ class DevPanel extends React.Component {
         className="DevPanel"
         id="DevPanel"
       >
-        {!this.state.edit ? (
+        {!this.state.edit && !this.state.showLesson && (
           <div>
             <div className="DevPanel__title">
               <h3>Dev Panel</h3>
@@ -308,7 +310,8 @@ class DevPanel extends React.Component {
                 })}
             </div>
           </div>
-        ) : (
+        )}
+        {this.state.edit && (
           <div className="DevPanel__edit">
             {" "}
             <svg
@@ -320,7 +323,7 @@ class DevPanel extends React.Component {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth="2"
-              className="button arrow"
+              className="button x"
               viewBox="0 0 24 24"
               onClick={() => {
                 if (this._isMounted) this.setState({ edit: false });
@@ -334,7 +337,7 @@ class DevPanel extends React.Component {
                 <div
                   key={indx}
                   className="DevPanel__lesson"
-                  onClick={() => this.loadLessonContent(val)}
+                  onClick={() => this.loadLessonContent(val, indx)}
                 >
                   <h4>{val}</h4>
                   <svg
@@ -357,6 +360,33 @@ class DevPanel extends React.Component {
               <div className="form-btn">
                 <h4>Add new Lesson</h4>
               </div>
+            </div>
+          </div>
+        )}
+        {this.state.showLesson && (
+          <div className="DevPanel__lessonContent">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              className="button x"
+              viewBox="0 0 24 24"
+              onClick={() => {
+                if (this._isMounted)
+                  this.setState({ edit: true, showLesson: false });
+              }}
+            >
+              <path d="M18 6L6 18" />
+              <path d="M6 6L18 18" />
+            </svg>
+            <div className="DevPanel__lessonText">
+              <h2> {content.title[parseInt(this.state.lessonId)]}</h2>
+              <p>{content.content[parseInt(this.state.lessonId)]}</p>
             </div>
           </div>
         )}

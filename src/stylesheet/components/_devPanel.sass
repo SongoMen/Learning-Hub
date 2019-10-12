@@ -16,10 +16,24 @@
     &__edit
         height: 100%
         width: 100%
-        .arrow
-            float: right
-            width: 30px
-            height: 30px
+    .x
+        float: right
+        width: 30px
+        height: 30px
+    &__lessonContent
+        display: flex
+        justify-content: center
+        align-items: center
+        height: 100%
+        position: relative
+        .x
+            position: absolute
+            top: 0
+            right: 0
+    &__lessonText
+        background-color: $accentColor1
+        width: 80%
+        border-radius: 10px
     &__lessons
         width: 100%
         height: 100%
