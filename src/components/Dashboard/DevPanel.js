@@ -196,33 +196,35 @@ class DevPanel extends React.Component {
 
   addNewLesson() {
     let lessonNumber = 0;
-    db.collection("courses")
-      .doc(this.state.courseName)
-      .get()
-      .then(doc => {
-        console.log(doc);
-        lessonNumber = doc.data()["length"];
-      })
-      .then(() => {
-        db.collection("courses")
-          .doc(this.state.courseName)
-          .update({
-            length: lessonNumber + 1
-          })
-          .then(() => {
-            db.collection("courses")
-              .doc(this.state.courseName)
-              .collection("lessons")
-              .doc(this.title.value)
-              .set({
-                title: this.title.value,
-                content: this.text.value
-              })
-              .catch(error => {
-                console.log("Error getting document:", error);
-              });
-          });
-      });
+    if (this.text.value.length > 0 && this.title.value.length > 0) {
+      db.collection("courses")
+        .doc(this.state.courseName)
+        .get()
+        .then(doc => {
+          console.log(doc);
+          lessonNumber = doc.data()["length"];
+        })
+        .then(() => {
+          db.collection("courses")
+            .doc(this.state.courseName)
+            .update({
+              length: parseInt(lessonNumber) + 1
+            })
+            .then(() => {
+              db.collection("courses")
+                .doc(this.state.courseName)
+                .collection("lessons")
+                .doc(this.title.value)
+                .set({
+                  title: this.title.value,
+                  content: this.text.value
+                })
+                .catch(error => {
+                  console.log("Error getting document:", error);
+                });
+            });
+        });
+    }
   }
 
   render() {
@@ -459,7 +461,7 @@ class DevPanel extends React.Component {
               viewBox="0 0 24 24"
               onClick={() => {
                 if (this._isMounted)
-                  this.setState({ edit: true, showLesson: false });
+                  this.setState({ edit: true, showLesson: false,addNewLesson:false });
               }}
             >
               <path d="M18 6L6 18" />
