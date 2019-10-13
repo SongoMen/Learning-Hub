@@ -4,7 +4,6 @@ import "firebase/firestore";
 import firebase from "firebase/app";
 import { changeRightBar, setPopupDev } from "../../actions/actionsPanel";
 import { connect } from "react-redux";
-import Loader from "../elements/Loader";
 import PopupDev from "../elements/PopupDev";
 import parse from "html-react-parser";
 

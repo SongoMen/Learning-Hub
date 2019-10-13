@@ -8,7 +8,7 @@ describe("Panel actions", () => {
       payload: rightBar
     };
     expect(actions.changeRightBar(rightBar)).toEqual(expectedAction);
-  })
+  });
   it("should create an action to hide/show popup", () => {
     const popup = "true";
     const expectedAction = {

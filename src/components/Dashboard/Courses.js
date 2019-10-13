@@ -5,6 +5,7 @@ import firebase from "firebase/app";
 import { changeRightBar } from "../../actions/actionsPanel";
 import { connect } from "react-redux";
 import Loader from "../elements/Loader";
+import parse from "html-react-parser";
 
 const now = new Date();
 const formatDate = date.format(now, "DD MMM YYYY, dddd");
@@ -18,6 +19,15 @@ const mapDispatchToProps = dispatch => ({
   changeRightBar: () => dispatch(changeRightBar(status))
 });
 
+const db = firebase.firestore();
+
+let courses = {
+  name: [],
+  length: [],
+  style: [],
+  svg: []
+};
+
 class Courses extends React.Component {
   _isMounted = false;
 
@@ -26,7 +36,8 @@ class Courses extends React.Component {
     this.state = {
       lastLesson: "",
       lastLessonLoader: true,
-      width: "68%"
+      width: "68%",
+      courses: ""
     };
   }
   rightBarChange() {
@@ -45,45 +56,46 @@ class Courses extends React.Component {
     }
   }
 
-  loadLastLesson() {
-    let user = firebase.auth().currentUser.uid;
-    firebase
-      .firestore()
-      .collection("users")
-      .doc(user)
-      .collection("courses")
+  loadAllCourses() {
+    let i = 0;
+    db.collection("courses")
       .get()
       .then(snapshot => {
+        courses.name = [];
+        courses.style = [];
+        courses.svg = [];
         if (snapshot.docs.length > 0) {
           snapshot.forEach(doc => {
-            console.log(doc.data());
+            courses.name.push(doc.data()["name"]);
+            courses.style.push(doc.data()["style"]);
+            courses.svg.push(doc.data()["svg"]);
+            i++;
           });
+          if (this._isMounted) {
+            this.setState({
+              courses: i
+            });
+          }
         } else {
           if (this._isMounted) {
             this.setState({
-              lastLesson: ""
+              courses: 0
             });
           }
         }
       })
-      .then(() => {
-        if (this._isMounted) {
-          this.setState({
-            lastLessonLoader: false
-          });
-        }
-      })
-      .catch(err => {
+      .catch(() => {
         console.error(
           "%c%s",
           "color: white; background: red;padding: 3px 6px;border-radius: 5px",
           "Error"
-        );        this.setState({
-          lastLessonLoader: false,
-          lastLesson: "err"
+        );
+        this.setState({
+          courses: "err"
         });
       });
   }
+
   componentDidMount() {
     this._isMounted = true;
     let right = this.props.rightBar ? "68%" : "88%";
@@ -92,6 +104,7 @@ class Courses extends React.Component {
         width: right
       });
     }
+    this.loadAllCourses();
   }
 
   componentWillUnmount() {
@@ -103,7 +116,7 @@ class Courses extends React.Component {
     return (
       <div style={{ width: this.state.width }} className="Courses" id="Courses">
         <div className="Courses__title">
-          <h3>Dashboard</h3>
+          <h3>All courses</h3>
           <div className="Courses__time">
             <h4 className="Courses__date">{formatDate}</h4>
             <svg
@@ -158,66 +171,37 @@ class Courses extends React.Component {
             )}
           </div>
         </div>
-        {this.state.lastLesson === "" && (
-          <div className="Courses__welcome">
-            <div className="left">
-              <h2> Welcome, {user}!</h2>
-              <h4>
-                Looks like you didn't do any lessons yet
-                <br />
-                maybe you should start?
-              </h4>
-            </div>
-          </div>
-        )}
-        <div className="Courses__quickstart">
-          {this.state.lastLessonLoader ? (
+        <div className="Courses__list">
+          {this.state.courses === "" ? (
             <Loader />
-          ) : this.state.lastLesson !== "err" ? (
-            this.state.lastLesson === "" && (
-              <div className="Courses__notification">
+          ) : (
+            courses.name.map((val, indx) => (
+              <div
+                key={indx}
+                className={"courses__box " + courses.style[parseInt(indx)]}
+              >
+                {parse(courses.svg[parseInt(indx)])}
+                <div className="courses__info">
+                  <h5>Number of lessons</h5>
+                  <h4>{val}</h4>
+                </div>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
                   height="24"
+                  viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
+                  strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth="2"
-                  className="button"
-                  viewBox="0 0 24 24"
+                  className="courses__arrow"
                 >
-                  <path d="M5 3L19 12 5 21 5 3z" />
+                  <line x1="0" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
                 </svg>
-                <h4>
-                  This is the quick start Courses, from here you will be able to
-                  quickly come back to last lesson but for now click here to
-                  begin lessons.
-                </h4>
               </div>
-            )
-          ) : (
-            <div className="Courses__error">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                className="feather feather-frown"
-                viewBox="0 0 24 24"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <path d="M16 16s-1.5-2-4-2-4 2-4 2" />
-                <path d="M9 9L9.01 9" />
-                <path d="M15 9L15.01 9" />
-              </svg>
-              <h4>Looks like we couldn't connect to servers. Sorry!</h4>
-            </div>
+            ))
           )}
         </div>
       </div>
