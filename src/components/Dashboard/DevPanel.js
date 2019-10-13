@@ -6,6 +6,7 @@ import { changeRightBar, setPopupDev } from "../../actions/actionsPanel";
 import { connect } from "react-redux";
 import PopupDev from "../elements/PopupDev";
 import parse from "html-react-parser";
+import Loader from "../elements/Loader";
 
 const now = new Date();
 const formatDate = date.format(now, "DD MMM YYYY, dddd");
@@ -22,21 +23,23 @@ const mapDispatchToProps = dispatch => ({
 
 const db = firebase.firestore();
 
+let admin = false; //ADMIN STATUS
+
 let courses = {
   name: [],
   length: [],
-  style: [],
+  style: [], //LOAD ALL COURSES
   svg: []
 };
 
 let lessons = {
   name: [],
-  content: []
+  content: [] //LOAD ALL LESSONS
 };
 
 let content = {
   title: [],
-  content: []
+  content: [] // LOAD SPECIFIC LESSON FROM COURSE
 };
 
 class DevPanel extends React.Component {
@@ -52,7 +55,8 @@ class DevPanel extends React.Component {
       showLesson: false,
       courseName: "",
       lessonId: "",
-      addLesson: false
+      addLesson: false,
+      loaded: false
     };
   }
   rightBarChange() {
@@ -150,6 +154,8 @@ class DevPanel extends React.Component {
   }
 
   componentDidMount() {
+    let user = firebase.auth().currentUser.uid;
+
     this._isMounted = true;
     this.loadAllCourses();
     let right = this.props.rightBar ? "68%" : "88%";
@@ -158,6 +164,18 @@ class DevPanel extends React.Component {
         width: right
       });
     }
+    db.collection("users")
+      .doc(user)
+      .onSnapshot(
+        function(doc) {
+          if (typeof doc.data() !== "undefined") {
+            admin = doc.data()["admin"];
+            this.setState({
+              loaded: true
+            });
+          }
+        }.bind(this)
+      );
   }
 
   componentWillUnmount() {
@@ -233,7 +251,10 @@ class DevPanel extends React.Component {
         className="DevPanel"
         id="DevPanel"
       >
-        {!this.state.edit &&
+        {!this.state.loaded ? (
+          <Loader />
+        ) : (
+          !this.state.edit &&
           !this.state.showLesson &&
           !this.state.addNewLesson && (
             <div>
@@ -342,7 +363,8 @@ class DevPanel extends React.Component {
                   })}
               </div>
             </div>
-          )}
+          )
+        )}
         {this.state.edit && (
           <div className="DevPanel__edit">
             <svg
@@ -460,7 +482,11 @@ class DevPanel extends React.Component {
               viewBox="0 0 24 24"
               onClick={() => {
                 if (this._isMounted)
-                  this.setState({ edit: true, showLesson: false,addNewLesson:false });
+                  this.setState({
+                    edit: true,
+                    showLesson: false,
+                    addNewLesson: false
+                  });
               }}
             >
               <path d="M18 6L6 18" />
@@ -489,7 +515,6 @@ class DevPanel extends React.Component {
             </button>
           </div>
         )}
-
         {this.props.popupDev === true && <PopupDev />}
       </div>
     );

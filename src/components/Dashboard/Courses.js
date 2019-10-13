@@ -112,7 +112,6 @@ class Courses extends React.Component {
   }
 
   render() {
-    let user = firebase.auth().currentUser.displayName;
     return (
       <div style={{ width: this.state.width }} className="Courses" id="Courses">
         <div className="Courses__title">
