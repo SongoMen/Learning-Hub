@@ -254,6 +254,7 @@ class DevPanel extends React.Component {
         {!this.state.loaded ? (
           <Loader />
         ) : (
+          admin &&
           !this.state.edit &&
           !this.state.showLesson &&
           !this.state.addNewLesson && (
