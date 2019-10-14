@@ -5,6 +5,8 @@
     align-items: center
     flex-direction: column
     border-right: 1px solid $linesColor
+    @media only screen and (max-width: 1270px)
+        width: 6%
     &__logo
         height: 20%
     &__dev
@@ -35,6 +37,11 @@
             transition: all .3s
             margin: 30px 0
             text-align: left
+            @media only screen and (max-width: 1270px)
+                justify-content: center
+            h4
+                @media only screen and (max-width: 1270px) 
+                    display: none
             a
                 display: flex
                 justify-content: center
@@ -61,3 +68,7 @@
                     background-color: $primaryColor
             svg
                 margin-right: 15px
+                @media only screen and (max-width: 1270px) 
+                    height: 25px
+                    width: 25px
+                    margin-right: 0

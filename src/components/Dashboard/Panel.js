@@ -34,7 +34,7 @@ class Panel extends React.Component {
     this.state = {
       lastLesson: "",
       lastLessonLoader: true,
-      width: "68%",
+      width: "",
       courses: ""
     };
   }
@@ -124,7 +124,7 @@ class Panel extends React.Component {
   }
   componentDidMount() {
     this._isMounted = true;
-    let right = this.props.rightBar ? "68%" : "88%";
+    let right = this.props.rightBar ? "" : "active";
     if (this._isMounted) {
       this.setState({
         width: right
@@ -136,7 +136,7 @@ class Panel extends React.Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.rightBar !== this.props.rightBar) {
-      let right = this.props.rightBar ? "68%" : "88%";
+      let right = this.props.rightBar ? "" : "active";
       if (this._isMounted) {
         this.setState({
           width: right
@@ -152,7 +152,7 @@ class Panel extends React.Component {
   render() {
     let user = firebase.auth().currentUser.displayName;
     return (
-      <div style={{ width: this.state.width }} className="Panel" id="Panel">
+      <div className={"Panel " + this.state.width} id="Panel">
         <div className="Panel__title">
           <h3>Dashboard</h3>
           <div className="Panel__time">
