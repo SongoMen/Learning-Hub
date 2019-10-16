@@ -48,7 +48,7 @@ class DevPanel extends React.Component {
   constructor() {
     super();
     this.state = {
-      width: "68%",
+      width: "",
       courses: "",
       edit: false,
       lessons: "",
@@ -66,7 +66,7 @@ class DevPanel extends React.Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.rightBar !== this.props.rightBar) {
-      let right = this.props.rightBar ? "68%" : "88%";
+      let right = this.props.rightBar ? "" : "active";
       if (this._isMounted) {
         this.setState({
           width: right
@@ -158,7 +158,7 @@ class DevPanel extends React.Component {
 
     this._isMounted = true;
     this.loadAllCourses();
-    let right = this.props.rightBar ? "68%" : "88%";
+    let right = this.props.rightBar ? "" : "active";
     if (this._isMounted) {
       this.setState({
         width: right
@@ -218,7 +218,6 @@ class DevPanel extends React.Component {
         .doc(this.state.courseName)
         .get()
         .then(doc => {
-          console.log(doc);
           lessonNumber = doc.data()["length"];
         })
         .then(() => {
@@ -247,8 +246,7 @@ class DevPanel extends React.Component {
   render() {
     return (
       <div
-        style={{ width: this.state.width }}
-        className="DevPanel"
+        className={"DevPanel " + this.state.width}
         id="DevPanel"
       >
         {!this.state.loaded ? (

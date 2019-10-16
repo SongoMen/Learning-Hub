@@ -3,6 +3,12 @@
     width: 68%
     background-color: $panelColor
     transition: width .3s
+    @media only screen and (max-width: 1270px) 
+        width: 74%
+    &.active
+        width: 88%
+        @media only screen and (max-width: 1270px) 
+            width: 94%
     &__list
         height: 79%
     &__topNav

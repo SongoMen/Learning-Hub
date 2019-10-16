@@ -36,7 +36,7 @@ class Courses extends React.Component {
     this.state = {
       lastLesson: "",
       lastLessonLoader: true,
-      width: "68%",
+      width: "",
       courses: ""
     };
   }
@@ -47,7 +47,7 @@ class Courses extends React.Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.rightBar !== this.props.rightBar) {
-      let right = this.props.rightBar ? "68%" : "88%";
+      let right = this.props.rightBar ? "" : "active";
       if (this._isMounted) {
         this.setState({
           width: right
@@ -98,7 +98,7 @@ class Courses extends React.Component {
 
   componentDidMount() {
     this._isMounted = true;
-    let right = this.props.rightBar ? "68%" : "88%";
+    let right = this.props.rightBar ? "" : "active";
     if (this._isMounted) {
       this.setState({
         width: right
@@ -113,7 +113,7 @@ class Courses extends React.Component {
 
   render() {
     return (
-      <div style={{ width: this.state.width }} className="Courses" id="Courses">
+      <div className={"Courses " + this.state.width} id="Courses">
         <div className="Courses__title">
           <h3>All courses</h3>
           <div className="Courses__time">
