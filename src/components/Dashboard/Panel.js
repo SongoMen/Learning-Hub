@@ -59,7 +59,6 @@ class Panel extends React.Component {
             courses.name.push(doc.data()["name"]);
             courses.style.push(doc.data()["style"]);
             courses.svg.push(doc.data()["svg"]);
-            console.log(courses.svg);
           });
           if (this._isMounted) {
             this.setState({
