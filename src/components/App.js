@@ -12,6 +12,7 @@ import LandingPage from "./LandingPage/LandingPage";
 import Login from "./Login/Login";
 import Register from "./Register/Register";
 import Dashboard from "./Dashboard/Dashboard";
+import CourseContainer from "./CoursePage/CourseContainer"
 
 function PrivateRoute({ component: Component, authed, ...rest }) {
   return (
@@ -107,6 +108,12 @@ class App extends Component {
               authed={this.state.authed}
               path="/devpanel"
               component={Dashboard}
+            />
+            <PrivateRoute
+              authed={this.state.authed}
+              path="/course/:name"
+              component={CourseContainer}
+              name={window.location.pathname.split("/")[2]}
             />
           </Switch>
         </div>
