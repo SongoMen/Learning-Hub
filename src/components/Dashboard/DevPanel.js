@@ -256,7 +256,7 @@ class DevPanel extends React.Component {
           !this.state.edit &&
           !this.state.showLesson &&
           !this.state.addNewLesson && (
-            <div>
+            <div className="DevPanel__content">
               <div className="DevPanel__title">
                 <h3>Dev Panel</h3>
                 <div className="DevPanel__time">
