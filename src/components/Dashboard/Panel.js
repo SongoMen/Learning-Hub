@@ -80,9 +80,11 @@ class Panel extends React.Component {
           "color: white; background: red;padding: 3px 6px;border-radius: 5px",
           "Error"
         );
-        this.setState({
-          courses: "err"
-        });
+        if (this._isMounted) {
+          this.setState({
+            courses: "err"
+          });
+        }
       });
   }
 
@@ -116,10 +118,12 @@ class Panel extends React.Component {
       })
       .catch(err => {
         console.log(err);
-        this.setState({
-          lastLessonLoader: false,
-          lastLesson: "err"
-        });
+        if (this._isMounted) {
+          this.setState({
+            lastLessonLoader: false,
+            lastLesson: "err"
+          });
+        }
       });
   }
   componentDidMount() {

@@ -12,7 +12,7 @@ import LandingPage from "./LandingPage/LandingPage";
 import Login from "./Login/Login";
 import Register from "./Register/Register";
 import Dashboard from "./Dashboard/Dashboard";
-import CourseContainer from "./CoursePage/CourseContainer"
+import CourseContainer from "./CoursePage/CourseContainer";
 
 function PrivateRoute({ component: Component, authed, ...rest }) {
   return (

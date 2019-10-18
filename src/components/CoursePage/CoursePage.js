@@ -21,14 +21,15 @@ const db = firebase.firestore();
 
 class CoursePage extends React.Component {
   _isMounted = false;
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      name: "",
+      name: props.match.params.name.replace(/%20/gi, " "),
       loader: true,
       style: "",
       svg: ""
     };
+    this.loadLessons = this.loadLessons.bind(this);
   }
 
   componentWillUnmount() {
@@ -36,10 +37,7 @@ class CoursePage extends React.Component {
   }
   componentDidMount() {
     this._isMounted = true;
-    if (this._isMounted)
-      this.setState({ name: this.props.name.replace(/%20/gi, " ") }, () =>
-        this.loadLessons()
-      );
+    this.loadLessons();
   }
 
   loadLessons() {
@@ -127,6 +125,8 @@ class CoursePage extends React.Component {
       });
   }
 
+  startCourse() {}
+
   render() {
     return (
       <div className="CoursePage">
@@ -169,6 +169,7 @@ class CoursePage extends React.Component {
                 type="button"
                 className="form-btn"
                 value="start course"
+                onClick={() => this.startCourse()}
               ></input>
             )}
       </div>
