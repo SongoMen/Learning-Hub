@@ -46,37 +46,67 @@ class CoursePage extends React.Component {
     lessons.name = [];
     lessons.content = [];
     let num = 1;
-    db.collection("courses")
-      .doc(this.state.name)
+    let user = firebase.auth().currentUser.uid;
+    firebase
+      .firestore()
+      .collection("users")
+      .doc(user)
+      .collection("courses")
       .get()
       .then(snapshot => {
-        if (this._isMounted)
-          this.setState({
-            style: snapshot.data()["style"],
-            svg: snapshot.data()["svg"]
+        if (snapshot.docs.length > 0) {
+          snapshot.forEach(doc => {
+            console.log(doc.data());
           });
+        } else {
+          if (this._isMounted) {
+            this.setState({
+              started: false
+            });
+          }
+        }
       })
       .then(() => {
         db.collection("courses")
           .doc(this.state.name)
-          .collection("lessons")
           .get()
           .then(snapshot => {
-            if (snapshot.docs.length > 0 && this._isMounted) {
-              snapshot.forEach(doc => {
-                lessons.number.push(num);
-                num++;
-                lessons.name.push(doc.id);
-                lessons.content.push(doc.data()["content"]);
+            if (this._isMounted)
+              this.setState({
+                style: snapshot.data()["style"],
+                svg: snapshot.data()["svg"]
               });
-            }
           })
           .then(() => {
-            if (this._isMounted) {
-              this.setState({
-                loader: false
+            db.collection("courses")
+              .doc(this.state.name)
+              .collection("lessons")
+              .get()
+              .then(snapshot => {
+                if (snapshot.docs.length > 0 && this._isMounted) {
+                  snapshot.forEach(doc => {
+                    lessons.number.push(num);
+                    num++;
+                    lessons.name.push(doc.id);
+                    lessons.content.push(doc.data()["content"]);
+                  });
+                }
+              })
+              .then(() => {
+                if (this._isMounted) {
+                  this.setState({
+                    loader: false
+                  });
+                }
+              })
+              .catch(err => {
+                console.error(
+                  "%c%s",
+                  "color: white; background: red;padding: 3px 6px;border-radius: 5px",
+                  "Error"
+                );
+                console.error(err);
               });
-            }
           })
           .catch(err => {
             console.error(
@@ -100,40 +130,47 @@ class CoursePage extends React.Component {
   render() {
     return (
       <div className="CoursePage">
-        <div className={"CoursePage__course " + this.state.style}>
-          {parse(this.state.svg)}
-          <h3>{this.state.name}</h3>
-        </div>
-        {this.state.loader ? (
-          <Loader />
-        ) : (
-          lessons.name.map((val, indx) => (
-            <div
-              key={indx}
-              className="CoursePage__lesson"
-              onClick={() => this.loadLessonContent(val, indx)}
-            >
-              <h4>
-                {lessons.number[parseInt(indx)]}. {val}
-              </h4>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="lessons__arrow"
-              >
-                <line x1="0" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </div>
-          ))
+        {!this.state.loader && (
+          <div className={"CoursePage__course " + this.state.style}>
+            {parse(this.state.svg)}
+            <h3>{this.state.name}</h3>
+          </div>
         )}
+        {this.state.loader && <Loader />}
+        {this.state.started === "" && !this.state.loader
+          ? lessons.name.map((val, indx) => (
+              <div
+                key={indx}
+                className="CoursePage__lesson"
+                onClick={() => this.loadLessonContent(val, indx)}
+              >
+                <h4>
+                  {lessons.number[parseInt(indx)]}. {val}
+                </h4>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lessons__arrow"
+                >
+                  <line x1="0" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </div>
+            ))
+          : !this.state.loader && (
+              <input
+                type="button"
+                className="form-btn"
+                value="start course"
+              ></input>
+            )}
       </div>
     );
   }
