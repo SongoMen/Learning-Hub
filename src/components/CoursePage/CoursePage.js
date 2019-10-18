@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import Loader from "../elements/Loader";
+import parse from "html-react-parser";
 
 const mapStateToProps = state => ({
   ...state
@@ -24,7 +25,9 @@ class CoursePage extends React.Component {
     super();
     this.state = {
       name: "",
-      loader: true
+      loader: true,
+      style: "",
+      svg: ""
     };
   }
 
@@ -45,24 +48,44 @@ class CoursePage extends React.Component {
     let num = 1;
     db.collection("courses")
       .doc(this.state.name)
-      .collection("lessons")
       .get()
       .then(snapshot => {
-        if (snapshot.docs.length > 0 && this._isMounted) {
-          snapshot.forEach(doc => {
-            lessons.number.push(num);
-            num++;
-            lessons.name.push(doc.id);
-            lessons.content.push(doc.data()["content"]);
+        if (this._isMounted)
+          this.setState({
+            style: snapshot.data()["style"],
+            svg: snapshot.data()["svg"]
           });
-        }
       })
       .then(() => {
-        if (this._isMounted) {
-          this.setState({
-            loader: false
+        db.collection("courses")
+          .doc(this.state.name)
+          .collection("lessons")
+          .get()
+          .then(snapshot => {
+            if (snapshot.docs.length > 0 && this._isMounted) {
+              snapshot.forEach(doc => {
+                lessons.number.push(num);
+                num++;
+                lessons.name.push(doc.id);
+                lessons.content.push(doc.data()["content"]);
+              });
+            }
+          })
+          .then(() => {
+            if (this._isMounted) {
+              this.setState({
+                loader: false
+              });
+            }
+          })
+          .catch(err => {
+            console.error(
+              "%c%s",
+              "color: white; background: red;padding: 3px 6px;border-radius: 5px",
+              "Error"
+            );
+            console.error(err);
           });
-        }
       })
       .catch(err => {
         console.error(
@@ -77,6 +100,10 @@ class CoursePage extends React.Component {
   render() {
     return (
       <div className="CoursePage">
+        <div className={"CoursePage__course " + this.state.style}>
+          {parse(this.state.svg)}
+          <h3>{this.state.name}</h3>
+        </div>
         {this.state.loader ? (
           <Loader />
         ) : (
