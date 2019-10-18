@@ -16,3 +16,25 @@
     background-color: $panelColor
     transition: width .3s
     height: 100%
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    &__lesson
+        width: 50%
+        border-radius: 5px
+        background-color: $accentColor1
+        display: flex
+        justify-content: space-between
+        align-items: center
+        margin: 7px
+        padding: 5px 10px
+        transition: all .3s
+        cursor: pointer
+        svg
+            margin-right: 20px
+            transition: all .3s
+        &:hover
+            box-shadow: 0px 0px 20px 5px $accentColor2
+            svg
+                margin-right: 0

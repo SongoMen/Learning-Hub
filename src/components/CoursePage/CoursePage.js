@@ -2,51 +2,65 @@ import React from "react";
 import "firebase/firestore";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import firebase from "firebase/app";
+import "firebase/firestore";
+import Loader from "../elements/Loader";
 
 const mapStateToProps = state => ({
   ...state
 });
 
 let lessons = {
-  name:[],
-  content:[]
-}
+  number: [],
+  name: [],
+  content: []
+};
+
+const db = firebase.firestore();
 
 class CoursePage extends React.Component {
   _isMounted = false;
+  constructor() {
+    super();
+    this.state = {
+      name: "",
+      loader: true
+    };
+  }
 
   componentWillUnmount() {
     this._isMounted = false;
   }
   componentDidMount() {
     this._isMounted = true;
-  }
-  /*
-  loadLessons() {
     if (this._isMounted)
-      this.setState({
-        courseName: name
-      });
+      this.setState({ name: this.props.name.replace(/%20/gi, " ") }, () =>
+        this.loadLessons()
+      );
+  }
+
+  loadLessons() {
     lessons.name = [];
     lessons.content = [];
-    let i = 0;
+    let num = 1;
     db.collection("courses")
-      .doc(name)
+      .doc(this.state.name)
       .collection("lessons")
       .get()
       .then(snapshot => {
         if (snapshot.docs.length > 0 && this._isMounted) {
           snapshot.forEach(doc => {
+            lessons.number.push(num);
+            num++;
             lessons.name.push(doc.id);
             lessons.content.push(doc.data()["content"]);
-            i++;
           });
+        }
+      })
+      .then(() => {
+        if (this._isMounted) {
           this.setState({
-            courses: i
-          });
-        } else if (this._isMounted) {
-          this.setState({
-            lessons: 0
+            loader: false
           });
         }
       })
@@ -58,12 +72,41 @@ class CoursePage extends React.Component {
         );
         console.error(err);
       });
-  }*/
+  }
 
   render() {
     return (
       <div className="CoursePage">
-        {this.props.name}
+        {this.state.loader ? (
+          <Loader />
+        ) : (
+          lessons.name.map((val, indx) => (
+            <div
+              key={indx}
+              className="CoursePage__lesson"
+              onClick={() => this.loadLessonContent(val, indx)}
+            >
+              <h4>
+                {lessons.number[parseInt(indx)]}. {val}
+              </h4>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lessons__arrow"
+              >
+                <line x1="0" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
+          ))
+        )}
       </div>
     );
   }
