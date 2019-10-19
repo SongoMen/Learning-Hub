@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import Loader from "../elements/Loader";
 import parse from "html-react-parser";
 import { Link } from "react-router-dom";
+import ordinal from "ordinal";
 
 const now = new Date();
 const formatDate = date.format(now, "DD MMM YYYY, dddd");
@@ -36,7 +37,8 @@ class Panel extends React.Component {
       lastLesson: "",
       lastLessonLoader: true,
       width: "",
-      courses: ""
+      courses: "",
+      lastLessonNumber: ""
     };
   }
   rightBarChange() {
@@ -100,8 +102,10 @@ class Panel extends React.Component {
         if (snapshot.docs.length > 0 && this._isMounted) {
           snapshot.forEach(doc => {
             this.setState({
-              lastLesson: doc.data()["lastcourse"]
+              lastLesson: doc.data()["lastCourse"],
+              lastLessonNumber: doc.data()["lastLesson"]
             });
+            console.log(doc.data());
           });
         } else if (this._isMounted) {
           this.setState({
@@ -213,7 +217,7 @@ class Panel extends React.Component {
             )}
           </div>
         </div>
-        {this.state.lastLesson === "" && (
+        {this.state.lastLesson === "" ? (
           <div className="Panel__welcome">
             <div className="left">
               <h2> Welcome, {user}!</h2>
@@ -224,12 +228,31 @@ class Panel extends React.Component {
               </h4>
             </div>
           </div>
+        ) : (
+          <div className="Panel__welcome">
+            <div className="left">
+              <h2> Welcome back, {user}!</h2>
+              <h4>
+                Your latest course was <b>{this.state.lastLesson}.</b>
+              </h4>
+              {this.state.lastLessonNumber !== 0 ? (
+                <h4>
+                  You ended up on{" "}
+                  {ordinal(parseInt(this.state.lastLessonNumber))}.
+                </h4>
+              ) : (
+                <h4>
+                  But you didn't complete any lesson.
+                </h4>
+              )}
+            </div>
+          </div>
         )}
         <div className="Panel__quickstart">
           {this.state.lastLessonLoader ? (
             <Loader />
           ) : this.state.lastLesson !== "err" ? (
-            this.state.lastLesson === "" && (
+            this.state.lastLesson === "" ? (
               <div className="Panel__notification">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -249,6 +272,10 @@ class Panel extends React.Component {
                   This is the quick start panel, it will be available when you
                   start course.
                 </h4>
+              </div>
+            ) : (
+              <div>
+                <h4>{this.state.lastLesson}</h4>
               </div>
             )
           ) : (

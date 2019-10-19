@@ -142,7 +142,8 @@ class CoursePage extends React.Component {
           .collection("lastcourse")
           .doc(this.state.name)
           .set({
-            lastCourse: this.state.name
+            lastCourse: this.state.name,
+            lastLesson: 0
           })
           .then(
             function() {
