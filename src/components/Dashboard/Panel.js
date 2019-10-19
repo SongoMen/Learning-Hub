@@ -38,7 +38,8 @@ class Panel extends React.Component {
       lastLessonLoader: true,
       width: "",
       courses: "",
-      lastLessonNumber: ""
+      lastLessonNumber: "",
+      svg: ""
     };
   }
   rightBarChange() {
@@ -103,7 +104,8 @@ class Panel extends React.Component {
           snapshot.forEach(doc => {
             this.setState({
               lastLesson: doc.data()["lastCourse"],
-              lastLessonNumber: doc.data()["lastLesson"]
+              lastLessonNumber: doc.data()["lastLesson"],
+              svg: doc.data()["svg"]
             });
             console.log(doc.data());
           });
@@ -241,9 +243,7 @@ class Panel extends React.Component {
                   {ordinal(parseInt(this.state.lastLessonNumber))}.
                 </h4>
               ) : (
-                <h4>
-                  But you didn't complete any lesson.
-                </h4>
+                <h4>But you didn't complete any lesson.</h4>
               )}
             </div>
           </div>
@@ -274,9 +274,18 @@ class Panel extends React.Component {
                 </h4>
               </div>
             ) : (
-              <div>
-                <h4>{this.state.lastLesson}</h4>
-              </div>
+              <Link to={"/course/" + this.state.lastLesson}>
+                <div>
+                  <h5>QUICKSTART</h5>
+                  <div className="title">
+                    <span className="courseLogo">{parse(this.state.svg)}</span>
+                    <h3>{this.state.lastLesson}</h3>
+                    <h4>
+                      Lesson: {ordinal(parseInt(this.state.lastLessonNumber))}
+                    </h4>
+                  </div>
+                </div>
+              </Link>
             )
           ) : (
             <div className="Panel__error">

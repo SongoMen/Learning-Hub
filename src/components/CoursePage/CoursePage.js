@@ -143,7 +143,8 @@ class CoursePage extends React.Component {
           .doc(this.state.name)
           .set({
             lastCourse: this.state.name,
-            lastLesson: 0
+            lastLesson: 0,
+            svg: this.state.svg
           })
           .then(
             function() {
