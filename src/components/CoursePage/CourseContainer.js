@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 
 import Leftbar from "../Dashboard/Leftbar";
 import CoursePage from "./CoursePage";
+import LessonPage from "./LessonPage";
 
 const mapStateToProps = state => ({
   ...state
@@ -22,7 +23,11 @@ class CourseContainer extends React.Component {
     return (
       <div className="CourseContainer">
         <Leftbar />
-        <CoursePage name={this.props.name}/>
+        {!this.props.id ? (
+          <CoursePage name={this.props.name} />
+        ) : (
+          <LessonPage id={this.props.id} />
+        )}
       </div>
     );
   }

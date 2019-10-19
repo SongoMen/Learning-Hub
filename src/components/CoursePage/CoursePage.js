@@ -6,12 +6,14 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import Loader from "../elements/Loader";
 import parse from "html-react-parser";
+import { Link } from "react-router-dom";
 
 const mapStateToProps = state => ({
   ...state
 });
 
 let lessons = {
+  id: [],
   number: [],
   name: [],
   content: [],
@@ -85,21 +87,25 @@ class CoursePage extends React.Component {
               .then(snapshot => {
                 if (snapshot.docs.length > 0 && this._isMounted) {
                   snapshot.forEach(doc => {
+                    lessons.id.push(doc.id);
                     lessons.number.push(num);
-                    lessons.name.push(doc.id);
+                    lessons.name.push(doc.data()["title"]);
                     lessons.content.push(doc.data()["content"]);
                     num++;
                   });
                 }
               })
               .then(() => {
-                if (this._isMounted) {
+                if (this._isMounted)
                   this.setState({
                     loader: false
                   });
-                }
               })
               .catch(err => {
+                if (this._isMounted)
+                  this.setState({
+                    loader: "error"
+                  });
                 console.error(
                   "%c%s",
                   "color: white; background: red;padding: 3px 6px;border-radius: 5px",
@@ -109,6 +115,10 @@ class CoursePage extends React.Component {
               });
           })
           .catch(err => {
+            if (this._isMounted)
+              this.setState({
+                loader: "error"
+              });
             console.error(
               "%c%s",
               "color: white; background: red;padding: 3px 6px;border-radius: 5px",
@@ -118,6 +128,10 @@ class CoursePage extends React.Component {
           });
       })
       .catch(err => {
+        if (this._isMounted)
+          this.setState({
+            loader: "error"
+          });
         console.error(
           "%c%s",
           "color: white; background: red;padding: 3px 6px;border-radius: 5px",
@@ -163,7 +177,7 @@ class CoursePage extends React.Component {
   render() {
     return (
       <div className="CoursePage">
-        {!this.state.loader && (
+        {!this.state.loader && this.state.loader !== "error" && (
           <div className={"CoursePage__course " + this.state.style}>
             {parse(this.state.svg)}
             <h3>{this.state.name}</h3>
@@ -173,35 +187,40 @@ class CoursePage extends React.Component {
             </h4>
           </div>
         )}
-        {this.state.loader && <Loader />}
-        {this.state.started && !this.state.loader
+        {this.state.loader && this.state.loader !== "error" && <Loader />}
+        {this.state.started &&
+        !this.state.loader &&
+        this.state.loader !== "error"
           ? lessons.name.map((val, indx) => (
-              <div
-                key={indx}
+              <Link
                 className="CoursePage__lesson"
-                onClick={() => this.loadLessonContent(val, indx)}
+                to={"/course/" + this.state.name + "/" + lessons.id[parseInt(indx)]}
+                key={indx}
               >
-                <h4>
-                  {lessons.number[parseInt(indx)]}. {val}
-                </h4>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lessons__arrow"
-                >
-                  <line x1="0" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-              </div>
+                <div>
+                  <h4>
+                    {lessons.number[parseInt(indx)]}. {val}
+                  </h4>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lessons__arrow"
+                  >
+                    <line x1="0" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </div>
+              </Link>
             ))
-          : !this.state.loader && (
+          : !this.state.loader &&
+            this.state.loader !== "error" && (
               <div className="CoursePage__start">
                 <h4>START COURSE</h4>
                 <input
@@ -212,6 +231,30 @@ class CoursePage extends React.Component {
                 ></input>
               </div>
             )}
+        {this.state.loader === "error" && (
+          <div className="CoursePage__error">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M16 16s-1.5-2-4-2-4 2-4 2" />
+              <path d="M9 9L9.01 9" />
+              <path d="M15 9L15.01 9" />
+            </svg>
+            <h1>ERROR</h1>
+            <Link to="/dashboard">
+              <h4>Go back to dashboard</h4>
+            </Link>
+          </div>
+        )}
       </div>
     );
   }

@@ -113,7 +113,14 @@ class App extends Component {
               authed={this.state.authed}
               path="/course/:name"
               component={CourseContainer}
+              exact
               name={window.location.pathname.split("/")[2]}
+            />
+            <PrivateRoute
+              authed={this.state.authed}
+              path="/course/:name/:id"
+              component={CourseContainer}
+              id={window.location.pathname.split("/")[3]}
             />
           </Switch>
         </div>

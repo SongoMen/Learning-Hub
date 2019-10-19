@@ -30,7 +30,6 @@ class LessonPage extends React.Component {
       svg: "",
       started: ""
     };
-    this.loadLessons = this.loadLessons.bind(this);
   }
 
   componentWillUnmount() {
@@ -41,11 +40,7 @@ class LessonPage extends React.Component {
   }
 
   render() {
-    return (
-      <div className="LessonPage">
-    
-      </div>
-    );
+    return <div className="LessonPage">{this.props.id}</div>;
   }
 }
 
