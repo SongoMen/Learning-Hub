@@ -14,7 +14,8 @@ const mapStateToProps = state => ({
 let lessons = {
   number: [],
   name: [],
-  content: []
+  content: [],
+  length: []
 };
 
 const db = firebase.firestore();
@@ -27,7 +28,8 @@ class CoursePage extends React.Component {
       name: props.match.params.name.replace(/%20/gi, " "),
       loader: true,
       style: "",
-      svg: ""
+      svg: "",
+      started: ""
     };
     this.loadLessons = this.loadLessons.bind(this);
   }
@@ -54,14 +56,13 @@ class CoursePage extends React.Component {
       .then(snapshot => {
         if (snapshot.docs.length > 0) {
           snapshot.forEach(doc => {
-            console.log(doc.data());
+            if (doc.id === this.state.name && this._isMounted)
+              this.setState({ started: true });
           });
-        } else {
-          if (this._isMounted) {
-            this.setState({
-              started: false
-            });
-          }
+        } else if (this._isMounted) {
+          this.setState({
+            started: false
+          });
         }
       })
       .then(() => {
@@ -74,6 +75,7 @@ class CoursePage extends React.Component {
                 style: snapshot.data()["style"],
                 svg: snapshot.data()["svg"]
               });
+            lessons.length.push(snapshot.data()["length"]);
           })
           .then(() => {
             db.collection("courses")
@@ -84,9 +86,9 @@ class CoursePage extends React.Component {
                 if (snapshot.docs.length > 0 && this._isMounted) {
                   snapshot.forEach(doc => {
                     lessons.number.push(num);
-                    num++;
                     lessons.name.push(doc.id);
                     lessons.content.push(doc.data()["content"]);
+                    num++;
                   });
                 }
               })
@@ -125,7 +127,36 @@ class CoursePage extends React.Component {
       });
   }
 
-  startCourse() {}
+  startCourse() {
+    let user = firebase.auth().currentUser.uid;
+    db.collection("users")
+      .doc(user)
+      .collection("courses")
+      .doc(this.state.name)
+      .set({
+        lastLesson: 0
+      })
+      .then(() => {
+        db.collection("users")
+          .doc(user)
+          .collection("lastcourse")
+          .doc(this.state.name)
+          .set({
+            lastCourse: this.state.name
+          })
+          .then(
+            function() {
+              if (this._isMounted) this.setState({ started: true });
+            }.bind(this)
+          )
+          .catch(function(error) {
+            console.error(error);
+          });
+      })
+      .catch(function(error) {
+        console.error(error);
+      });
+  }
 
   render() {
     return (
@@ -134,10 +165,14 @@ class CoursePage extends React.Component {
           <div className={"CoursePage__course " + this.state.style}>
             {parse(this.state.svg)}
             <h3>{this.state.name}</h3>
+            <span className="line"></span>
+            <h4>
+              Number of lessons: <b>{lessons.length[0]}</b>
+            </h4>
           </div>
         )}
         {this.state.loader && <Loader />}
-        {this.state.started === "" && !this.state.loader
+        {this.state.started && !this.state.loader
           ? lessons.name.map((val, indx) => (
               <div
                 key={indx}
@@ -165,12 +200,15 @@ class CoursePage extends React.Component {
               </div>
             ))
           : !this.state.loader && (
-              <input
-                type="button"
-                className="form-btn"
-                value="start course"
-                onClick={() => this.startCourse()}
-              ></input>
+              <div className="CoursePage__start">
+                <h4>START COURSE</h4>
+                <input
+                  type="button"
+                  className="form-btn"
+                  value="start"
+                  onClick={() => this.startCourse()}
+                ></input>
+              </div>
             )}
       </div>
     );

@@ -94,19 +94,19 @@ class Panel extends React.Component {
       .firestore()
       .collection("users")
       .doc(user)
-      .collection("courses")
+      .collection("lastcourse")
       .get()
       .then(snapshot => {
-        if (snapshot.docs.length > 0) {
+        if (snapshot.docs.length > 0 && this._isMounted) {
           snapshot.forEach(doc => {
-            console.log(doc.data());
-          });
-        } else {
-          if (this._isMounted) {
             this.setState({
-              lastLesson: ""
+              lastLesson: doc.data()["lastcourse"]
             });
-          }
+          });
+        } else if (this._isMounted) {
+          this.setState({
+            lastLesson: ""
+          });
         }
       })
       .then(() => {
