@@ -50,6 +50,11 @@
     padding: 15px
     cursor: pointer
     margin-top: 20px
+    &:hover 
+        h5
+            color: $primaryColor
+        svg
+            background-color: $primaryColor
     .title
         display: flex
         justify-content: flex-start
@@ -58,6 +63,7 @@
         svg
             margin: 0
             margin-bottom: 10px
+            transition: all .3s
         span
             display: flex
             justify-content: center
