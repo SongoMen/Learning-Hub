@@ -6,6 +6,7 @@ import { changeRightBar } from "../../actions/actionsPanel";
 import { connect } from "react-redux";
 import Loader from "../elements/Loader";
 import parse from "html-react-parser";
+import { Link } from "react-router-dom";
 
 const now = new Date();
 const formatDate = date.format(now, "DD MMM YYYY, dddd");
@@ -175,31 +176,32 @@ class Courses extends React.Component {
             <Loader />
           ) : (
             courses.name.map((val, indx) => (
-              <div
-                key={indx}
-                className={"courses__box " + courses.style[parseInt(indx)]}
-              >
-                {parse(courses.svg[parseInt(indx)])}
-                <div className="courses__info">
-                  <h5>Number of lessons</h5>
-                  <h4>{val}</h4>
-                </div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="courses__arrow"
+              <Link to={"/course/" + val} key={indx}>
+                <div
+                  className={"courses__box " + courses.style[parseInt(indx)]}
                 >
-                  <line x1="0" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-              </div>
+                  {parse(courses.svg[parseInt(indx)])}
+                  <div className="courses__info">
+                    <h5>Number of lessons</h5>
+                    <h4>{val}</h4>
+                  </div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="courses__arrow"
+                  >
+                    <line x1="0" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </div>
+              </Link>
             ))
           )}
         </div>

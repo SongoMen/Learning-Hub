@@ -56,7 +56,9 @@ class DevPanel extends React.Component {
       courseName: "",
       lessonId: "",
       addLesson: false,
-      loaded: false
+      loaded: false,
+      name: "",
+      courseId: ""
     };
   }
   rightBarChange() {
@@ -126,11 +128,12 @@ class DevPanel extends React.Component {
     db.collection("courses")
       .doc(name)
       .collection("lessons")
+      .orderBy("title", "asc")
       .get()
       .then(snapshot => {
         if (snapshot.docs.length > 0 && this._isMounted) {
           snapshot.forEach(doc => {
-            lessons.name.push(doc.id);
+            lessons.name.push(doc.data()["title"]);
             lessons.content.push(doc.data()["content"]);
             i++;
           });
@@ -184,7 +187,9 @@ class DevPanel extends React.Component {
   courseView(id) {
     if (this._isMounted) {
       this.setState({
-        edit: true
+        edit: true,
+        name: courses.name[parseInt(id)],
+        courseId: id
       });
     }
     this.loadAllLessonsFromCourse(courses.name[parseInt(id)]);
@@ -238,6 +243,9 @@ class DevPanel extends React.Component {
                 .catch(error => {
                   console.log("Error getting document:", error);
                 });
+            })
+            .then(() => {
+              this.courseView(this.state.courseId);
             });
         });
     }
@@ -245,10 +253,7 @@ class DevPanel extends React.Component {
 
   render() {
     return (
-      <div
-        className={"DevPanel " + this.state.width}
-        id="DevPanel"
-      >
+      <div className={"DevPanel " + this.state.width} id="DevPanel">
         {!this.state.loaded ? (
           <Loader />
         ) : (

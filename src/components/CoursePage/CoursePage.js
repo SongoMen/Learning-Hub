@@ -46,7 +46,6 @@ class CoursePage extends React.Component {
   loadLessons() {
     lessons.name = [];
     lessons.content = [];
-    let num = 1;
     let user = firebase.auth().currentUser.uid;
     firebase
       .firestore()
@@ -82,6 +81,7 @@ class CoursePage extends React.Component {
             db.collection("courses")
               .doc(this.state.name)
               .collection("lessons")
+              .orderBy("title", "asc")
               .get()
               .then(snapshot => {
                 if (snapshot.docs.length > 0 && this._isMounted) {

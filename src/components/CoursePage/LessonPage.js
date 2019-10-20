@@ -7,17 +7,14 @@ import "firebase/firestore";
 import Loader from "../elements/Loader";
 import parse from "html-react-parser";
 import { Link } from "react-router-dom";
+import date from "date-and-time";
 
 const mapStateToProps = state => ({
   ...state
 });
 
-let lessons = {
-  number: [],
-  name: [],
-  content: [],
-  length: []
-};
+const now = new Date();
+const dateNow = date.format(now, "DD MMM YYYY, dddd");
 
 const db = firebase.firestore();
 
@@ -29,15 +26,28 @@ class LessonPage extends React.Component {
       name: props.match.params.name.replace(/%20/gi, " "),
       loader: true,
       title: "",
-      content: ""
+      content: "",
+      time: ""
     };
   }
 
   componentWillUnmount() {
     this._isMounted = false;
   }
+
+  refreshTime() {
+    if (this._isMounted) {
+      const now = new Date();
+      this.setState({ time: date.format(now, "HH:mm:ss, ") });
+    }
+  }
+
   componentDidMount() {
     this._isMounted = true;
+    this.refreshTime();
+    setInterval(() => {
+      this.refreshTime();
+    }, 1000);
     this.loadLessonContent();
   }
 
@@ -49,7 +59,6 @@ class LessonPage extends React.Component {
       .doc(this.props.id)
       .get()
       .then(doc => {
-        console.log(this.props);
         if (this._isMounted)
           this.setState({
             title: doc.data()["title"],
@@ -75,7 +84,13 @@ class LessonPage extends React.Component {
     return (
       <div className="LessonPage">
         {this.state.loader && this.state.loader !== "error" && <Loader />}
-        {this.state.loader !== "error" && (
+        {!this.state.loader && this.state.loader !== "error" && (
+          <div className="LessonPage__time">
+            <b>{this.state.time}</b>
+            {dateNow}
+          </div>
+        )}
+        {this.state.loader !== "error" && !this.state.loader && (
           <div className="LessonPage__lesson">
             <h2>{this.state.title}</h2>
             <p>{parse(this.state.content)}</p>
