@@ -23,10 +23,10 @@ class CourseContainer extends React.Component {
     return (
       <div className="CourseContainer">
         <Leftbar />
-        {!this.props.id ? (
+        {typeof window.location.pathname.split("/")[3] === "undefined" ? (
           <CoursePage name={this.props.name} />
         ) : (
-          <LessonPage id={this.props.id} />
+          <LessonPage id={window.location.pathname.split("/")[3]} />
         )}
       </div>
     );

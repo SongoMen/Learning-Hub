@@ -107,7 +107,6 @@ class Panel extends React.Component {
               lastLessonNumber: doc.data()["lastLesson"],
               svg: doc.data()["svg"]
             });
-            console.log(doc.data());
           });
         } else if (this._isMounted) {
           this.setState({

@@ -119,6 +119,7 @@ class App extends Component {
             <PrivateRoute
               authed={this.state.authed}
               path="/course/:name/:id"
+              exact
               component={CourseContainer}
               id={window.location.pathname.split("/")[3]}
             />
