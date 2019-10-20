@@ -9,6 +9,19 @@
         width: 6%
     &__logo
         height: 20%
+        display: flex
+        align-items: center
+        user-select: none
+        white-space: nowrap
+        svg
+            margin-right: 10px
+            min-width: 50px
+            min-height: 50px
+        @media only screen and (max-width: 1270px)
+            svg
+                margin: 0
+            h3
+                display: none
     &__dev
         h4,svg
             color: $devColor
