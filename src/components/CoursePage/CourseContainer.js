@@ -26,7 +26,7 @@ class CourseContainer extends React.Component {
         {typeof window.location.pathname.split("/")[3] === "undefined" ? (
           <CoursePage name={this.props.name} />
         ) : (
-          <LessonPage id={window.location.pathname.split("/")[3]} />
+          <LessonPage courseName={this.props.name} id={window.location.pathname.split("/")[3]} />
         )}
       </div>
     );

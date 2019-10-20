@@ -14,7 +14,6 @@ const mapStateToProps = state => ({
 
 let lessons = {
   id: [],
-  number: [],
   name: [],
   content: [],
   length: []
@@ -88,10 +87,8 @@ class CoursePage extends React.Component {
                 if (snapshot.docs.length > 0 && this._isMounted) {
                   snapshot.forEach(doc => {
                     lessons.id.push(doc.id);
-                    lessons.number.push(num);
                     lessons.name.push(doc.data()["title"]);
                     lessons.content.push(doc.data()["content"]);
-                    num++;
                   });
                 }
               })
@@ -194,13 +191,16 @@ class CoursePage extends React.Component {
           ? lessons.name.map((val, indx) => (
               <Link
                 className="CoursePage__lesson"
-                to={"/course/" + this.state.name + "/" + lessons.id[parseInt(indx)]}
+                to={
+                  "/course/" +
+                  this.state.name +
+                  "/" +
+                  lessons.id[parseInt(indx)]
+                }
                 key={indx}
               >
                 <div>
-                  <h4>
-                    {lessons.number[parseInt(indx)]}. {val}
-                  </h4>
+                  <h4>{val}</h4>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"

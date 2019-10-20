@@ -230,7 +230,7 @@ class DevPanel extends React.Component {
               db.collection("courses")
                 .doc(this.state.courseName)
                 .collection("lessons")
-                .doc(this.title.value)
+                .doc()
                 .set({
                   title: this.title.value,
                   content: this.text.value
