@@ -139,15 +139,57 @@ class Panel extends React.Component {
       });
   }
 
-  getStats() {
-    let user = firebase.auth().currentUser.uid;
+  daysInMonth(month, year) {
+    return new Date(year, month, 0).getDate();
+  }
+
+  getThisWeekDates(){
     const today = date.format(now, "DD MMM YYYY");
 
-    let timer;
+    let forward = 0;
+    let backwards = 0;
+    switch (date.format(now, "dddd")) {
+      case "Monday":
+        backwards = 0;
+        forward = 6;
+        break;
+      case "Tuesday":
+        backwards = 1;
+        forward = 5;
+        break;
+      case "Sunday":
+        backwards = 6;
+        forward = 0;
+        break;
+      default:
+        forward = 0;
+        backwards = 0;
+    }
+
+    let datesWeek = [];
+      let lastDate = parseInt(today.split(" ")[0])
+      while (backwards > 0) {
+        
+        datesWeek.push(lastDate - 1);
+        lastDate--
+        backwards--;
+        
+      }
+      console.log(datesWeek);
+      console.log(date.parse(`${lastDate}-${date.format(now, "M")}-2019`, 'DD-MM-YYYY'))
+
+  }
+
+  getStats() {
+    let user = firebase.auth().currentUser.uid;
+    this.getThisWeekDates()
+    console.log(
+      this.daysInMonth(date.format(now, "M"), date.format(now, "YYYY"))
+    );
     let userDates = db
       .collection("users")
       .doc(user)
-      .collection("dates")
+      .collection("dates");
     userDates.get().then(snapshot => {
       snapshot.forEach(doc => {
         console.log(doc.id);
