@@ -44,25 +44,30 @@ class LessonPage extends React.Component {
   }
 
   saveLearningTime() {
-    if (!document.hidden) {
-      let user = firebase.auth().currentUser.uid;
-      const today = date.format(now, "DD MMM YYYY");
-      let userDates = db
-        .collection("users")
-        .doc(user)
-        .collection("dates")
-        .doc(today);
-
-      userDates.get().then(docSnapshot => {
-        if (docSnapshot.exists) {
-          userDates.update({
-            time: this.state.timer
-          });
-        } else {
-          userDates.set({ time: this.state.timer });
-        }
+    let user = firebase.auth().currentUser.uid;
+    const today = date.format(now, "DD MMM YYYY");
+    let timer;
+    let userDates = db
+      .collection("users")
+      .doc(user)
+      .collection("dates")
+      .doc(today);
+    userDates
+      .get()
+      .then(doc => {
+        timer = doc.data()["time"];
+      })
+      .then(() => {
+        userDates.get().then(docSnapshot => {
+          if (docSnapshot.exists) {
+            userDates.update({
+              time: parseInt(timer) + parseInt(this.state.timer)
+            });
+          } else {
+            userDates.set({ time: this.state.timer });
+          }
+        });
       });
-    }
   }
 
   componentDidMount() {

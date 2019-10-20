@@ -9,10 +9,6 @@ import parse from "html-react-parser";
 import { Link } from "react-router-dom";
 import ordinal from "ordinal";
 
-const now = new Date();
-const formatDate = date.format(now, "DD MMM YYYY, dddd");
-let status;
-
 const mapStateToProps = state => ({
   ...state
 });
@@ -21,12 +17,23 @@ const mapDispatchToProps = dispatch => ({
   changeRightBar: () => dispatch(changeRightBar(status))
 });
 
+const now = new Date();
+const formatDate = date.format(now, "DD MMM YYYY, dddd");
+let status;
+
+const db = firebase.firestore();
+
 let courses = {
   name: [],
   length: [],
   style: [],
   svg: []
 };
+
+let stats = {
+  date:[],
+  time:[]
+}
 
 class Panel extends React.Component {
   _isMounted = false;
@@ -131,6 +138,27 @@ class Panel extends React.Component {
         }
       });
   }
+
+  getStats() {
+    let user = firebase.auth().currentUser.uid;
+    const today = date.format(now, "DD MMM YYYY");
+
+    let timer;
+    let userDates = db
+      .collection("users")
+      .doc(user)
+      .collection("dates")
+      .doc(today);
+    userDates.get().then(snapshot => {
+      snapshot.forEach(doc => {
+          console.log(doc.id)
+          console.log(doc.data())
+          stats.date.push(doc.id)
+          stats.time.push(doc.data()["time"])
+      });
+    });
+  }
+
   componentDidMount() {
     this._isMounted = true;
     let right = this.props.rightBar ? "" : "active";
@@ -308,6 +336,9 @@ class Panel extends React.Component {
               <h4>Looks like we couldn't connect to servers. Sorry!</h4>
             </div>
           )}
+        </div>
+        <div className="Panel__stats">
+          <h5>TIME SPENT ON LEARNING</h5>
         </div>
         <div className="Panel__more">
           <h3>More courses</h3>

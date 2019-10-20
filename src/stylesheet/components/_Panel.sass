@@ -13,6 +13,7 @@
     &__more
         width: 100%
         height: 20%
+        float: left
         padding-bottom: 10px
         .courses__box
             height: 70%
@@ -20,6 +21,21 @@
             white-space: nowrap
         h3
             margin-bottom: 25px
+    &__stats
+        background-color: $accentColor1
+        width: 60%
+        height: 30%
+        border-radius: 10px
+        position: relative
+        transition: all .3s
+        padding: 15px
+        margin-top: 20px
+        float: right
+        h5,h4
+            color: $accentColor3
+            margin-top: 0
+        h5
+            margin-bottom: 10px
 .Panel__title,.DevPanel__title,.Courses__title
     display: flex
     justify-content: space-between
@@ -50,6 +66,7 @@
     padding: 15px
     cursor: pointer
     margin-top: 20px
+    float: left
     &:hover 
         h5
             color: $primaryColor
