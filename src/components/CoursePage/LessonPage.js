@@ -27,7 +27,8 @@ class LessonPage extends React.Component {
       loader: true,
       title: "",
       content: "",
-      time: ""
+      time: "",
+      timer: 0
     };
   }
 
@@ -42,12 +43,41 @@ class LessonPage extends React.Component {
     }
   }
 
+  saveLearningTime() {
+    if (!document.hidden) {
+      let user = firebase.auth().currentUser.uid;
+      const today = date.format(now, "DD MMM YYYY");
+      let userDates = db
+        .collection("users")
+        .doc(user)
+        .collection("dates")
+        .doc(today);
+
+      userDates.get().then(docSnapshot => {
+        if (docSnapshot.exists) {
+          userDates.update({
+            time: this.state.timer
+          });
+        } else {
+          userDates.set({ time: this.state.timer });
+        }
+      });
+    }
+  }
+
   componentDidMount() {
     this._isMounted = true;
     this.refreshTime();
     setInterval(() => {
       this.refreshTime();
     }, 1000);
+    setInterval(() => {
+      if (!document.hidden && this._isMounted)
+        this.setState({ timer: parseInt(this.state.timer) + 1 });
+    }, 1000);
+    setInterval(() => {
+      this.saveLearningTime();
+    }, 5 * 1000);
     this.loadLessonContent();
   }
 
