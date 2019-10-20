@@ -143,7 +143,7 @@ class Panel extends React.Component {
     return new Date(year, month, 0).getDate();
   }
 
-  getThisWeekDates(){
+  getThisWeekDates() {
     const today = date.format(now, "DD MMM YYYY");
 
     let forward = 0;
@@ -157,6 +157,23 @@ class Panel extends React.Component {
         backwards = 1;
         forward = 5;
         break;
+      case "Wednesday":
+        backwards = 2;
+        forward = 4;
+        break;
+
+      case "Thursday":
+        backwards = 3;
+        forward = 3;
+        break;
+      case "Friday":
+        backwards = 4;
+        forward = 2;
+        break;
+      case "Saturday":
+        backwards = 5;
+        forward = 1;
+        break;
       case "Sunday":
         backwards = 6;
         forward = 0;
@@ -167,22 +184,36 @@ class Panel extends React.Component {
     }
 
     let datesWeek = [];
-      let lastDate = parseInt(today.split(" ")[0])
-      while (backwards > 0) {
-        
-        datesWeek.push(lastDate - 1);
-        lastDate--
-        backwards--;
-        
-      }
-      console.log(datesWeek);
-      console.log(date.parse(`${lastDate}-${date.format(now, "M")}-2019`, 'DD-MM-YYYY'))
+    let lastDate = parseInt(today.split(" ")[0]);
+    let lastDate2 = parseInt(today.split(" ")[0]);
+    datesWeek.push(lastDate);
+    while (backwards > 0) {
+      datesWeek.push(lastDate - 1);
+      lastDate--;
+      backwards--;
+    }
+    while (forward > 0) {
+      datesWeek.push(lastDate2 + 1);
+      lastDate2++;
+      forward--;
+    }
+    datesWeek.sort((a, b) => a - b);
 
+    console.log(datesWeek);
+
+    for (let i = 0; i < datesWeek.length; i++) {
+      console.log(
+        date.parse(
+          `${datesWeek[i]}-${date.format(now, "M")}-2019`,
+          "DD-MM-YYYY"
+        )
+      );
+    }
   }
 
   getStats() {
     let user = firebase.auth().currentUser.uid;
-    this.getThisWeekDates()
+    this.getThisWeekDates();
     console.log(
       this.daysInMonth(date.format(now, "M"), date.format(now, "YYYY"))
     );
