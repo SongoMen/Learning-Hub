@@ -8,6 +8,7 @@ import Loader from "../elements/Loader";
 import parse from "html-react-parser";
 import { Link } from "react-router-dom";
 import ordinal from "ordinal";
+import "firebase/firestore";
 
 const mapStateToProps = state => ({
   ...state
@@ -31,7 +32,7 @@ let courses = {
 };
 
 let stats = {
-  date: [],
+  date: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
   time: []
 };
 
@@ -46,7 +47,8 @@ class Panel extends React.Component {
       width: "",
       courses: "",
       lastLessonNumber: "",
-      svg: ""
+      svg: "",
+      statsLoader: true
     };
   }
   rightBarChange() {
@@ -202,33 +204,30 @@ class Panel extends React.Component {
     console.log(datesWeek);
 
     for (let i = 0; i < datesWeek.length; i++) {
-      console.log(
-        date.parse(
-          `${datesWeek[i]}-${date.format(now, "M")}-2019`,
-          "DD-MM-YYYY"
-        )
-      );
+      this.getStats(`${datesWeek[i]} ${date.format(now, "MMM YYYY")}`, i);
     }
   }
 
-  getStats() {
+  getStats(date, i) {
+    console.log(date);
     let user = firebase.auth().currentUser.uid;
-    this.getThisWeekDates();
-    console.log(
-      this.daysInMonth(date.format(now, "M"), date.format(now, "YYYY"))
-    );
     let userDates = db
       .collection("users")
       .doc(user)
-      .collection("dates");
-    userDates.get().then(snapshot => {
-      snapshot.forEach(doc => {
-        console.log(doc.id);
-        console.log(doc.data());
-        stats.date.push(doc.id);
-        stats.time.push(doc.data()["time"]);
+      .collection("dates")
+      .doc(date);
+    userDates
+      .get()
+      .then(snapshot => {
+        if (snapshot.exists === true) {
+          stats.time.push(snapshot.data()["time"]);
+        } else {
+          stats.time.push(0);
+        }
+      })
+      .then(() => {
+        if (i === 6 && this._isMounted) this.setState({ statsLoader: false });
       });
-    });
   }
 
   componentDidMount() {
@@ -241,7 +240,7 @@ class Panel extends React.Component {
     }
     this.loadLastLesson();
     this.loadCourses();
-    this.getStats();
+    this.getThisWeekDates();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -411,7 +410,21 @@ class Panel extends React.Component {
           )}
         </div>
         <div className="Panel__stats">
-          <h5>TIME SPENT ON LEARNING</h5>
+          {this.state.statsLoader ? (
+            <Loader />
+          ) : (
+            <div className="Panel__days">
+              <h5>TIME SPENT ON LEARNING</h5>
+              <div className="Panel__chart">
+                {stats.date.map((val, indx) => (
+                  <div className="Panel__day" key={indx}>
+                    <h4>{val}</h4>
+                    <h4>{stats.time[indx]}</h4>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
         <div className="Panel__more">
           <h3>More courses</h3>
