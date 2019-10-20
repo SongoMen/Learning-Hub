@@ -31,9 +31,9 @@ let courses = {
 };
 
 let stats = {
-  date:[],
-  time:[]
-}
+  date: [],
+  time: []
+};
 
 class Panel extends React.Component {
   _isMounted = false;
@@ -148,13 +148,12 @@ class Panel extends React.Component {
       .collection("users")
       .doc(user)
       .collection("dates")
-      .doc(today);
     userDates.get().then(snapshot => {
       snapshot.forEach(doc => {
-          console.log(doc.id)
-          console.log(doc.data())
-          stats.date.push(doc.id)
-          stats.time.push(doc.data()["time"])
+        console.log(doc.id);
+        console.log(doc.data());
+        stats.date.push(doc.id);
+        stats.time.push(doc.data()["time"]);
       });
     });
   }
@@ -169,6 +168,7 @@ class Panel extends React.Component {
     }
     this.loadLastLesson();
     this.loadCourses();
+    this.getStats();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
