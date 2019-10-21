@@ -19,7 +19,21 @@ const dateNow = date.format(now, "DD MMM YYYY, dddd");
 const db = firebase.firestore();
 
 class LessonPage extends React.Component {
+  refreshTimeInterval = setInterval(() => {
+    this.refreshTime();
+  }, 1000);
+
+  timeCounterInterval = setInterval(() => {
+    if (!document.hidden && this._isMounted)
+      this.setState({ timer: parseInt(this.state.timer) + 1 });
+  }, 1000);
+
+  saveLearningTimeInterval = setInterval(() => {
+    this.saveLearningTime();
+  }, 5 * 1000);
+
   _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -34,6 +48,20 @@ class LessonPage extends React.Component {
 
   componentWillUnmount() {
     this._isMounted = false;
+    clearInterval(this.refreshTimeInterval);
+    clearInterval(this.timeCounterInterval);
+    clearInterval(this.saveLearningTimeInterval);
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+    //intervals
+    this.refreshTimeInterval = true;
+    this.timeCounterInterval = true;
+    this.saveLearningTimeInterval = true;
+    // functions
+    this.refreshTime();
+    this.loadLessonContent();
   }
 
   refreshTime() {
@@ -55,7 +83,7 @@ class LessonPage extends React.Component {
     userDates
       .get()
       .then(doc => {
-        timer = doc.data()["time"];
+        if (typeof doc.data() !== "undefined") timer = doc.data()["time"];
       })
       .then(() => {
         userDates.get().then(docSnapshot => {
@@ -68,22 +96,6 @@ class LessonPage extends React.Component {
           }
         });
       });
-  }
-
-  componentDidMount() {
-    this._isMounted = true;
-    this.refreshTime();
-    setInterval(() => {
-      this.refreshTime();
-    }, 1000);
-    setInterval(() => {
-      if (!document.hidden && this._isMounted)
-        this.setState({ timer: parseInt(this.state.timer) + 1 });
-    }, 1000);
-    setInterval(() => {
-      this.saveLearningTime();
-    }, 5 * 1000);
-    this.loadLessonContent();
   }
 
   loadLessonContent() {
