@@ -10,6 +10,8 @@ import { Link } from "react-router-dom";
 import ordinal from "ordinal";
 import "firebase/firestore";
 
+let status;
+
 const mapStateToProps = state => ({
   ...state
 });
@@ -20,7 +22,6 @@ const mapDispatchToProps = dispatch => ({
 
 const now = new Date();
 const formatDate = date.format(now, "DD MMM YYYY, dddd");
-let status;
 
 const db = firebase.firestore();
 
@@ -204,7 +205,7 @@ class Panel extends React.Component {
     console.log(datesWeek);
 
     for (let i = 0; i < datesWeek.length; i++) {
-      this.getStats(`${datesWeek[i]} ${date.format(now, "MMM YYYY")}`, i);
+      this.getStats(`${datesWeek[parseInt(i)]} ${date.format(now, "MMM YYYY")}`, i);
     }
   }
 
@@ -419,7 +420,7 @@ class Panel extends React.Component {
                 {stats.date.map((val, indx) => (
                   <div className="Panel__day" key={indx}>
                     <h4>{val}</h4>
-                    <h4>{stats.time[indx]}</h4>
+                    <h4>{stats.time[parseInt(indx)]}</h4>
                   </div>
                 ))}
               </div>
