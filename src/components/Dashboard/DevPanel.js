@@ -34,7 +34,8 @@ let courses = {
 
 let lessons = {
   name: [],
-  content: [] //LOAD ALL LESSONS
+  content: [], //LOAD ALL LESSONS
+  id: []
 };
 
 let content = {
@@ -135,6 +136,7 @@ class DevPanel extends React.Component {
           snapshot.forEach(doc => {
             lessons.name.push(doc.data()["title"]);
             lessons.content.push(doc.data()["content"]);
+            lessons.id.push(doc.id);
             i++;
           });
           this.setState({
@@ -207,7 +209,9 @@ class DevPanel extends React.Component {
         content.title.push(doc.data()["title"]);
         if (this._isMounted) this.setState({ lessonId: id });
       })
-      .catch(() => {
+      .catch(err => {
+        console.error(err);
+
         console.error(
           "%c%s",
           "color: white; background: red;padding: 3px 6px;border-radius: 5px",
@@ -413,7 +417,7 @@ class DevPanel extends React.Component {
                 <div
                   key={indx}
                   className="DevPanel__lesson"
-                  onClick={() => this.loadLessonContent(val, indx)}
+                  onClick={() => this.loadLessonContent(lessons.id[indx], indx)}
                 >
                   <h4>{val}</h4>
                   <svg
@@ -466,8 +470,14 @@ class DevPanel extends React.Component {
               <path d="M6 6L18 18" />
             </svg>
             <div className="DevPanel__lessonText">
-              <h2> {content.title[parseInt(this.state.lessonId)]}</h2>
-              <p>{content.content[parseInt(this.state.lessonId)]}</p>
+              <h2>
+                {" "}
+                {parse(String(content.title[parseInt(this.state.lessonId)]))}
+              </h2>
+              <p>
+                {" "}
+                {parse(String(content.content[parseInt(this.state.lessonId)]))}
+              </p>
             </div>
           </div>
         )}
