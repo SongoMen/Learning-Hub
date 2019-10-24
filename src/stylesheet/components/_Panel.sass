@@ -57,13 +57,14 @@
             left: 15px
     &__slider
         width: 5px
-        height: 60px
+        height: 80px
         background-color: $accentColor2
         border-radius: 20px
         position: relative
         &-active
             background-color: $primaryColor
             position: absolute
+            border-radius: 20px
             width: 100%
             bottom: 0
     &__day
@@ -71,6 +72,11 @@
         flex-direction: column
         justify-content: center
         align-items: center    
+        height: 100%
+        h5
+            margin-bottom: 10px
+        h5
+            margin: 10px 0
 
 .Panel__title,.DevPanel__title,.Courses__title
     display: flex

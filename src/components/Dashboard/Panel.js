@@ -9,8 +9,25 @@ import parse from "html-react-parser";
 import { Link } from "react-router-dom";
 import ordinal from "ordinal";
 import "firebase/firestore";
+import humanizeDuration from "humanize-duration";
 
 let status;
+
+const shortEnglishHumanizer = humanizeDuration.humanizer({
+  language: "shortEn",
+  languages: {
+    shortEn: {
+      y: () => "y",
+      mo: () => "mo",
+      w: () => "w",
+      d: () => "d",
+      h: () => "h",
+      m: () => "m",
+      s: () => "s",
+      ms: () => "ms"
+    }
+  }
+});
 
 const mapStateToProps = state => ({
   ...state
@@ -148,7 +165,7 @@ class Panel extends React.Component {
   }
 
   getThisWeekDates() {
-    stats.date = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    stats.date = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     const today = date.format(now, "DD MMM YYYY");
 
     let forward = 0;
@@ -211,8 +228,10 @@ class Panel extends React.Component {
         `${datesWeek[parseInt(i)]} ${date.format(now, "MMM YYYY")}`,
         i
       );
-      stats.date[parseInt(i)] +=
-        " " + `${datesWeek[parseInt(i)]} ${date.format(now, "MMM")}`;
+      stats.date[parseInt(i)] += ` ${datesWeek[parseInt(i)]} ${date.format(
+        now,
+        "MMM"
+      )}`;
     }
   }
 
@@ -437,16 +456,22 @@ class Panel extends React.Component {
                         className="Panel__slider-active"
                         style={{
                           height:
-                            this.state.maxValue / stats.time[parseInt(indx)] ===
+                            stats.time[parseInt(indx)] / this.state.maxValue ===
                             1
                               ? 100 + "%"
-                              : this.state.maxValue /
-                                  stats.time[parseInt(indx)] +
+                              : (stats.time[parseInt(indx)] /
+                                  this.state.maxValue) *
+                                  90 +
                                 "%"
                         }}
                       ></div>
                     </div>
-                    <h4>{stats.time[parseInt(indx)]}</h4>
+                    <h5>
+                      {shortEnglishHumanizer(
+                        stats.time[parseInt(indx)] * 1000,
+                        { largest: 2, round: true }
+                      )}
+                    </h5>
                   </div>
                 ))}
               </div>
