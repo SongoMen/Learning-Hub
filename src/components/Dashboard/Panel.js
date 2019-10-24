@@ -162,10 +162,6 @@ class Panel extends React.Component {
       });
   }
 
-  daysInMonth(month, year) {
-    return new Date(year, month, 0).getDate();
-  }
-
   getThisWeekDates() {
     stats.date = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     stats.time = [];
@@ -209,6 +205,11 @@ class Panel extends React.Component {
     let datesWeek = [];
     let lastDate = parseInt(today.split(" ")[0]);
     let lastDate2 = parseInt(today.split(" ")[0]);
+    let daysInMonth = new Date(
+      date.format(now, "YYYY"),
+      date.format(now, "M"),
+      0
+    ).getDate();
     datesWeek.push(lastDate);
     while (backwards > 0) {
       datesWeek.push(lastDate - 1);
@@ -216,21 +217,41 @@ class Panel extends React.Component {
       backwards--;
     }
     while (forward > 0) {
-      datesWeek.push(lastDate2 + 1);
+      if (daysInMonth < lastDate2) {
+        lastDate2 = 0;
+        datesWeek.push("33 " + (lastDate2 + 1));
+      } else {
+        datesWeek.push(lastDate2 + 1);
+      }
       lastDate2++;
       forward--;
     }
     datesWeek.sort((a, b) => a - b);
-
     for (let i = 0; i < datesWeek.length; i++) {
-      this.getStats(
-        `${datesWeek[parseInt(i)]} ${date.format(now, "MMM YYYY")}`,
-        i
-      );
-      stats.date[parseInt(i)] += ` ${datesWeek[parseInt(i)]} ${date.format(
-        now,
-        "MMM"
-      )}`;
+      if (String(datesWeek[parseInt(i)]).split(" ").length === 1) {
+        this.getStats(
+          `${datesWeek[parseInt(i)]} ${date.format(now, "MMM YYYY")}`,
+          i
+        );
+        stats.date[parseInt(i)] += ` ${datesWeek[parseInt(i)]} ${date.format(
+          now,
+          "MMM"
+        )}`;
+        console.log("x")
+      } else {
+        this.getStats(
+          `${String(datesWeek[parseInt(i)]).split(" ")[1]} ${date.format(
+            now,
+            "MMM YYYY"
+          )}`,
+          i
+        );
+        stats.date[parseInt(i)] += ` ${
+          String(datesWeek[parseInt(i)]).split(" ")[1]
+        } ${date.format(now, "MMM")}`;
+        console.log("x")
+
+      }
     }
   }
 
@@ -290,10 +311,12 @@ class Panel extends React.Component {
 
   changeWeek(event) {
     if (event.target.value === "Last week" && !this.state.lastWeek) {
-      if (this._isMounted) this.setState({ lastWeek: true,selectValue: "Last week" });
+      if (this._isMounted)
+        this.setState({ lastWeek: true, selectValue: "Last week" });
       this.getLastWeekDates();
     } else {
-      if (this._isMounted) this.setState({ lastWeek: false,selectValue: "This week" });
+      if (this._isMounted)
+        this.setState({ lastWeek: false, selectValue: "This week" });
       this.getThisWeekDates();
     }
   }
@@ -497,7 +520,7 @@ class Panel extends React.Component {
                               ? 100 + "%"
                               : (stats.time[parseInt(indx)] /
                                   this.state.maxValue) *
-                                  90 +
+                                  95 +
                                 "%"
                         }}
                       ></div>
@@ -511,9 +534,10 @@ class Panel extends React.Component {
                   </div>
                 ))}
               </div>
-              <select value={this.state.selectValue}
+              <select
+                value={this.state.selectValue}
                 ref={select => (this.select = select)}
-                onChange={ this.changeWeek.bind(this)}
+                onChange={this.changeWeek.bind(this)}
                 className="Panel__selectWeek"
               >
                 <option value="This week">This week</option>
