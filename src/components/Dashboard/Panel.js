@@ -68,7 +68,8 @@ class Panel extends React.Component {
       svg: "",
       statsLoader: true,
       maxValue: "",
-      lastWeek: false
+      lastWeek: false,
+      selectValue: "This week"
     };
   }
   rightBarChange() {
@@ -238,7 +239,6 @@ class Panel extends React.Component {
     backwards = 6;
     let datesWeek = [];
     let lastDate = stats.date[0].split(" ")[1] - 1;
-    console.log(lastDate);
     stats.time = [];
     stats.date = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     datesWeek.push(lastDate);
@@ -259,8 +259,6 @@ class Panel extends React.Component {
         "MMM"
       )}`;
     }
-    console.log(stats.date);
-    console.log(datesWeek);
   }
 
   getStats(date, i) {
@@ -290,12 +288,12 @@ class Panel extends React.Component {
       });
   }
 
-  changeWeek() {
-    if (this.select.value === "Last week" && !this.state.lastWeek) {
-      if (this._isMounted) this.setState({ lastWeek: true });
+  changeWeek(event) {
+    if (event.target.value === "Last week" && !this.state.lastWeek) {
+      if (this._isMounted) this.setState({ lastWeek: true,selectValue: "Last week" });
       this.getLastWeekDates();
     } else {
-      if (this._isMounted) this.setState({ lastWeek: false });
+      if (this._isMounted) this.setState({ lastWeek: false,selectValue: "This week" });
       this.getThisWeekDates();
     }
   }
@@ -513,13 +511,13 @@ class Panel extends React.Component {
                   </div>
                 ))}
               </div>
-              <select
+              <select value={this.state.selectValue}
                 ref={select => (this.select = select)}
-                onChange={() => this.changeWeek()}
+                onChange={ this.changeWeek.bind(this)}
                 className="Panel__selectWeek"
               >
-                <option>This week</option>
-                <option>Last week</option>
+                <option value="This week">This week</option>
+                <option value="Last week">Last week</option>
               </select>
             </div>
           )}
