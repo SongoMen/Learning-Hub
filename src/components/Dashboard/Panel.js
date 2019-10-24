@@ -33,7 +33,7 @@ let courses = {
 };
 
 let stats = {
-  date: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+  date: [],
   time: []
 };
 
@@ -49,7 +49,8 @@ class Panel extends React.Component {
       courses: "",
       lastLessonNumber: "",
       svg: "",
-      statsLoader: true
+      statsLoader: true,
+      maxValue: ""
     };
   }
   rightBarChange() {
@@ -147,6 +148,7 @@ class Panel extends React.Component {
   }
 
   getThisWeekDates() {
+    stats.date = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     const today = date.format(now, "DD MMM YYYY");
 
     let forward = 0;
@@ -205,8 +207,12 @@ class Panel extends React.Component {
     console.log(datesWeek);
 
     for (let i = 0; i < datesWeek.length; i++) {
-      this.getStats(`${datesWeek[parseInt(i)]} ${date.format(now, "MMM YYYY")}`, i);
-      stats.date[parseInt(i)] += " " + `${datesWeek[parseInt(i)]} ${date.format(now, "MMM")}`
+      this.getStats(
+        `${datesWeek[parseInt(i)]} ${date.format(now, "MMM YYYY")}`,
+        i
+      );
+      stats.date[parseInt(i)] +=
+        " " + `${datesWeek[parseInt(i)]} ${date.format(now, "MMM")}`;
     }
   }
 
@@ -228,7 +234,12 @@ class Panel extends React.Component {
         }
       })
       .then(() => {
-        if (i === 6 && this._isMounted) this.setState({ statsLoader: false });
+        if (i === 6 && this._isMounted) {
+          this.setState({
+            statsLoader: false,
+            maxValue: Math.max(...stats.time)
+          });
+        }
       });
   }
 
@@ -421,7 +432,20 @@ class Panel extends React.Component {
                 {stats.date.map((val, indx) => (
                   <div className="Panel__day" key={indx}>
                     <h5>{val}</h5>
-                    <div className="Panel__slider"></div>
+                    <div className="Panel__slider">
+                      <div
+                        className="Panel__slider-active"
+                        style={{
+                          height:
+                            this.state.maxValue / stats.time[parseInt(indx)] ===
+                            1
+                              ? 100 + "%"
+                              : this.state.maxValue /
+                                  stats.time[parseInt(indx)] +
+                                "%"
+                        }}
+                      ></div>
+                    </div>
                     <h4>{stats.time[parseInt(indx)]}</h4>
                   </div>
                 ))}
