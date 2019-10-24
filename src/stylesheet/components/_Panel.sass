@@ -48,13 +48,24 @@
         margin-top: 20px
         float: right
         position: relative
-        h5,h4
+        h5
             color: $accentColor3
             margin-top: 0
-        h5
+        .Panel__days > h5:nth-child(1)
             top: 15px
             position: absolute
             left: 15px
+    &__slider
+        width: 5px
+        height: 60px
+        background-color: $accentColor2
+        border-radius: 20px
+    &__day
+        display: flex
+        flex-direction: column
+        justify-content: center
+        align-items: center    
+
 .Panel__title,.DevPanel__title,.Courses__title
     display: flex
     justify-content: space-between

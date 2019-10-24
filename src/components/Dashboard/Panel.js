@@ -206,6 +206,7 @@ class Panel extends React.Component {
 
     for (let i = 0; i < datesWeek.length; i++) {
       this.getStats(`${datesWeek[parseInt(i)]} ${date.format(now, "MMM YYYY")}`, i);
+      stats.date[parseInt(i)] += " " + `${datesWeek[parseInt(i)]} ${date.format(now, "MMM")}`
     }
   }
 
@@ -419,7 +420,8 @@ class Panel extends React.Component {
               <div className="Panel__chart">
                 {stats.date.map((val, indx) => (
                   <div className="Panel__day" key={indx}>
-                    <h4>{val}</h4>
+                    <h5>{val}</h5>
+                    <div className="Panel__slider"></div>
                     <h4>{stats.time[parseInt(indx)]}</h4>
                   </div>
                 ))}
