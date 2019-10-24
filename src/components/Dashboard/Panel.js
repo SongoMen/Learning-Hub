@@ -67,7 +67,8 @@ class Panel extends React.Component {
       lastLessonNumber: "",
       svg: "",
       statsLoader: true,
-      maxValue: ""
+      maxValue: "",
+      lastWeek: false
     };
   }
   rightBarChange() {
@@ -166,8 +167,8 @@ class Panel extends React.Component {
 
   getThisWeekDates() {
     stats.date = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    stats.time = [];
     const today = date.format(now, "DD MMM YYYY");
-
     let forward = 0;
     let backwards = 0;
     switch (date.format(now, "dddd")) {
@@ -204,7 +205,6 @@ class Panel extends React.Component {
         forward = 0;
         backwards = 0;
     }
-
     let datesWeek = [];
     let lastDate = parseInt(today.split(" ")[0]);
     let lastDate2 = parseInt(today.split(" ")[0]);
@@ -221,8 +221,6 @@ class Panel extends React.Component {
     }
     datesWeek.sort((a, b) => a - b);
 
-    console.log(datesWeek);
-
     for (let i = 0; i < datesWeek.length; i++) {
       this.getStats(
         `${datesWeek[parseInt(i)]} ${date.format(now, "MMM YYYY")}`,
@@ -235,9 +233,39 @@ class Panel extends React.Component {
     }
   }
 
+  getLastWeekDates() {
+    let backwards = 0;
+    backwards = 6;
+    let datesWeek = [];
+    let lastDate = stats.date[0].split(" ")[1] - 1;
+    console.log(lastDate);
+    stats.time = [];
+    stats.date = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    datesWeek.push(lastDate);
+    while (backwards > 0) {
+      datesWeek.push(lastDate - 1);
+      lastDate--;
+      backwards--;
+    }
+    datesWeek.sort((a, b) => a - b);
+
+    for (let i = 0; i < datesWeek.length; i++) {
+      this.getStats(
+        `${datesWeek[parseInt(i)]} ${date.format(now, "MMM YYYY")}`,
+        i
+      );
+      stats.date[parseInt(i)] += ` ${datesWeek[parseInt(i)]} ${date.format(
+        now,
+        "MMM"
+      )}`;
+    }
+    console.log(stats.date);
+    console.log(datesWeek);
+  }
+
   getStats(date, i) {
-    console.log(date);
     let user = firebase.auth().currentUser.uid;
+    if (this._isMounted) this.setState({ statsLoader: true });
     let userDates = db
       .collection("users")
       .doc(user)
@@ -260,6 +288,16 @@ class Panel extends React.Component {
           });
         }
       });
+  }
+
+  changeWeek() {
+    if (this.select.value === "Last week" && !this.state.lastWeek) {
+      if (this._isMounted) this.setState({ lastWeek: true });
+      this.getLastWeekDates();
+    } else {
+      if (this._isMounted) this.setState({ lastWeek: false });
+      this.getThisWeekDates();
+    }
   }
 
   componentDidMount() {
@@ -475,6 +513,14 @@ class Panel extends React.Component {
                   </div>
                 ))}
               </div>
+              <select
+                ref={select => (this.select = select)}
+                onChange={() => this.changeWeek()}
+                className="Panel__selectWeek"
+              >
+                <option>This week</option>
+                <option>Last week</option>
+              </select>
             </div>
           )}
         </div>

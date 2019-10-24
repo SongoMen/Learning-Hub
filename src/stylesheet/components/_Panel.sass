@@ -15,6 +15,18 @@
         justify-content: center
         margin-top: 20px
         height: 100%
+    &__selectWeek
+        position: absolute
+        top: 10px
+        right: 15px
+        background-color: $accentColor2
+        border: 0
+        color: white
+        padding: 5px 10px
+        cursor: pointer
+        &:active, &:hover 
+            outline: none
+
     &__chart
         display: flex
         justify-content: space-between
@@ -54,6 +66,7 @@
         .Panel__days > h5:nth-child(1)
             top: 15px
             position: absolute
+            color: white
             left: 15px
     &__slider
         width: 5px
@@ -140,6 +153,7 @@
     h5
         position: absolute
         top: 15px
+        color: white
         left: 15px
 .Panel__error
     display: flex
