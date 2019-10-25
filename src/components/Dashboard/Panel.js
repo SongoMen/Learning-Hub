@@ -285,6 +285,7 @@ class Panel extends React.Component {
   getStats(date, i) {
     let user = firebase.auth().currentUser.uid;
     if (this._isMounted) this.setState({ statsLoader: true });
+    let sum = 0 
     let userDates = db
       .collection("users")
       .doc(user)
@@ -295,20 +296,25 @@ class Panel extends React.Component {
       .get()
       .then(snapshot => {
         snapshot.forEach(doc => {
-          if (snapshot.exists === true) {
-            stats.time.push(doc.data()["time"]);
+          this.getCourseStyle(doc.id)
+          console.log(doc)
+          if (doc.exists === true) {
+            sum+=(doc.data()["time"]);
           } else {
             stats.time.push(0);
           }
         });
       })
       .then(() => {
+        stats.time.push(sum)
         if (i === 6 && this._isMounted) {
           this.setState({
             statsLoader: false,
             maxValue: Math.max(...stats.time)
           });
         }
+        console.log(stats)
+        console.log(this.state.maxValue)
       });
   }
 
@@ -526,11 +532,11 @@ class Panel extends React.Component {
                   <div className="Panel__day" key={indx}>
                     <h5>{val}</h5>
                     <div className="Panel__slider">
-                      {stats.styles.map((val2, indx) => {
+                      {stats.styles.map((val2, indx2) => {
                         console.log(stats.time);
                         return (
                           <div
-                            key={indx}
+                            key={indx2}
                             className={"Panel__slider-active " + val2}
                             style={{
                               height:

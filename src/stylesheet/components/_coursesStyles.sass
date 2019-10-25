@@ -13,11 +13,39 @@
     max-width: 300px
     max-height: 250px
     white-space: nowrap
+    svg:nth-child(1)
+        width: 20%
+        min-width: 40px
+        border-radius: 10px
+        padding: 10px
+        margin-right: 20px
+        fill: white
+    .courses__arrow
+        position: absolute
+        bottom: 10px
+        right: 15px
+        width: 15px
+        height: 15px
+        transition: all .3s
     svg
         stroke: white
     &:hover
         .courses__arrow
             right: 5px
+.english1
+    background-color: #4e4cac
+    svg:nth-child(1)
+        width: 20%
+        min-width: 40px
+        background-color: #5b5ab3
+        border-radius: 10px
+        padding: 10px
+        margin-right: 20px
+        fill: white
+    h5:nth-child(1)
+        color: #babbff
+        margin: 0
+
 .jsfun
     background-color: #ff808b
     svg:nth-child(1)
@@ -28,6 +56,9 @@
         padding: 10px
         margin-right: 20px
         fill: white
+    h5:nth-child(1)
+        color: #ffdadd
+        margin: 0
     .courses__arrow
         position: absolute
         bottom: 10px
@@ -40,9 +71,6 @@
     justify-content: center
     align-items: flex-start
     flex-direction: column
-    h5:nth-child(1)
-        color: #ffdadd
-        margin: 0
     h4
         margin: 0
         color: white
