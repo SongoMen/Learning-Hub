@@ -351,6 +351,7 @@ class Panel extends React.Component {
     this.loadCourses();
     this.getThisWeekDates();
     setTimeout(() => {
+      if(this._isMounted)
       this.setState({ statsLoader: false });
     }, 3000);
   }
