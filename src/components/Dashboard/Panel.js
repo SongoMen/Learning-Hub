@@ -309,12 +309,14 @@ class Panel extends React.Component {
       })
       .then(() => {
         stats.time.push(sum);
-        if (i === 6 && this._isMounted) {
-          this.setState({
-            statsLoader: false,
-            maxValue: Math.max(...stats.time)
-          });
-        }
+        setTimeout(() => {
+          if (i === 6 && this._isMounted) {
+            this.setState({
+              statsLoader: false,
+              maxValue: Math.max(...stats.time)
+            });
+          }
+        }, 1000);
       });
   }
 
@@ -351,8 +353,7 @@ class Panel extends React.Component {
     this.loadCourses();
     this.getThisWeekDates();
     setTimeout(() => {
-      if(this._isMounted)
-      this.setState({ statsLoader: false });
+      if (this._isMounted) this.setState({ statsLoader: false });
     }, 3000);
   }
 
