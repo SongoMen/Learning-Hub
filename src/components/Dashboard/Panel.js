@@ -51,7 +51,8 @@ let courses = {
 
 let stats = {
   date: [],
-  time: []
+  time: [],
+  styles: []
 };
 
 class Panel extends React.Component {
@@ -237,7 +238,7 @@ class Panel extends React.Component {
           now,
           "MMM"
         )}`;
-        console.log("x")
+        console.log("x");
       } else {
         this.getStats(
           `${String(datesWeek[parseInt(i)]).split(" ")[1]} ${date.format(
@@ -249,8 +250,7 @@ class Panel extends React.Component {
         stats.date[parseInt(i)] += ` ${
           String(datesWeek[parseInt(i)]).split(" ")[1]
         } ${date.format(now, "MMM")}`;
-        console.log("x")
-
+        console.log("x");
       }
     }
   }
@@ -289,15 +289,18 @@ class Panel extends React.Component {
       .collection("users")
       .doc(user)
       .collection("dates")
-      .doc(date);
+      .doc(date)
+      .collection("lessons");
     userDates
       .get()
       .then(snapshot => {
-        if (snapshot.exists === true) {
-          stats.time.push(snapshot.data()["time"]);
-        } else {
-          stats.time.push(0);
-        }
+        snapshot.forEach(doc => {
+          if (snapshot.exists === true) {
+            stats.time.push(doc.data()["time"]);
+          } else {
+            stats.time.push(0);
+          }
+        });
       })
       .then(() => {
         if (i === 6 && this._isMounted) {
@@ -306,6 +309,15 @@ class Panel extends React.Component {
             maxValue: Math.max(...stats.time)
           });
         }
+      });
+  }
+
+  getCourseStyle(name) {
+    db.collection("courses")
+      .doc(name)
+      .get()
+      .then(snapshot => {
+        stats.styles.push(snapshot.data()["style"]);
       });
   }
 
@@ -332,6 +344,9 @@ class Panel extends React.Component {
     this.loadLastLesson();
     this.loadCourses();
     this.getThisWeekDates();
+    setTimeout(() => {
+      this.setState({ statsLoader: false });
+    }, 3000);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -511,19 +526,26 @@ class Panel extends React.Component {
                   <div className="Panel__day" key={indx}>
                     <h5>{val}</h5>
                     <div className="Panel__slider">
-                      <div
-                        className="Panel__slider-active"
-                        style={{
-                          height:
-                            stats.time[parseInt(indx)] / this.state.maxValue ===
-                            1
-                              ? 100 + "%"
-                              : (stats.time[parseInt(indx)] /
-                                  this.state.maxValue) *
-                                  95 +
-                                "%"
-                        }}
-                      ></div>
+                      {stats.styles.map((val2, indx) => {
+                        console.log(stats.time);
+                        return (
+                          <div
+                            key={indx}
+                            className={"Panel__slider-active " + val2}
+                            style={{
+                              height:
+                                stats.time[parseInt(indx)] /
+                                  this.state.maxValue ===
+                                1
+                                  ? 100 + "%"
+                                  : (stats.time[parseInt(indx)] /
+                                      this.state.maxValue) *
+                                      95 +
+                                    "%"
+                            }}
+                          ></div>
+                        );
+                      })}
                     </div>
                     <h5>
                       {shortEnglishHumanizer(

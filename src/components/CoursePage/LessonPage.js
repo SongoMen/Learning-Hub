@@ -19,18 +19,21 @@ const dateNow = date.format(now, "DD MMM YYYY, dddd");
 const db = firebase.firestore();
 
 class LessonPage extends React.Component {
-  refreshTimeInterval = setInterval(() => {
-    this.refreshTime();
-  }, 1000);
+  refreshTimeInterval = () =>
+    setInterval(() => {
+      this.refreshTime();
+    }, 1000);
 
-  timeCounterInterval = setInterval(() => {
-    if (!document.hidden && this._isMounted)
-      this.setState({ timer: parseInt(this.state.timer) + 1 });
-  }, 1000);
+  timeCounterInterval = () =>
+    setInterval(() => {
+      if (!document.hidden && this._isMounted)
+        this.setState({ timer: parseInt(this.state.timer) + 1 });
+    }, 1000);
 
-  saveLearningTimeInterval = setInterval(() => {
-    this.saveLearningTime();
-  }, 5 * 1000);
+  saveLearningTimeInterval = () =>
+    setInterval(() => {
+      this.saveLearningTime();
+    }, 5 * 1000);
 
   _isMounted = false;
 
@@ -56,9 +59,9 @@ class LessonPage extends React.Component {
   componentDidMount() {
     this._isMounted = true;
     //intervals
-    this.refreshTimeInterval = true;
-    this.timeCounterInterval = true;
-    this.saveLearningTimeInterval = true;
+    this.refreshTimeInterval();
+    this.timeCounterInterval();
+    this.saveLearningTimeInterval();
     // functions
     this.refreshTime();
     this.loadLessonContent();
@@ -80,7 +83,29 @@ class LessonPage extends React.Component {
       .doc(user)
       .collection("dates")
       .doc(today);
+
     userDates
+      .collection("lessons")
+      .doc(window.location.pathname.split("/")[2].replace(/%20/gi, " "))
+      .get()
+      .then(doc => {
+        if (typeof doc.data() !== "undefined") timer = doc.data()["time"];
+      })
+      .then(() => {
+        userDates.get().then(docSnapshot => {
+          if (docSnapshot.exists) {
+            userDates.update({
+              doc: "doc"
+            });
+          } else {
+            userDates.set({ doc: "doc" });
+          }
+        });
+      });
+
+    userDates
+      .collection("lessons")
+      .doc(window.location.pathname.split("/")[2].replace(/%20/gi, " "))
       .get()
       .then(doc => {
         if (typeof doc.data() !== "undefined") timer = doc.data()["time"];
