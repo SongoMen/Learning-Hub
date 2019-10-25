@@ -20,20 +20,20 @@ const db = firebase.firestore();
 
 class LessonPage extends React.Component {
   refreshTimeInterval = () =>
-    setInterval(() => {
+    (this.refresh = setInterval(() => {
       this.refreshTime();
-    }, 1000);
+    }, 1000));
 
   timeCounterInterval = () =>
-    setInterval(() => {
+    (this.counter = setInterval(() => {
       if (!document.hidden && this._isMounted)
         this.setState({ timer: parseInt(this.state.timer) + 1 });
-    }, 1000);
+    }, 1000));
 
   saveLearningTimeInterval = () =>
-    setInterval(() => {
+    (this.saveToDb = setInterval(() => {
       this.saveLearningTime();
-    }, 5 * 1000);
+    }, 5 * 1000));
 
   _isMounted = false;
 
@@ -51,9 +51,9 @@ class LessonPage extends React.Component {
 
   componentWillUnmount() {
     this._isMounted = false;
-    clearInterval(this.refreshTimeInterval);
-    clearInterval(this.timeCounterInterval);
-    clearInterval(this.saveLearningTimeInterval);
+    clearInterval(this.refresh);
+    clearInterval(this.counter);
+    clearInterval(this.saveToDb);
   }
 
   componentDidMount() {

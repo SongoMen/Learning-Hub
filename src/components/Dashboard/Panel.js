@@ -52,7 +52,8 @@ let courses = {
 let stats = {
   date: [],
   time: [],
-  styles: []
+  styles: [],
+  names: []
 };
 
 class Panel extends React.Component {
@@ -166,6 +167,8 @@ class Panel extends React.Component {
   getThisWeekDates() {
     stats.date = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     stats.time = [];
+    stats.styles = [];
+    stats.names = [];
     const today = date.format(now, "DD MMM YYYY");
     let forward = 0;
     let backwards = 0;
@@ -238,7 +241,6 @@ class Panel extends React.Component {
           now,
           "MMM"
         )}`;
-        console.log("x");
       } else {
         this.getStats(
           `${String(datesWeek[parseInt(i)]).split(" ")[1]} ${date.format(
@@ -250,7 +252,6 @@ class Panel extends React.Component {
         stats.date[parseInt(i)] += ` ${
           String(datesWeek[parseInt(i)]).split(" ")[1]
         } ${date.format(now, "MMM")}`;
-        console.log("x");
       }
     }
   }
@@ -285,7 +286,7 @@ class Panel extends React.Component {
   getStats(date, i) {
     let user = firebase.auth().currentUser.uid;
     if (this._isMounted) this.setState({ statsLoader: true });
-    let sum = 0 
+    let sum = 0;
     let userDates = db
       .collection("users")
       .doc(user)
@@ -296,25 +297,24 @@ class Panel extends React.Component {
       .get()
       .then(snapshot => {
         snapshot.forEach(doc => {
-          this.getCourseStyle(doc.id)
-          console.log(doc)
+          this.getCourseStyle(doc.id);
           if (doc.exists === true) {
-            sum+=(doc.data()["time"]);
+            sum += doc.data()["time"];
+            stats.names.push(doc.id);
+            stats[doc.id] = doc.data()["time"];
           } else {
             stats.time.push(0);
           }
         });
       })
       .then(() => {
-        stats.time.push(sum)
+        stats.time.push(sum);
         if (i === 6 && this._isMounted) {
           this.setState({
             statsLoader: false,
             maxValue: Math.max(...stats.time)
           });
         }
-        console.log(stats)
-        console.log(this.state.maxValue)
       });
   }
 
@@ -532,26 +532,26 @@ class Panel extends React.Component {
                   <div className="Panel__day" key={indx}>
                     <h5>{val}</h5>
                     <div className="Panel__slider">
-                      {stats.styles.map((val2, indx2) => {
-                        console.log(stats.time);
-                        return (
-                          <div
-                            key={indx2}
-                            className={"Panel__slider-active " + val2}
-                            style={{
-                              height:
-                                stats.time[parseInt(indx)] /
-                                  this.state.maxValue ===
-                                1
-                                  ? 100 + "%"
-                                  : (stats.time[parseInt(indx)] /
-                                      this.state.maxValue) *
-                                      95 +
-                                    "%"
-                            }}
-                          ></div>
-                        );
-                      })}
+                      {stats.time[parseInt(indx)] > 0 &&
+                        stats.styles.map((val2, indx2) => {
+                          return (
+                            <div
+                              key={indx2}
+                              className={"Panel__slider-active " + val2}
+                              style={{
+                                height:
+                                  stats[stats.names[indx2]] /
+                                    this.state.maxValue ===
+                                  1
+                                    ? 100 + "%"
+                                    : (stats[stats.names[indx2]] /
+                                        this.state.maxValue) *
+                                        100 +
+                                      "%"
+                              }}
+                            ></div>
+                          );
+                        })}
                     </div>
                     <h5>
                       {shortEnglishHumanizer(
