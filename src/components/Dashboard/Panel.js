@@ -67,7 +67,7 @@ class Panel extends React.Component {
         <div className="Panel__slider">
           {stats.time[parseInt(indx)] > 0 &&
             stats.styles.map((val2, indx2) => {
-              console.log(stats)
+              console.log(stats.fullDates[indx]," ",stats[stats.names[indx2]]/this.state.maxValue)
               if(stats.fullDates[indx] === val2.split(" ")[0] + " " +val2.split(" ")[1] +" "+ val2.split(" ")[2])
               return (
                 <div
@@ -78,7 +78,7 @@ class Panel extends React.Component {
                       stats[stats.names[indx2]] / this.state.maxValue === 1
                         ? 100 + "%"
                         : (stats[stats.names[indx2]] / this.state.maxValue) *
-                            100 +
+                            100 + 10 +
                           "%"
                   }}
                 ></div>
@@ -86,7 +86,7 @@ class Panel extends React.Component {
             })}
         </div>
         <h5>
-          {shortEnglishHumanizer(stats.time[parseInt(indx)] * 1000, {
+          {shortEnglishHumanizer(parseInt(stats.time[parseInt(indx)] * 1000), {
             largest: 2,
             round: true
           })}
