@@ -417,7 +417,7 @@ class DevPanel extends React.Component {
                 <div
                   key={indx}
                   className="DevPanel__lesson"
-                  onClick={() => this.loadLessonContent(lessons.id[indx], indx)}
+                  onClick={() => this.loadLessonContent(lessons.id[parseInt(indx)], indx)}
                 >
                   <h4>{val}</h4>
                   <svg
