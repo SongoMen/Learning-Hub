@@ -81,9 +81,9 @@ class Panel extends React.Component {
                     className={"Panel__slider-active " + val2}
                     style={{
                       height:
-                        stats[stats.names[indx2]] / this.state.maxValue === 1
+                        stats[stats.names[parseInt(indx2)]] / this.state.maxValue === 1
                           ? 100 + "%"
-                          : (stats[stats.names[indx2]] / this.state.maxValue) *
+                          : (stats[stats.names[parseInt(indx2)]] / this.state.maxValue) *
                               100 +
                             10 +
                             "%"
