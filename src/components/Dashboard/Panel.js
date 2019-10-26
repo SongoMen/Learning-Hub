@@ -53,11 +53,47 @@ let stats = {
   date: [],
   time: [],
   styles: [],
-  names: []
+  names: [],
+  fullDates: []
 };
 
 class Panel extends React.Component {
   _isMounted = false;
+
+  StatCharts = () => {
+    return stats.date.map((val, indx) => (
+      <div className="Panel__day" key={indx}>
+        <h5>{val}</h5>
+        <div className="Panel__slider">
+          {stats.time[parseInt(indx)] > 0 &&
+            stats.styles.map((val2, indx2) => {
+              console.log(stats)
+              if(stats.fullDates[indx] === val2.split(" ")[0] + " " +val2.split(" ")[1] +" "+ val2.split(" ")[2])
+              return (
+                <div
+                  key={indx2}
+                  className={"Panel__slider-active " + val2}
+                  style={{
+                    height:
+                      stats[stats.names[indx2]] / this.state.maxValue === 1
+                        ? 100 + "%"
+                        : (stats[stats.names[indx2]] / this.state.maxValue) *
+                            100 +
+                          "%"
+                  }}
+                ></div>
+              );
+            })}
+        </div>
+        <h5>
+          {shortEnglishHumanizer(stats.time[parseInt(indx)] * 1000, {
+            largest: 2,
+            round: true
+          })}
+        </h5>
+      </div>
+    ));
+  };
 
   constructor() {
     super();
@@ -287,6 +323,7 @@ class Panel extends React.Component {
     let user = firebase.auth().currentUser.uid;
     if (this._isMounted) this.setState({ statsLoader: true });
     let sum = 0;
+    stats.fullDates.push(date)
     let userDates = db
       .collection("users")
       .doc(user)
@@ -297,11 +334,11 @@ class Panel extends React.Component {
       .get()
       .then(snapshot => {
         snapshot.forEach(doc => {
-          this.getCourseStyle(doc.id);
+          this.getCourseStyle(doc.id, date);
           if (doc.exists === true) {
             sum += doc.data()["time"];
-            stats.names.push(doc.id);
-            stats[doc.id] = doc.data()["time"];
+            stats.names.push(date + " " + doc.id);
+            stats[date + " " + doc.id] = doc.data()["time"];
           } else {
             stats.time.push(0);
           }
@@ -316,16 +353,16 @@ class Panel extends React.Component {
               maxValue: Math.max(...stats.time)
             });
           }
-        }, 1000);
+        }, 1500);
       });
   }
 
-  getCourseStyle(name) {
+  getCourseStyle(name, date) {
     db.collection("courses")
       .doc(name)
       .get()
       .then(snapshot => {
-        stats.styles.push(snapshot.data()["style"]);
+        stats.styles.push(date + " " + snapshot.data()["style"]);
       });
   }
 
@@ -529,41 +566,7 @@ class Panel extends React.Component {
           ) : (
             <div className="Panel__days">
               <h5>TIME SPENT ON LEARNING</h5>
-              <div className="Panel__chart">
-                {stats.date.map((val, indx) => (
-                  <div className="Panel__day" key={indx}>
-                    <h5>{val}</h5>
-                    <div className="Panel__slider">
-                      {stats.time[parseInt(indx)] > 0 &&
-                        stats.styles.map((val2, indx2) => {
-                          return (
-                            <div
-                              key={indx2}
-                              className={"Panel__slider-active " + val2}
-                              style={{
-                                height:
-                                  stats[stats.names[indx2]] /
-                                    this.state.maxValue ===
-                                  1
-                                    ? 100 + "%"
-                                    : (stats[stats.names[indx2]] /
-                                        this.state.maxValue) *
-                                        100 +
-                                      "%"
-                              }}
-                            ></div>
-                          );
-                        })}
-                    </div>
-                    <h5>
-                      {shortEnglishHumanizer(
-                        stats.time[parseInt(indx)] * 1000,
-                        { largest: 2, round: true }
-                      )}
-                    </h5>
-                  </div>
-                ))}
-              </div>
+              <div className="Panel__chart">{this.StatCharts()}</div>
               <select
                 value={this.state.selectValue}
                 ref={select => (this.select = select)}

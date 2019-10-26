@@ -85,9 +85,12 @@ class LessonPage extends React.Component {
       .doc(today);
 
     userDates
+      .collection("lessons")
+      .doc(window.location.pathname.split("/")[2].replace(/%20/gi, " "))
       .get()
       .then(doc => {
-        if (typeof doc.data() !== "undefined") timer = doc.data()["time"];
+        if (typeof doc.data() !== "undefined")
+          timer = parseInt(doc.data()["time"]);
       })
       .then(() => {
         userDates.get().then(docSnapshot => {
@@ -119,6 +122,9 @@ class LessonPage extends React.Component {
             .doc(window.location.pathname.split("/")[2].replace(/%20/gi, " "))
             .set({ time: this.state.timer });
         }
+      })
+      .then(() => {
+        if (this._isMounted) this.setState({ timer: 0 });
       });
   }
 
