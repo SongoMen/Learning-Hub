@@ -69,27 +69,39 @@ class Panel extends React.Component {
             stats.styles.map((val2, indx2) => {
               if (
                 stats.fullDates[parseInt(indx)] ===
-                val2.split(" ")[0] +
-                  " " +
-                  val2.split(" ")[1] +
-                  " " +
-                  val2.split(" ")[2]
-              )
+                  val2.split(" ")[0] +
+                    " " +
+                    val2.split(" ")[1] +
+                    " " +
+                    val2.split(" ")[2] &&
+                stats[stats.names[parseInt(indx2)]] > 0
+              ) {
+                console.log(stats);
+                console.log(
+                  stats.fullDates[parseInt(indx)],
+                  " ",
+                  val2,
+                  " ",
+                  stats[stats.names[indx2]]
+                );
                 return (
                   <div
                     key={indx2}
                     className={"Panel__slider-active " + val2}
                     style={{
                       height:
-                        stats[stats.names[parseInt(indx2)]] / this.state.maxValue === 1
+                        stats[stats.names[parseInt(indx2)]] /
+                          this.state.maxValue ===
+                        1
                           ? 100 + "%"
-                          : (stats[stats.names[parseInt(indx2)]] / this.state.maxValue) *
+                          : (stats[stats.names[parseInt(indx2)]] /
+                              this.state.maxValue) *
                               100 +
-                            10 +
                             "%"
                     }}
                   ></div>
                 );
+              }
             })}
         </div>
         <h5>
@@ -370,6 +382,7 @@ class Panel extends React.Component {
       .get()
       .then(snapshot => {
         stats.styles.push(date + " " + snapshot.data()["style"]);
+        stats.styles.sort();
       });
   }
 
