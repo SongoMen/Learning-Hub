@@ -76,14 +76,6 @@ class Panel extends React.Component {
                     val2.split(" ")[2] &&
                 stats[stats.names[parseInt(indx2)]] > 0
               ) {
-                console.log(stats);
-                console.log(
-                  stats.fullDates[parseInt(indx)],
-                  " ",
-                  val2,
-                  " ",
-                  stats[stats.names[indx2]]
-                );
                 return (
                   <div
                     key={indx2}
@@ -224,6 +216,7 @@ class Panel extends React.Component {
     stats.time = [];
     stats.styles = [];
     stats.names = [];
+    stats.fullDates = [];
     const today = date.format(now, "DD MMM YYYY");
     let forward = 0;
     let backwards = 0;
@@ -316,8 +309,11 @@ class Panel extends React.Component {
     backwards = 6;
     let datesWeek = [];
     let lastDate = stats.date[0].split(" ")[1] - 1;
-    stats.time = [];
     stats.date = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    stats.time = [];
+    stats.styles = [];
+    stats.names = [];
+    stats.fullDates = [];
     datesWeek.push(lastDate);
     while (backwards > 0) {
       datesWeek.push(lastDate - 1);
@@ -327,14 +323,27 @@ class Panel extends React.Component {
     datesWeek.sort((a, b) => a - b);
 
     for (let i = 0; i < datesWeek.length; i++) {
-      this.getStats(
-        `${datesWeek[parseInt(i)]} ${date.format(now, "MMM YYYY")}`,
-        i
-      );
-      stats.date[parseInt(i)] += ` ${datesWeek[parseInt(i)]} ${date.format(
-        now,
-        "MMM"
-      )}`;
+      if (String(datesWeek[parseInt(i)]).split(" ").length === 1) {
+        this.getStats(
+          `${datesWeek[parseInt(i)]} ${date.format(now, "MMM YYYY")}`,
+          i
+        );
+        stats.date[parseInt(i)] += ` ${datesWeek[parseInt(i)]} ${date.format(
+          now,
+          "MMM"
+        )}`;
+      } else {
+        this.getStats(
+          `${String(datesWeek[parseInt(i)]).split(" ")[1]} ${date.format(
+            now,
+            "MMM YYYY"
+          )}`,
+          i
+        );
+        stats.date[parseInt(i)] += ` ${
+          String(datesWeek[parseInt(i)]).split(" ")[1]
+        } ${date.format(now, "MMM")}`;
+      }
     }
   }
 
@@ -372,7 +381,7 @@ class Panel extends React.Component {
               maxValue: Math.max(...stats.time)
             });
           }
-        }, 1500);
+        }, 1000);
       });
   }
 
@@ -409,9 +418,6 @@ class Panel extends React.Component {
     this.loadLastLesson();
     this.loadCourses();
     this.getThisWeekDates();
-    setTimeout(() => {
-      if (this._isMounted) this.setState({ statsLoader: false });
-    }, 3000);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
