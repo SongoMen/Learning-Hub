@@ -13,6 +13,7 @@ import Login from "./Login/Login";
 import Register from "./Register/Register";
 import Dashboard from "./Dashboard/Dashboard";
 import CourseContainer from "./CoursePage/CourseContainer";
+import Page404 from "./404page/404"
 
 function PrivateRoute({ component: Component, authed, ...rest }) {
   return (
@@ -123,6 +124,7 @@ class App extends Component {
               component={CourseContainer}
               id={window.location.pathname.split("/")[3]}
             />
+            <Route component={Page404} />
           </Switch>
         </div>
       </Router>

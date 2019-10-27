@@ -6,7 +6,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import Loader from "../elements/Loader";
 import parse from "html-react-parser";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import date from "date-and-time";
 
 const mapStateToProps = state => ({
