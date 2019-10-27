@@ -75,7 +75,7 @@ class Panel extends React.Component {
                     " " +
                     val2.split(" ")[2] &&
                 stats[stats.names[parseInt(indx2)]] > 0
-              ) {
+              )
                 return (
                   <div
                     key={indx2}
@@ -93,7 +93,6 @@ class Panel extends React.Component {
                     }}
                   ></div>
                 );
-              }
             })}
         </div>
         <h5>
@@ -118,7 +117,8 @@ class Panel extends React.Component {
       statsLoader: true,
       maxValue: "",
       lastWeek: false,
-      selectValue: "This week"
+      selectValue: "This week",
+      lessonId: ""
     };
   }
   rightBarChange() {
@@ -184,6 +184,7 @@ class Panel extends React.Component {
             this.setState({
               lastLesson: doc.data()["lastCourse"],
               lastLessonNumber: doc.data()["lastLesson"],
+              lessonId: doc.data()["lessonId"],
               svg: doc.data()["svg"]
             });
           });
@@ -495,35 +496,37 @@ class Panel extends React.Component {
             )}
           </div>
         </div>
-        {this.state.lastLesson === "" ? (
-          <div className="Panel__welcome">
-            <div className="left">
-              <h2> Welcome, {user}!</h2>
-              <h4>
-                Looks like you didn't do any lessons yet
-                <br />
-                maybe you should start?
-              </h4>
-            </div>
-          </div>
-        ) : (
-          <div className="Panel__welcome">
-            <div className="left">
-              <h2> Welcome back, {user}!</h2>
-              <h4>
-                Your latest course was <b>{this.state.lastLesson}.</b>
-              </h4>
-              {this.state.lastLessonNumber !== 0 ? (
+        <div className="Panel__welcome">
+          {!this.state.lastLessonLoader ? (
+            this.state.lastLesson === "" ? (
+              <div className="left">
+                <h2> Welcome, {user}!</h2>
                 <h4>
-                  You ended up on{" "}
-                  {ordinal(parseInt(this.state.lastLessonNumber))}.
+                  Looks like you didn't do any lessons yet
+                  <br />
+                  maybe you should start?
                 </h4>
-              ) : (
-                <h4>But you didn't complete any lesson.</h4>
-              )}
-            </div>
-          </div>
-        )}
+              </div>
+            ) : (
+              <div className="left">
+                <h2> Welcome back, {user}!</h2>
+                <h4>
+                  Your latest course was <b>{this.state.lastLesson}.</b>
+                </h4>
+                {this.state.lastLessonNumber !== 0 ? (
+                  <h4>
+                    You ended up on{" "}
+                    {ordinal(parseInt(this.state.lastLessonNumber))} lesson.
+                  </h4>
+                ) : (
+                  <h4>But you didn't complete any lesson.</h4>
+                )}
+              </div>
+            )
+          ) : (
+            <Loader />
+          )}
+        </div>
         <div className="Panel__quickstart">
           {this.state.lastLessonLoader ? (
             <Loader />
@@ -549,8 +552,26 @@ class Panel extends React.Component {
                   start course.
                 </h4>
               </div>
-            ) : (
+            ) : this.state.lastLesson > 0 ? (
               <Link to={"/course/" + this.state.lastLesson}>
+                <div>
+                  <h5>QUICKSTART</h5>
+                  <div className="title">
+                    <span className="courseLogo">{parse(this.state.svg)}</span>
+                    <h3>{this.state.lastLesson}</h3>
+                    <h4>
+                      Lesson: {ordinal(parseInt(this.state.lastLessonNumber))}
+                    </h4>
+                  </div>
+                </div>
+              </Link>
+            ) : (
+              <Link
+                to={
+                  "/course/" + this.state.lastLesson + "/" + this.state.lessonId
+                }
+              >
+                {" "}
                 <div>
                   <h5>QUICKSTART</h5>
                   <div className="title">

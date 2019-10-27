@@ -83,7 +83,7 @@ class LessonPage extends React.Component {
       .doc(user)
       .collection("dates")
       .doc(today);
-
+    let userLastLessons = db.collection("users").doc(user);
     userDates
       .collection("lessons")
       .doc(window.location.pathname.split("/")[2].replace(/%20/gi, " "))
@@ -103,7 +103,6 @@ class LessonPage extends React.Component {
           }
         });
       });
-
     userDates
       .collection("lessons")
       .doc(window.location.pathname.split("/")[2].replace(/%20/gi, " "))
@@ -124,6 +123,15 @@ class LessonPage extends React.Component {
         }
       })
       .then(() => {
+        userLastLessons
+          .collection("lastcourse")
+          .doc(window.location.pathname.split("/")[2].replace(/%20/gi, " "))
+          .update({
+            lastLesson: this.state.title.split(".")[0],
+            lessonId: window.location.pathname
+              .split("/")[3]
+              .replace(/%20/gi, " ")
+          });
         if (this._isMounted) this.setState({ timer: 0 });
       });
   }
