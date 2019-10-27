@@ -164,6 +164,9 @@ class LessonPage extends React.Component {
           });
       });
   }
+  getNextLessonId(){
+    
+  }
 
   render() {
     return (
