@@ -6,7 +6,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import Loader from "../elements/Loader";
 import parse from "html-react-parser";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import date from "date-and-time";
 
 const mapStateToProps = state => ({
@@ -14,9 +14,11 @@ const mapStateToProps = state => ({
 });
 
 const now = new Date();
-const dateNow = date.format(now, "DD MMM YYYY, dddd");
+const dateNow = date.format(now, "DD MMM, dddd");
 
 const db = firebase.firestore();
+
+let lessonsId = [];
 
 class LessonPage extends React.Component {
   refreshTimeInterval = () =>
@@ -45,19 +47,61 @@ class LessonPage extends React.Component {
       title: "",
       content: "",
       time: "",
-      timer: 0
+      timer: 0,
+      nextLesson: ""
     };
+  }
+
+  _handleKey(e) {
+    switch (e.keyCode) {
+      case 37:
+        if (
+          typeof lessonsId[
+            lessonsId.indexOf(
+              window.location.pathname.split("/")[3].replace(/%20/gi, " ")
+            ) + -1
+          ] !== "undefined"
+        )
+          window.location.href =
+            "/course/" +
+            window.location.pathname.split("/")[2].replace(/%20/gi, " ") +
+            "/" +
+            lessonsId[
+              lessonsId.indexOf(
+                window.location.pathname.split("/")[3].replace(/%20/gi, " ")
+              ) + -1
+            ];
+        break;
+      case 39:
+        window.location.href =
+          "/course/" +
+          window.location.pathname.split("/")[2].replace(/%20/gi, " ") +
+          "/" +
+          lessonsId[
+            lessonsId.indexOf(
+              window.location.pathname.split("/")[3].replace(/%20/gi, " ")
+            ) + 1
+          ];
+        break;
+      default:
+        break;
+    }
   }
 
   componentWillUnmount() {
     this._isMounted = false;
+
     clearInterval(this.refresh);
     clearInterval(this.counter);
     clearInterval(this.saveToDb);
+
+    document.removeEventListener("keydown", this._handleKey);
   }
 
   componentDidMount() {
     this._isMounted = true;
+    //key press
+    document.addEventListener("keydown", this._handleKey);
     //intervals
     this.refreshTimeInterval();
     this.timeCounterInterval();
@@ -65,6 +109,7 @@ class LessonPage extends React.Component {
     // functions
     this.refreshTime();
     this.loadLessonContent();
+    this.getNextLessonId();
   }
 
   refreshTime() {
@@ -164,8 +209,19 @@ class LessonPage extends React.Component {
           });
       });
   }
-  getNextLessonId(){
-    
+  getNextLessonId() {
+    db.collection("courses")
+      .doc(window.location.pathname.split("/")[2].replace(/%20/gi, " "))
+      .collection("lessons")
+      .orderBy("title", "asc")
+      .get()
+      .then(snapshot => {
+        if (snapshot.docs.length > 0 && this._isMounted) {
+          snapshot.forEach(doc => {
+            lessonsId.push(doc.id);
+          });
+        }
+      });
   }
 
   render() {
@@ -182,6 +238,46 @@ class LessonPage extends React.Component {
           <div className="LessonPage__lesson">
             <h2>{this.state.title}</h2>
             <p>{parse(this.state.content)}</p>
+          </div>
+        )}
+        {this.state.loader !== "error" && !this.state.loader && (
+          <div className="LessonPage__controls">
+            <div className="LessonPage__option">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                className="backwards"
+                viewBox="0 0 24 24"
+              >
+                <path d="M19 12L5 12"></path>
+                <path d="M12 19L5 12 12 5"></path>
+              </svg>
+              <h5>Previous lesson</h5>
+            </div>
+            <div className="LessonPage__option">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                className="forward"
+              >
+                <path d="M5 12L19 12"></path>
+                <path d="M12 5L19 12 12 19"></path>
+              </svg>
+              <h5>Next lesson</h5>
+            </div>
           </div>
         )}
         {this.state.loader === "error" && (
