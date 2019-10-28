@@ -307,12 +307,13 @@ class Panel extends React.Component {
           now,
           "MMM"
         )}`;
-      } else{
+      } else {
         if (String(datesWeek[parseInt(i)]).split(" ").length > 1 && !newMonth) {
           this.getStats(
-            `${datesWeek[parseInt(i)].split(" ")[1]} ${
-              nextMonth
-            } ${date.format(now, "YYYY")}`,
+            `${datesWeek[parseInt(i)].split(" ")[1]} ${nextMonth} ${date.format(
+              now,
+              "YYYY"
+            )}`,
             i
           );
           stats.date[parseInt(i)] += ` ${
@@ -321,14 +322,13 @@ class Panel extends React.Component {
           newMonth = true;
         } else {
           this.getStats(
-            `${datesWeek[parseInt(i)]} ${
-              nextMonth
-            } ${date.format(now, "YYYY")}`,
+            `${datesWeek[parseInt(i)]} ${nextMonth} ${date.format(
+              now,
+              "YYYY"
+            )}`,
             i
           );
-          stats.date[parseInt(i)] += ` ${datesWeek[parseInt(i)]} ${
-            nextMonth
-          }`;
+          stats.date[parseInt(i)] += ` ${datesWeek[parseInt(i)]} ${nextMonth}`;
         }
         newMonth = true;
       }
@@ -924,37 +924,42 @@ class Panel extends React.Component {
         <div className="Panel__more">
           <h3>More courses</h3>
           {this.state.courses === 0 && <h3>No courses available.</h3>}
-          {this.state.courses > 0 &&
-            courses.name.map((val, indx) => {
-              return (
-                <Link to={"/course/" + val} key={indx}>
-                  <div
-                    className={"courses__box " + courses.style[parseInt(indx)]}
-                  >
-                    {parse(courses.svg[parseInt(indx)])}
-                    <div className="courses__info">
-                      <h5>Number of lessons</h5>
-                      <h4>{val}</h4>
-                    </div>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="courses__arrow"
+          {this.state.courses > 0 && (
+            <div class="Panel__coursesContainer">
+              {courses.name.map((val, indx) => {
+                return (
+                  <Link to={"/course/" + val} key={indx}>
+                    <div
+                      className={
+                        "courses__box " + courses.style[parseInt(indx)]
+                      }
                     >
-                      <line x1="0" y1="12" x2="19" y2="12"></line>
-                      <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                  </div>
-                </Link>
-              );
-            })}
+                      {parse(courses.svg[parseInt(indx)])}
+                      <div className="courses__info">
+                        <h5>Number of lessons</h5>
+                        <h4>{val}</h4>
+                      </div>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="courses__arrow"
+                      >
+                        <line x1="0" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                      </svg>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     );
