@@ -271,6 +271,7 @@ class Panel extends React.Component {
         backwards = 0;
     }
     let datesWeek = [];
+    let lastDateX = 0; //TO SORT CORRECTLY WHILE TRANSITION BETWEEN ONE MONTH TO ANOTHER
     let lastDate = parseInt(today.split(" ")[0]);
     let lastDate2 = parseInt(today.split(" ")[0]);
     let daysInMonth = new Date(
@@ -286,15 +287,18 @@ class Panel extends React.Component {
     }
     while (forward > 0) {
       if (daysInMonth <= lastDate2) {
-        lastDate2 = 0;
-        datesWeek.push("33 " + (lastDate2 + 1));
+        datesWeek.push("33 " + (lastDateX + 1));
+        lastDateX++;
       } else {
         datesWeek.push(lastDate2 + 1);
       }
       lastDate2++;
       forward--;
     }
+    console.log(datesWeek)
+
     datesWeek.sort((a, b) => a - b);
+    console.log(datesWeek)
     let newMonth = false;
     let nextMonth = months[months.indexOf(date.format(now, "MMM")) + 1];
     for (let i = 0; i < datesWeek.length; i++) {
@@ -308,7 +312,7 @@ class Panel extends React.Component {
           "MMM"
         )}`;
       } else {
-        if (String(datesWeek[parseInt(i)]).split(" ").length > 1 && !newMonth) {
+        if (String(datesWeek[parseInt(i)]).split(" ").length > 1) {
           this.getStats(
             `${datesWeek[parseInt(i)].split(" ")[1]} ${nextMonth} ${date.format(
               now,
@@ -320,17 +324,7 @@ class Panel extends React.Component {
             datesWeek[parseInt(i)].split(" ")[1]
           } ${nextMonth}`;
           newMonth = true;
-        } else {
-          this.getStats(
-            `${datesWeek[parseInt(i)]} ${nextMonth} ${date.format(
-              now,
-              "YYYY"
-            )}`,
-            i
-          );
-          stats.date[parseInt(i)] += ` ${datesWeek[parseInt(i)]} ${nextMonth}`;
         }
-        newMonth = true;
       }
     }
   }
@@ -925,7 +919,7 @@ class Panel extends React.Component {
           <h3>More courses</h3>
           {this.state.courses === 0 && <h3>No courses available.</h3>}
           {this.state.courses > 0 && (
-            <div class="Panel__coursesContainer">
+            <div className="Panel__coursesContainer">
               {courses.name.map((val, indx) => {
                 return (
                   <Link to={"/course/" + val} key={indx}>
