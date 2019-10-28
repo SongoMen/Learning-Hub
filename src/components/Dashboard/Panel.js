@@ -29,6 +29,21 @@ const shortEnglishHumanizer = humanizeDuration.humanizer({
   }
 });
 
+const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "June",
+  "July",
+  "Aug",
+  "Sept",
+  "Oct",
+  "Nov",
+  "Dec"
+];
+
 const mapStateToProps = state => ({
   ...state
 });
@@ -270,7 +285,7 @@ class Panel extends React.Component {
       backwards--;
     }
     while (forward > 0) {
-      if (daysInMonth < lastDate2) {
+      if (daysInMonth <= lastDate2) {
         lastDate2 = 0;
         datesWeek.push("33 " + (lastDate2 + 1));
       } else {
@@ -280,8 +295,10 @@ class Panel extends React.Component {
       forward--;
     }
     datesWeek.sort((a, b) => a - b);
+    let newMonth = false;
+    let nextMonth = months[months.indexOf(date.format(now, "MMM")) + 1];
     for (let i = 0; i < datesWeek.length; i++) {
-      if (String(datesWeek[parseInt(i)]).split(" ").length === 1) {
+      if (String(datesWeek[parseInt(i)]).split(" ").length === 1 && !newMonth) {
         this.getStats(
           `${datesWeek[parseInt(i)]} ${date.format(now, "MMM YYYY")}`,
           i
@@ -290,17 +307,30 @@ class Panel extends React.Component {
           now,
           "MMM"
         )}`;
-      } else {
-        this.getStats(
-          `${String(datesWeek[parseInt(i)]).split(" ")[1]} ${date.format(
-            now,
-            "MMM YYYY"
-          )}`,
-          i
-        );
-        stats.date[parseInt(i)] += ` ${
-          String(datesWeek[parseInt(i)]).split(" ")[1]
-        } ${date.format(now, "MMM")}`;
+      } else{
+        if (String(datesWeek[parseInt(i)]).split(" ").length > 1 && !newMonth) {
+          this.getStats(
+            `${datesWeek[parseInt(i)].split(" ")[1]} ${
+              nextMonth
+            } ${date.format(now, "YYYY")}`,
+            i
+          );
+          stats.date[parseInt(i)] += ` ${
+            datesWeek[parseInt(i)].split(" ")[1]
+          } ${nextMonth}`;
+          newMonth = true;
+        } else {
+          this.getStats(
+            `${datesWeek[parseInt(i)]} ${
+              nextMonth
+            } ${date.format(now, "YYYY")}`,
+            i
+          );
+          stats.date[parseInt(i)] += ` ${datesWeek[parseInt(i)]} ${
+            nextMonth
+          }`;
+        }
+        newMonth = true;
       }
     }
   }
