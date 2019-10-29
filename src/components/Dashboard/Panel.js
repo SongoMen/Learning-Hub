@@ -108,6 +108,7 @@ class Panel extends React.Component {
                     }}
                   ></div>
                 );
+                else return ""
             })}
         </div>
         <h5>
@@ -295,10 +296,7 @@ class Panel extends React.Component {
       lastDate2++;
       forward--;
     }
-    console.log(datesWeek)
-
     datesWeek.sort((a, b) => a - b);
-    console.log(datesWeek)
     let newMonth = false;
     let nextMonth = months[months.indexOf(date.format(now, "MMM")) + 1];
     for (let i = 0; i < datesWeek.length; i++) {

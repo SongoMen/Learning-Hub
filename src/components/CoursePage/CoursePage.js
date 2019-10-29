@@ -187,8 +187,9 @@ class CoursePage extends React.Component {
         {this.state.loader && this.state.loader !== "error" && <Loader />}
         {this.state.started &&
         !this.state.loader &&
-        this.state.loader !== "error"
-          ? lessons.name.map((val, indx) => (
+        this.state.loader !== "error" ? (
+          <div className="CoursePage__lessonsContainer">
+            {lessons.name.map((val, indx) => (
               <Link
                 className="CoursePage__lesson"
                 to={
@@ -218,19 +219,22 @@ class CoursePage extends React.Component {
                   </svg>
                 </div>
               </Link>
-            ))
-          : !this.state.loader &&
-            this.state.loader !== "error" && (
-              <div className="CoursePage__start">
-                <h4>START COURSE</h4>
-                <input
-                  type="button"
-                  className="form-btn"
-                  value="start"
-                  onClick={() => this.startCourse()}
-                ></input>
-              </div>
-            )}
+            ))}
+          </div>
+        ) : (
+          !this.state.loader &&
+          this.state.loader !== "error" && (
+            <div className="CoursePage__start">
+              <h4>START COURSE</h4>
+              <input
+                type="button"
+                className="form-btn"
+                value="start"
+                onClick={() => this.startCourse()}
+              ></input>
+            </div>
+          )
+        )}
         {this.state.loader === "error" && (
           <div className="CoursePage__error">
             <svg
