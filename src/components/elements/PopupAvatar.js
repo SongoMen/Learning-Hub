@@ -119,7 +119,7 @@ class PopupAvatar extends React.Component {
               onClick={() => {
                 this.upload();
               }}
-              className="form-btn"
+              className="form-btn" 
             >
               SUBMIT
             </button>

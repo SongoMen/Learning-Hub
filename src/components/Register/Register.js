@@ -135,7 +135,7 @@ class Register extends Component {
             <div>
               <button
                 type="button"
-                className="form-btn"
+                className="form-btn" 
                 onClick={event =>
                   this.handleClickRegisterUser(event, this.props.role)
                 }

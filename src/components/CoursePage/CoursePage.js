@@ -228,7 +228,7 @@ class CoursePage extends React.Component {
               <h4>START COURSE</h4>
               <input
                 type="button"
-                className="form-btn"
+                className="form-btn" 
                 value="start"
                 onClick={() => this.startCourse()}
               ></input>

@@ -104,7 +104,7 @@ export default class Login extends React.Component {
             <div>
               <button
                 type="submit"
-                className="form-btn"
+                className="form-btn" 
                 onClick={event => this.handleClick(event)}
               >
                 {this.state.loading ? <Loader /> : <span>SIGN IN</span>}

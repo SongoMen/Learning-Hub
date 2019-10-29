@@ -105,7 +105,7 @@ class PopupDev extends React.Component {
             </div>
             <input
               type="button"
-              className="form-btn"
+              className="form-btn" 
               value="CREATE"
               onClick={() => {
                 this.newCourse();
