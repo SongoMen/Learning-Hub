@@ -224,6 +224,10 @@ class LessonPage extends React.Component {
       });
   }
 
+  lessonDone(){
+    
+  }
+
   render() {
     return (
       <div className="LessonPage">
