@@ -108,7 +108,7 @@ class Panel extends React.Component {
                     }}
                   ></div>
                 );
-                else return ""
+              else return "";
             })}
         </div>
         <h5>

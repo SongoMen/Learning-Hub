@@ -247,19 +247,21 @@ class LessonPage extends React.Component {
           .get()
           .then(doc => (lessons = doc.data()["completed"]))
           .then(() => {
-            if (
-              lessons
-                .split(",")
-                .indexOf(
-                  window.location.pathname.split("/")[3].replace(/%20/gi, " ")
-                ) === -1
-            )
-              lessonsCompleted.update({
-                completed:
-                  lessons +
-                  "," +
-                  window.location.pathname.split("/")[3].replace(/%20/gi, " ")
-              });
+            if (typeof lessons === "undefined")
+              if (
+                lessons
+                  .split(",")
+                  .indexOf(
+                    window.location.pathname.split("/")[3].replace(/%20/gi, " ")
+                  ) === -1
+              ) {
+                lessonsCompleted.update({
+                  completed:
+                    lessons +
+                    "," +
+                    window.location.pathname.split("/")[3].replace(/%20/gi, " ")
+                });
+              }
           });
       } else {
         console.log("no");
