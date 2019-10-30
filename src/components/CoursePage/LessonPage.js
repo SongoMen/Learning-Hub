@@ -50,38 +50,41 @@ class LessonPage extends React.Component {
       timer: 0,
       nextLesson: ""
     };
+    this._handleKey = this._handleKey.bind(this);
   }
 
   _handleKey(e) {
+    let previousLesson =
+      lessonsId[
+        lessonsId.indexOf(
+          window.location.pathname.split("/")[3].replace(/%20/gi, " ")
+        ) - 1
+      ];
+    let nextLesson =
+      lessonsId[
+        lessonsId.indexOf(
+          window.location.pathname.split("/")[3].replace(/%20/gi, " ")
+        ) + 1
+      ];
+
     switch (e.keyCode) {
       case 37:
-        if (
-          typeof lessonsId[
-            lessonsId.indexOf(
-              window.location.pathname.split("/")[3].replace(/%20/gi, " ")
-            ) + -1
-          ] !== "undefined"
-        )
+        if (previousLesson !== "undefined") {
+          this.lessonDone();
           window.location.href =
             "/course/" +
             window.location.pathname.split("/")[2].replace(/%20/gi, " ") +
             "/" +
-            lessonsId[
-              lessonsId.indexOf(
-                window.location.pathname.split("/")[3].replace(/%20/gi, " ")
-              ) + -1
-            ];
+            previousLesson;
+        }
         break;
       case 39:
+        this.lessonDone();
         window.location.href =
           "/course/" +
           window.location.pathname.split("/")[2].replace(/%20/gi, " ") +
           "/" +
-          lessonsId[
-            lessonsId.indexOf(
-              window.location.pathname.split("/")[3].replace(/%20/gi, " ")
-            ) + 1
-          ];
+          nextLesson;
         break;
       default:
         break;
@@ -110,6 +113,9 @@ class LessonPage extends React.Component {
     this.refreshTime();
     this.loadLessonContent();
     this.getNextLessonId();
+    setTimeout(() => {
+      this.lessonDone();
+    }, 30000);
   }
 
   refreshTime() {
@@ -224,8 +230,32 @@ class LessonPage extends React.Component {
       });
   }
 
-  lessonDone(){
-    
+  lessonDone() {
+    let user = firebase.auth().currentUser.uid;
+    let lessons = "";
+    let lessonsCompleted = db
+      .collection("users")
+      .doc(user)
+      .collection("lessonsCompleted")
+      .doc(window.location.pathname.split("/")[2].replace(/%20/gi, " "));
+    lessonsCompleted.get().then(docSnapshot => {
+      if (docSnapshot.exists) {
+        lessonsCompleted.get().then(doc => (lessons = doc.data()["completed"]));
+        lessonsCompleted.update({
+          completed:
+            lessons +
+            "," +
+            window.location.pathname.split("/")[3].replace(/%20/gi, " ")
+        });
+      } else {
+        lessonsCompleted.set({
+          completed:
+            lessons +
+            "," +
+            window.location.pathname.split("/")[3].replace(/%20/gi, " ")
+        });
+      }
+    });
   }
 
   render() {

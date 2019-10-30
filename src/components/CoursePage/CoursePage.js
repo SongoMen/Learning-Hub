@@ -30,7 +30,8 @@ class CoursePage extends React.Component {
       loader: true,
       style: "",
       svg: "",
-      started: ""
+      started: "",
+      completedLessons: ""
     };
     this.loadLessons = this.loadLessons.bind(this);
   }
@@ -41,6 +42,7 @@ class CoursePage extends React.Component {
   componentDidMount() {
     this._isMounted = true;
     this.loadLessons();
+    this.loadCompletedLessons();
   }
 
   loadLessons() {
@@ -171,6 +173,20 @@ class CoursePage extends React.Component {
       });
   }
 
+  loadCompletedLessons() {
+    let user = firebase.auth().currentUser.uid;
+    firebase
+      .firestore()
+      .collection("users")
+      .doc(user)
+      .collection("lessonsCompleted")
+      .doc(this.state.name)
+      .get()
+      .then(doc => {
+        this.setState({ completedLessons: doc.data()["completed"] });
+      });
+  }
+
   render() {
     return (
       <div className="CoursePage">
@@ -201,7 +217,24 @@ class CoursePage extends React.Component {
                 key={indx}
               >
                 <div>
-                  <h4>{val}</h4>
+                  <div>
+                    <h4>{val}</h4>
+                    {this.state.completedLessons
+                      .split(",")
+                      .indexOf(lessons.id[parseInt(indx)]) > -1 && (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        x="0"
+                        y="0"
+                        enableBackground="new 0 0 512 512"
+                        version="1.1"
+                        viewBox="0 0 512 512"
+                        xmlSpace="preserve"
+                      >
+                        <path d="M504.502 75.496c-9.997-9.998-26.205-9.998-36.204 0L161.594 382.203 43.702 264.311c-9.997-9.998-26.205-9.997-36.204 0-9.998 9.997-9.998 26.205 0 36.203l135.994 135.992c9.994 9.997 26.214 9.99 36.204 0L504.502 111.7c9.998-9.997 9.997-26.206 0-36.204z"></path>
+                      </svg>
+                    )}
+                  </div>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -228,7 +261,7 @@ class CoursePage extends React.Component {
               <h4>START COURSE</h4>
               <input
                 type="button"
-                className="form-btn" 
+                className="form-btn"
                 value="start"
                 onClick={() => this.startCourse()}
               ></input>
