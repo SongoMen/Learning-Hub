@@ -69,7 +69,7 @@ class LessonPage extends React.Component {
 
     switch (e.keyCode) {
       case 37:
-        if (previousLesson !== "undefined") {
+        if (typeof previousLesson !== "undefined") {
           this.lessonDone();
           window.location.href =
             "/course/" +
@@ -79,12 +79,14 @@ class LessonPage extends React.Component {
         }
         break;
       case 39:
-        this.lessonDone();
-        window.location.href =
-          "/course/" +
-          window.location.pathname.split("/")[2].replace(/%20/gi, " ") +
-          "/" +
-          nextLesson;
+        if (typeof nextLesson !== "undefined") {
+          this.lessonDone();
+          window.location.href =
+            "/course/" +
+            window.location.pathname.split("/")[2].replace(/%20/gi, " ") +
+            "/" +
+            nextLesson;
+        }
         break;
       default:
         break;
@@ -239,15 +241,28 @@ class LessonPage extends React.Component {
       .collection("lessonsCompleted")
       .doc(window.location.pathname.split("/")[2].replace(/%20/gi, " "));
     lessonsCompleted.get().then(docSnapshot => {
+      console.log("x");
       if (docSnapshot.exists) {
-        lessonsCompleted.get().then(doc => (lessons = doc.data()["completed"]));
-        lessonsCompleted.update({
-          completed:
-            lessons +
-            "," +
-            window.location.pathname.split("/")[3].replace(/%20/gi, " ")
-        });
+        lessonsCompleted
+          .get()
+          .then(doc => (lessons = doc.data()["completed"]))
+          .then(() => {
+            if (
+              lessons
+                .split(",")
+                .indexOf(
+                  window.location.pathname.split("/")[3].replace(/%20/gi, " ")
+                ) === -1
+            )
+              lessonsCompleted.update({
+                completed:
+                  lessons +
+                  "," +
+                  window.location.pathname.split("/")[3].replace(/%20/gi, " ")
+              });
+          });
       } else {
+        console.log("no");
         lessonsCompleted.set({
           completed:
             lessons +
