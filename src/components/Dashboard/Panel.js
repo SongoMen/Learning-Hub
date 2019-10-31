@@ -413,8 +413,10 @@ class Panel extends React.Component {
       .doc(name)
       .get()
       .then(snapshot => {
-        stats.styles.push(date + " " + snapshot.data()["style"]);
-        stats.styles.sort();
+        if (typeof snapshot.data() !== "undefined") {
+          stats.styles.push(date + " " + snapshot.data()["style"]);
+          stats.styles.sort();
+        }
       });
   }
 

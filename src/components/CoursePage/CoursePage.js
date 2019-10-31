@@ -72,7 +72,7 @@ class CoursePage extends React.Component {
           .doc(this.state.name)
           .get()
           .then(snapshot => {
-            if (this._isMounted)
+            if (this._isMounted && typeof snapshot.data() !== "undefined")
               this.setState({
                 style: snapshot.data()["style"],
                 svg: snapshot.data()["svg"]
@@ -183,7 +183,8 @@ class CoursePage extends React.Component {
       .doc(this.state.name)
       .get()
       .then(doc => {
-        this.setState({ completedLessons: doc.data()["completed"] });
+        if (this._isMounted && typeof doc.data() !== "undefined")
+          this.setState({ completedLessons: doc.data()["completed"] });
       });
   }
 
