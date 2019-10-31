@@ -134,7 +134,7 @@ class LessonPage extends React.Component {
 
   componentDidUpdate(prevState) {
     if (prevState.id !== this.props.id) {
-      this.loadLessonContent()
+      this.loadLessonContent();
       this.getNextLessonId();
     }
   }
