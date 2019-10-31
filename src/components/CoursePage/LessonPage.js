@@ -73,7 +73,8 @@ class LessonPage extends React.Component {
           this.lessonDone();
           this.setState(
             {
-              redirect: "previous"
+              redirect: "previous",
+              loader: true
             },
             () => {
               this.setState({
@@ -88,7 +89,8 @@ class LessonPage extends React.Component {
           this.lessonDone();
           this.setState(
             {
-              redirect: "next"
+              redirect: "next",
+              loader: true
             },
             () => {
               this.setState({
@@ -96,7 +98,6 @@ class LessonPage extends React.Component {
               });
             }
           );
-          console.log("x");
         }
         break;
       default:
@@ -115,7 +116,6 @@ class LessonPage extends React.Component {
   }
 
   componentDidMount() {
-    console.log("xx");
     this._isMounted = true;
     //key press
     document.addEventListener("keydown", this._handleKey);
@@ -262,7 +262,6 @@ class LessonPage extends React.Component {
       .collection("lessonsCompleted")
       .doc(window.location.pathname.split("/")[2].replace(/%20/gi, " "));
     lessonsCompleted.get().then(docSnapshot => {
-      console.log("x");
       if (docSnapshot.exists) {
         lessonsCompleted
           .get()
