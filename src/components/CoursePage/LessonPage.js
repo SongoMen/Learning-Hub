@@ -132,9 +132,11 @@ class LessonPage extends React.Component {
     }, 30000);
   }
 
-  componentDidUpdate() {
-    this.loadLessonContent();
-    this.getNextLessonId();
+  componentDidUpdate(prevState) {
+    if (prevState.id !== this.props.id) {
+      this.loadLessonContent()
+      this.getNextLessonId();
+    }
   }
 
   refreshTime() {
@@ -218,12 +220,13 @@ class LessonPage extends React.Component {
       .doc(this.props.id)
       .get()
       .then(doc => {
-        if (this._isMounted && typeof doc.data() !== "undefined")
+        if (this._isMounted && typeof doc.data() !== "undefined") {
           this.setState({
             title: doc.data()["title"],
             content: doc.data()["content"],
             loader: false
           });
+        }
       })
       .catch(err => {
         console.error(
