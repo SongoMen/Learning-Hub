@@ -4,8 +4,12 @@
     background-color: $accentColor1
     border-left: 1px solid $linesColor
     padding: 20px
+    @media only screen and (max-width: 1160px) 
+        padding: 20px 10px
+    @media only screen and (max-width: 600px) 
+        display: none
     &__slider
-        width: 30%
+        width: 25%
         height: 4px
         background-color: $accentColor4
         border-radius: 20px
@@ -15,6 +19,10 @@
         justify-content: flex-end
         align-items: flex-end
         flex-direction: column
+        @media only screen and (max-width: 1500px) 
+            width: 40%
+            margin-top: 10px
+            margin-left: 0
         span
             height: 100%
             position: absolute
@@ -28,6 +36,11 @@
         display: flex
         align-items: center
         justify-content: flex-start
+        flex-wrap: wrap
+        @media only screen and (max-width: 1500px) 
+            justify-content: center
+            div h5
+                margin-right: 20px!important
         div
             display: flex
             flex-direction: column
@@ -35,6 +48,10 @@
             align-items: flex-start
             h5:last-child
                 color: $accentColor3!important
+            @media only screen and (max-width: 1050px) 
+                align-items: center
+                h5
+                    margin-right: 0!important
         svg
             background-color: $accentColor2!important
             width: 30px!important

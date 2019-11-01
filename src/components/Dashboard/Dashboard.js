@@ -1,7 +1,7 @@
 import React from "react";
 import "firebase/firestore";
 import { connect } from "react-redux";
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 import Leftbar from "./Leftbar";
 import Panel from "./Panel";
@@ -22,16 +22,16 @@ class Dashboard extends React.Component {
   }
   componentDidMount() {
     this._isMounted = true;
-      }
+  }
 
   render() {
     return (
       <div className="Dashboard">
         {this.props.popupAvatar === true && <PopupAvatar />}
         <Leftbar />
-        {this.props.location.pathname ==="/dashboard" && <Panel />}
-        {this.props.location.pathname ==="/courses" && <Courses />}
-        {this.props.location.pathname ==="/devpanel" && <DevPanel />}
+        {this.props.location.pathname === "/dashboard" && <Panel />}
+        {this.props.location.pathname === "/courses" && <Courses />}
+        {this.props.location.pathname === "/devpanel" && <DevPanel />}
 
         {this.props.rightBar && <Rightbar />}
       </div>

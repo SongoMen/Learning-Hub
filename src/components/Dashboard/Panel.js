@@ -82,23 +82,6 @@ class Panel extends React.Component {
         <div className="Panel__slider">
           {stats.time[parseInt(indx)] > 0 &&
             stats.styles.map((val2, indx2) => {
-              console.log(stats.styles);
-              console.log(
-                stats[stats.names[parseInt(indx2)]],
-                " ",
-                val,
-                " ",
-                this.state.maxValue
-              );
-              console.log(
-                stats.fullDates[parseInt(indx)],
-                " ",
-                val2.split(" ")[0] +
-                  " " +
-                  val2.split(" ")[1] +
-                  " " +
-                  val2.split(" ")[2]
-              );
               if (
                 (stats.fullDates[parseInt(indx)] ===
                   val2.split(" ")[0] +
@@ -498,6 +481,11 @@ class Panel extends React.Component {
       this.setState({
         width: right
       });
+    }
+    if(window.matchMedia("(max-width: 800px)").matches){
+      status = false
+      this.props.changeRightBar();
+  
     }
     this.loadLastLesson();
     this.loadCourses();
