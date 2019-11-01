@@ -48,6 +48,8 @@ class CoursePage extends React.Component {
   loadLessons() {
     lessons.name = [];
     lessons.content = [];
+    lessons.length = [];
+    lessons.id = [];
     let user = firebase.auth().currentUser.uid;
     firebase
       .firestore()

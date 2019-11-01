@@ -273,6 +273,11 @@ class Panel extends React.Component {
     }
     let datesWeek = [];
     let lastDateX = 0; //TO SORT CORRECTLY WHILE TRANSITION BETWEEN ONE MONTH TO ANOTHER
+    let lastDateY = new Date(
+      date.format(now, "YYYY"),
+      date.format(now, "M") - 1,
+      0
+    ).getDate(); //TO SORT CORRECTLY WHILE TRANSITION BETWEEN ONE MONTH TO ANOTHER -- BACKWARDS
     let lastDate = parseInt(today.split(" ")[0]);
     let lastDate2 = parseInt(today.split(" ")[0]);
     let daysInMonth = new Date(
@@ -282,7 +287,12 @@ class Panel extends React.Component {
     ).getDate();
     datesWeek.push(lastDate);
     while (backwards > 0) {
-      datesWeek.push(lastDate - 1);
+      if (lastDate <= 1) {
+        datesWeek.push(-99 + " " + (lastDateY + 1 - 1));
+        lastDateY--;
+      } else {
+        datesWeek.push(lastDate - 1);
+      }
       lastDate--;
       backwards--;
     }
@@ -296,11 +306,11 @@ class Panel extends React.Component {
       lastDate2++;
       forward--;
     }
-    datesWeek.sort((a, b) => a - b);
-    let newMonth = false;
+    datesWeek.sort();
     let nextMonth = months[months.indexOf(date.format(now, "MMM")) + 1];
+    let previousMonth = months[months.indexOf(date.format(now, "MMM")) - 1];
     for (let i = 0; i < datesWeek.length; i++) {
-      if (String(datesWeek[parseInt(i)]).split(" ").length === 1 && !newMonth) {
+      if (String(datesWeek[parseInt(i)]).split(" ").length === 1) {
         this.getStats(
           `${datesWeek[parseInt(i)]} ${date.format(now, "MMM YYYY")}`,
           i
@@ -309,7 +319,7 @@ class Panel extends React.Component {
           now,
           "MMM"
         )}`;
-      } else {
+      } else if (String(datesWeek[parseInt(i)]).split(" ")[0] !== "-99") {
         if (String(datesWeek[parseInt(i)]).split(" ").length > 1) {
           this.getStats(
             `${datesWeek[parseInt(i)].split(" ")[1]} ${nextMonth} ${date.format(
@@ -321,8 +331,17 @@ class Panel extends React.Component {
           stats.date[parseInt(i)] += ` ${
             datesWeek[parseInt(i)].split(" ")[1]
           } ${nextMonth}`;
-          newMonth = true;
         }
+      } else if (String(datesWeek[parseInt(i)]).split(" ")[0] === "-99") {
+        this.getStats(
+          `${
+            datesWeek[parseInt(i)].split(" ")[1]
+          } ${previousMonth} ${date.format(now, "YYYY")}`,
+          i
+        );
+        stats.date[parseInt(i)] += ` ${
+          datesWeek[parseInt(i)].split(" ")[1]
+        } ${previousMonth}`;
       }
     }
   }

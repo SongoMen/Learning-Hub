@@ -17,8 +17,13 @@ const mapDispatchToProps = dispatch => ({
 
 let courses = {
   name: [],
-  lesson: []
+  lesson: [],
+  length: [],
+  style: [],
+  svg:[]
 };
+
+const db = firebase.firestore();
 
 class Rightbar extends React.Component {
   _isMounted = false;
@@ -27,7 +32,8 @@ class Rightbar extends React.Component {
     this.state = {
       avatar: "",
       show: false,
-      width: ""
+      width: "",
+      coursesLoader: true
     };
   }
   getUserInfo() {
@@ -101,6 +107,7 @@ class Rightbar extends React.Component {
   componentDidMount() {
     this._isMounted = true;
     this.getUserInfo();
+    this.getStartedCourses();
     this.setState({
       width: "0"
     });
@@ -110,6 +117,45 @@ class Rightbar extends React.Component {
         width: "20%"
       });
     }, 300);
+  }
+
+  getStartedCourses() {
+    let user = firebase.auth().currentUser.uid;
+    let i = 0;
+    db.collection("users")
+      .doc(user)
+      .collection("lessonsCompleted")
+      .get()
+      .then(snapshot => {
+        console.log(snapshot)
+        if (snapshot.docs.length > 0) {
+          snapshot.forEach(doc => {
+            if (i < 3) {
+              courses.name.push(doc.id);
+              this.getLengthOfUserCourses(doc.id);
+              i++;
+            }
+          });
+        }
+      });
+  }
+
+  getLengthOfUserCourses(name) {
+    db.collection("courses")
+      .doc(name)
+      .get()
+      .then(snapshot => {
+        if (this._isMounted && typeof snapshot.data() !== "undefined") {
+          courses.svg.push(snapshot.data()["svg"]);
+          courses.style.push(snapshot.data()["style"]);
+          if (typeof snapshot.data()["length"] !== "undefined")
+            courses.length.push(snapshot.data()["length"]);
+          else courses.length.push(10);
+        }
+      })
+      .then(()=>{
+        if(this._isMounted) this.setState({coursesLoader: false})
+      })
   }
 
   render() {
@@ -167,11 +213,11 @@ class Rightbar extends React.Component {
               )}
               <h3>{user}</h3>
             </div>
-            {courses.name.length > 0 && (
+            {courses.name.length > 0 && !this.state.coursesLoader && (
               <div className="Rightbar__currentCourses">
                 <h3>Courses in Progress</h3>
                 {courses.name.map((val, indx) => {
-                  return <div className="Rightbar__course">x</div>;
+                  return <div key={indx} className="Rightbar__courses">{val}</div>;
                 })}
               </div>
             )}
