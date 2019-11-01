@@ -78,7 +78,7 @@ class Panel extends React.Component {
   statCharts = () => {
     return stats.date.map((val, indx) => (
       <div className="Panel__day" key={indx}>
-        <h5>{val}</h5>
+        <h6>{val}</h6>
         <div className="Panel__slider">
           {stats.time[parseInt(indx)] > 0 &&
             stats.styles.map((val2, indx2) => {
@@ -114,12 +114,12 @@ class Panel extends React.Component {
               } else return "";
             })}
         </div>
-        <h5>
+        <h6>
           {shortEnglishHumanizer(parseInt(stats.time[parseInt(indx)] * 1000), {
             largest: 2,
             round: true
           })}
-        </h5>
+        </h6>
       </div>
     ));
   };
