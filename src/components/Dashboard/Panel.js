@@ -951,7 +951,7 @@ class Panel extends React.Component {
                     >
                       {parse(courses.svg[parseInt(indx)])}
                       <div className="courses__info">
-                        <h5>Total lessons {courses.length[parseInt(indx)]}</h5>
+                        <h5>Total lessons: {courses.length[parseInt(indx)]}</h5>
                         <h4>{val}</h4>
                       </div>
                       <svg

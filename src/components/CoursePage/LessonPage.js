@@ -69,35 +69,37 @@ class LessonPage extends React.Component {
       ];
     switch (e.keyCode) {
       case 37:
-        if (typeof previousLesson !== "undefined" && this._isMounted) {
-          this.lessonDone();
-          this.setState(
-            {
-              redirect: "previous",
-              loader: true
-            },
-            () => {
-              this.setState({
-                redirect: ""
-              });
-            }
-          );
+        if (typeof previousLesson !== "undefined") {
+          this.lessonDone(window.location.pathname.split("/")[3]);
+          if (this._isMounted)
+            this.setState(
+              {
+                redirect: "previous",
+                loader: true
+              },
+              () => {
+                this.setState({
+                  redirect: ""
+                });
+              }
+            );
         }
         break;
       case 39:
-        if (typeof nextLesson !== "undefined" && this._isMounted) {
-          this.lessonDone();
-          this.setState(
-            {
-              redirect: "next",
-              loader: true
-            },
-            () => {
-              this.setState({
-                redirect: ""
-              });
-            }
-          );
+        if (typeof nextLesson !== "undefined") {
+          this.lessonDone(window.location.pathname.split("/")[3]);
+          if (this._isMounted)
+            this.setState(
+              {
+                redirect: "next",
+                loader: true
+              },
+              () => {
+                this.setState({
+                  redirect: ""
+                });
+              }
+            );
         }
         break;
       default:
@@ -128,7 +130,7 @@ class LessonPage extends React.Component {
     this.loadLessonContent();
     this.getNextLessonId();
     setTimeout(() => {
-      this.lessonDone();
+      this.lessonDone(window.location.pathname.split("/")[3]);
     }, 30000);
   }
 
@@ -256,7 +258,7 @@ class LessonPage extends React.Component {
       });
   }
 
-  lessonDone() {
+  lessonDone(id) {
     let user = firebase.auth().currentUser.uid;
     let lessons = "";
     let lessonsCompleted = db
@@ -268,31 +270,22 @@ class LessonPage extends React.Component {
       if (docSnapshot.exists) {
         lessonsCompleted
           .get()
-          .then(doc => (lessons = doc.data()["completed"]))
+          .then(doc => {
+            lessons = doc.data()["completed"];
+          })
           .then(() => {
-            if (typeof lessons === "undefined")
-              if (
-                lessons
-                  .split(",")
-                  .indexOf(
-                    window.location.pathname.split("/")[3].replace(/%20/gi, " ")
-                  ) === -1
-              ) {
+            if (typeof lessons !== "undefined") {
+              if (lessons.split(",").indexOf(id) === -1) {
                 lessonsCompleted.update({
-                  completed:
-                    lessons +
-                    "," +
-                    window.location.pathname.split("/")[3].replace(/%20/gi, " ")
+                  completed: lessons + "," + id
                 });
               }
+            }
           });
       } else {
         if (typeof window.location.pathname.split("/")[3] !== "undefined")
           lessonsCompleted.set({
-            completed:
-              lessons +
-              "," +
-              window.location.pathname.split("/")[3].replace(/%20/gi, " ")
+            completed: lessons + "," + id
           });
       }
     });
