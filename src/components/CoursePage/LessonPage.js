@@ -19,6 +19,7 @@ const dateNow = date.format(now, "DD MMM, dddd");
 const db = firebase.firestore();
 
 let lessonsId = [];
+let completedLessons = "";
 
 class LessonPage extends React.Component {
   refreshTimeInterval = () =>
@@ -151,6 +152,10 @@ class LessonPage extends React.Component {
   saveLearningTime() {
     let user = firebase.auth().currentUser.uid;
     const today = date.format(now, "DD MMM YYYY");
+    completedLessons = "";
+    let courseName = window.location.pathname
+      .split("/")[2]
+      .replace(/%20/gi, " ");
     let timer;
     let userDates = db
       .collection("users")
@@ -161,7 +166,7 @@ class LessonPage extends React.Component {
     if (typeof window.location.pathname.split("/")[2] !== "undefined")
       userDates
         .collection("lessons")
-        .doc(window.location.pathname.split("/")[2].replace(/%20/gi, " "))
+        .doc(courseName)
         .get()
         .then(doc => {
           if (typeof doc.data() !== "undefined")
@@ -180,7 +185,7 @@ class LessonPage extends React.Component {
         });
     userDates
       .collection("lessons")
-      .doc(window.location.pathname.split("/")[2].replace(/%20/gi, " "))
+      .doc(courseName)
       .get()
       .then(docSnapshot => {
         if (
@@ -189,28 +194,42 @@ class LessonPage extends React.Component {
         ) {
           userDates
             .collection("lessons")
-            .doc(window.location.pathname.split("/")[2].replace(/%20/gi, " "))
+            .doc(courseName)
             .update({
               time: parseInt(timer) + parseInt(this.state.timer)
             });
         } else {
           userDates
             .collection("lessons")
-            .doc(window.location.pathname.split("/")[2].replace(/%20/gi, " "))
+            .doc(courseName)
             .set({ time: this.state.timer });
         }
       })
       .then(() => {
-        if (typeof window.location.pathname.split("/")[2] !== "undefined")
+        db.collection("users")
+          .doc(user)
+          .collection("lessonsCompleted")
+          .doc(courseName)
+          .get()
+          .then(doc => {
+            completedLessons = doc.data()["completed"];
+          });
+      })
+      .then(() => {
+        if (
+          typeof window.location.pathname.split("/")[2] !== "undefined" &&
+          completedLessons
+            .split(",")
+            .indexOf(window.location.pathname.split("/")[3]) > -1
+        ) {
           userLastLessons
             .collection("lastcourse")
-            .doc(window.location.pathname.split("/")[2].replace(/%20/gi, " "))
+            .doc(courseName)
             .update({
               lastLesson: this.state.title.split(".")[0],
-              lessonId: window.location.pathname
-                .split("/")[3]
-                .replace(/%20/gi, " ")
+              lessonId: window.location.pathname.split("/")[3]
             });
+        }
         if (this._isMounted) this.setState({ timer: 0 });
       });
   }
