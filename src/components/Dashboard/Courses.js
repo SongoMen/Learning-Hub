@@ -70,6 +70,7 @@ class Courses extends React.Component {
             courses.name.push(doc.data()["name"]);
             courses.style.push(doc.data()["style"]);
             courses.svg.push(doc.data()["svg"]);
+            courses.length.push(doc.data()["length"]);
             i++;
           });
           if (this._isMounted) {
@@ -182,7 +183,7 @@ class Courses extends React.Component {
                 >
                   {parse(courses.svg[parseInt(indx)])}
                   <div className="courses__info">
-                    <h5>Number of lessons</h5>
+                    <h5>Total lessons: {courses.length[parseInt(indx)]}</h5>
                     <h4>{val}</h4>
                   </div>
                   <svg

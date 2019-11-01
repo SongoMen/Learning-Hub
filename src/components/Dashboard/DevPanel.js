@@ -91,6 +91,7 @@ class DevPanel extends React.Component {
             courses.name.push(doc.data()["name"]);
             courses.style.push(doc.data()["style"]);
             courses.svg.push(doc.data()["svg"]);
+            courses.length.push(doc.data()["length"]);
             i++;
           });
           if (this._isMounted) {
@@ -348,7 +349,7 @@ class DevPanel extends React.Component {
                       >
                         {parse(courses.svg[parseInt(indx)])}
                         <div className="courses__info">
-                          <h5>Number of lessons</h5>
+                          <h5>Total lessons: {courses.length[parseInt(indx)]}</h5>
                           <h4>{val}</h4>
                         </div>
                         <svg
@@ -417,7 +418,9 @@ class DevPanel extends React.Component {
                 <div
                   key={indx}
                   className="DevPanel__lesson"
-                  onClick={() => this.loadLessonContent(lessons.id[parseInt(indx)], indx)}
+                  onClick={() =>
+                    this.loadLessonContent(lessons.id[parseInt(indx)], indx)
+                  }
                 >
                   <h4>{val}</h4>
                   <svg

@@ -61,7 +61,7 @@ let courses = {
   name: [],
   length: [],
   style: [],
-  svg: [],
+  svg: []
 };
 
 let stats = {
@@ -82,33 +82,53 @@ class Panel extends React.Component {
         <div className="Panel__slider">
           {stats.time[parseInt(indx)] > 0 &&
             stats.styles.map((val2, indx2) => {
+              console.log(stats.styles);
+              console.log(
+                stats[stats.names[parseInt(indx2)]],
+                " ",
+                val,
+                " ",
+                this.state.maxValue
+              );
+              console.log(
+                stats.fullDates[parseInt(indx)],
+                " ",
+                val2.split(" ")[0] +
+                  " " +
+                  val2.split(" ")[1] +
+                  " " +
+                  val2.split(" ")[2]
+              );
               if (
-                stats.fullDates[parseInt(indx)] ===
+                (stats.fullDates[parseInt(indx)] ===
                   val2.split(" ")[0] +
                     " " +
                     val2.split(" ")[1] +
                     " " +
-                    val2.split(" ")[2] &&
+                    val2.split(" ")[2] ||
+                  stats.fullDates[parseInt(indx)] ===
+                    val2.split(" ")[1] +
+                      " " +
+                      val2.split(" ")[2] +
+                      " " +
+                      val2.split(" ")[3]) &&
                 stats[stats.names[parseInt(indx2)]] > 0
-              )
+              ) {
+                let he =
+                  (" ",
+                  stats[stats.names[parseInt(indx2)]] / this.state.maxValue) *
+                    100 +
+                  "%";
                 return (
                   <div
                     key={indx2}
                     className={"Panel__slider-active " + val2}
                     style={{
-                      height:
-                        stats[stats.names[parseInt(indx2)]] /
-                          this.state.maxValue ===
-                        1
-                          ? 100 + "%"
-                          : (stats[stats.names[parseInt(indx2)]] /
-                              this.state.maxValue) *
-                              100 +
-                            "%"
+                      height: he
                     }}
                   ></div>
                 );
-              else return "";
+              } else return "";
             })}
         </div>
         <h5>
@@ -287,7 +307,11 @@ class Panel extends React.Component {
       date.format(now, "M"),
       0
     ).getDate();
-    datesWeek.push(lastDate);
+
+    datesWeek.push(String(lastDate).length === 1 ? "0" + lastDate : lastDate);
+
+    // MOVE BACKWARDS FROM CURRENT DATE
+
     while (backwards > 0) {
       if (lastDate <= 1) {
         datesWeek.push(-99 + " " + (lastDateY + 1 - 1));
@@ -298,24 +322,33 @@ class Panel extends React.Component {
       lastDate--;
       backwards--;
     }
+
+    // MOVE FORWARD FROM CURRENT DATE
+
     while (forward > 0) {
-      if (daysInMonth <= lastDate2) {
+      if (daysInMonth <= lastDate2 && String(lastDate2 + 1).length !== 1) {
         datesWeek.push("33 " + (lastDateX + 1));
         lastDateX++;
-      } else {
+      } else if (String(lastDate2 + 1).length !== 1) {
         datesWeek.push(lastDate2 + 1);
+      } else {
+        datesWeek.push("0" + (lastDate2 + 1));
       }
       lastDate2++;
       forward--;
     }
+
     datesWeek.sort();
+
     let nextMonth = months[months.indexOf(date.format(now, "MMM")) + 1];
     let previousMonth = months[months.indexOf(date.format(now, "MMM")) - 1];
+
     for (let i = 0; i < datesWeek.length; i++) {
       if (String(datesWeek[parseInt(i)]).split(" ").length === 1) {
         this.getStats(
           `${datesWeek[parseInt(i)]} ${date.format(now, "MMM YYYY")}`,
-          i
+          i,
+          false
         );
         stats.date[parseInt(i)] += ` ${datesWeek[parseInt(i)]} ${date.format(
           now,
@@ -328,7 +361,8 @@ class Panel extends React.Component {
               now,
               "YYYY"
             )}`,
-            i
+            i,
+            false
           );
           stats.date[parseInt(i)] += ` ${
             datesWeek[parseInt(i)].split(" ")[1]
@@ -339,7 +373,8 @@ class Panel extends React.Component {
           `${
             datesWeek[parseInt(i)].split(" ")[1]
           } ${previousMonth} ${date.format(now, "YYYY")}`,
-          i
+          i,
+          true
         );
         stats.date[parseInt(i)] += ` ${
           datesWeek[parseInt(i)].split(" ")[1]
@@ -391,7 +426,7 @@ class Panel extends React.Component {
     }
   }
 
-  getStats(date, i) {
+  getStats(date, i, nextMonth) {
     let user = firebase.auth().currentUser.uid;
     if (this._isMounted) this.setState({ statsLoader: true });
     let sum = 0;
@@ -406,7 +441,7 @@ class Panel extends React.Component {
       .get()
       .then(snapshot => {
         snapshot.forEach(doc => {
-          this.getCourseStyle(doc.id, date);
+          this.getCourseStyle(doc.id, date, nextMonth);
           if (doc.exists === true) {
             sum += doc.data()["time"];
             stats.names.push(date + " " + doc.id);
@@ -429,13 +464,16 @@ class Panel extends React.Component {
       });
   }
 
-  getCourseStyle(name, date) {
+  getCourseStyle(name, date, nextMonth) {
     db.collection("courses")
       .doc(name)
       .get()
       .then(snapshot => {
         if (typeof snapshot.data() !== "undefined") {
-          stats.styles.push(date + " " + snapshot.data()["style"]);
+          if (nextMonth)
+            stats.styles.push("-1 " + date + " " + snapshot.data()["style"]);
+          else stats.styles.push(date + " " + snapshot.data()["style"]);
+
           stats.styles.sort();
         }
       });
