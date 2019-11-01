@@ -6,6 +6,7 @@ import "firebase/firestore";
 import Loader from "../elements/Loader";
 import { setPopup } from "../../actions/actionsPanel";
 import { connect } from "react-redux";
+import parse from "html-react-parser";
 
 const mapStateToProps = state => ({
   rightBar: state.rightBar
@@ -17,10 +18,10 @@ const mapDispatchToProps = dispatch => ({
 
 let courses = {
   name: [],
-  lesson: [],
   length: [],
   style: [],
-  svg:[]
+  svg: [],
+  completedLessons: []
 };
 
 const db = firebase.firestore();
@@ -61,30 +62,6 @@ class Rightbar extends React.Component {
       });
   }
 
-  currentCourses() {
-    let user = firebase.auth().currentUser.uid;
-    firebase
-      .firestore()
-      .collection("users")
-      .doc(user)
-      .collection("courses")
-      .get()
-      .then(snapshot => {
-        if (snapshot.docs.length > 0) {
-          snapshot.forEach(doc => {
-            console.log(doc.data());
-          });
-        }
-      })
-      .catch(() => {
-        console.error(
-          "%c%s",
-          "color: white; background: red;padding: 3px 6px;border-radius: 5px",
-          "Error"
-        );
-      });
-  }
-
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.rightBar !== this.props.rightBar) {
       let right = this.props.rightBar ? "20%" : "0";
@@ -120,6 +97,10 @@ class Rightbar extends React.Component {
   }
 
   getStartedCourses() {
+    courses.name = [];
+    courses.svg = [];
+    courses.style = [];
+    courses.length = [];
     let user = firebase.auth().currentUser.uid;
     let i = 0;
     db.collection("users")
@@ -127,11 +108,13 @@ class Rightbar extends React.Component {
       .collection("lessonsCompleted")
       .get()
       .then(snapshot => {
-        console.log(snapshot)
         if (snapshot.docs.length > 0) {
           snapshot.forEach(doc => {
             if (i < 3) {
               courses.name.push(doc.id);
+              courses.completedLessons.push(
+                doc.data()["completed"].split(",").length - 1
+              );
               this.getLengthOfUserCourses(doc.id);
               i++;
             }
@@ -153,9 +136,9 @@ class Rightbar extends React.Component {
           else courses.length.push(10);
         }
       })
-      .then(()=>{
-        if(this._isMounted) this.setState({coursesLoader: false})
-      })
+      .then(() => {
+        if (this._isMounted) this.setState({ coursesLoader: false });
+      });
   }
 
   render() {
@@ -215,9 +198,32 @@ class Rightbar extends React.Component {
             </div>
             {courses.name.length > 0 && !this.state.coursesLoader && (
               <div className="Rightbar__currentCourses">
-                <h3>Courses in Progress</h3>
                 {courses.name.map((val, indx) => {
-                  return <div key={indx} className="Rightbar__courses">{val}</div>;
+                  return (
+                    <div
+                      key={indx}
+                      className={
+                        "Rightbar__course " + courses.style[parseInt(indx)]
+                      }
+                    >
+                      {parse(courses.svg[parseInt(indx)])}
+                      <div>
+                        <h5>{val}</h5>
+                        <h5>Total lessons: {courses.length[parseInt(indx)]}</h5>
+                      </div>
+                      <span className="Rightbar__slider">
+                        <span
+                          style={{
+                            width:
+                              (courses.completedLessons[parseInt(indx)] /
+                                courses.length[parseInt(indx)]) *
+                                100 +
+                              "%"
+                          }}
+                        ></span>
+                      </span>
+                    </div>
+                  );
                 })}
               </div>
             )}

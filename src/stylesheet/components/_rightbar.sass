@@ -4,6 +4,44 @@
     background-color: $accentColor1
     border-left: 1px solid $linesColor
     padding: 20px
+    &__slider
+        width: 70px
+        height: 4px
+        background-color: $accentColor4
+        border-radius: 20px
+        margin-left: 20px
+        position: relative
+        display: flex
+        justify-content: flex-end
+        align-items: flex-end
+        flex-direction: column
+        span
+            height: 100%
+            position: absolute
+            left: 0
+            background-color: $primaryColor
+            border-radius: 20px
+    &__currentCourses
+        margin-top: 30px
+    &__course
+        background-color: transparent!important
+        display: flex
+        align-items: center
+        justify-content: flex-start
+        div
+            display: flex
+            flex-direction: column
+            justify-content: center
+            align-items: flex-start
+            h5:last-child
+                color: $accentColor3!important
+        svg
+            background-color: $accentColor2!important
+            width: 30px!important
+            margin-right: 10px!important
+        h5
+            color: white!important
+            margin: 0
     &__logout
         width: 100%
         display: flex

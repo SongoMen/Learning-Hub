@@ -61,7 +61,7 @@ let courses = {
   name: [],
   length: [],
   style: [],
-  svg: []
+  svg: [],
 };
 
 let stats = {
@@ -152,12 +152,14 @@ class Panel extends React.Component {
         courses.name = [];
         courses.style = [];
         courses.svg = [];
+        courses.length = [];
         if (snapshot.docs.length > 0) {
           snapshot.forEach(doc => {
             i++;
             courses.name.push(doc.data()["name"]);
             courses.style.push(doc.data()["style"]);
             courses.svg.push(doc.data()["svg"]);
+            courses.length.push(doc.data()["length"]);
           });
           if (this._isMounted) {
             this.setState({
@@ -949,7 +951,7 @@ class Panel extends React.Component {
                     >
                       {parse(courses.svg[parseInt(indx)])}
                       <div className="courses__info">
-                        <h5>Number of lessons</h5>
+                        <h5>Total lessons {courses.length[parseInt(indx)]}</h5>
                         <h4>{val}</h4>
                       </div>
                       <svg
