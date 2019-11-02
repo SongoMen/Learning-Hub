@@ -85,15 +85,17 @@ class Rightbar extends React.Component {
     this._isMounted = true;
     this.getUserInfo();
     this.getStartedCourses();
-    this.setState({
-      width: "0"
-    });
-    setTimeout(() => {
+    if (this._isMounted) {
       this.setState({
-        show: true,
-        width: "20%"
+        width: "0"
       });
-    }, 300);
+      setTimeout(() => {
+        this.setState({
+          show: true,
+          width: "20%"
+        });
+      }, 300);
+    }
   }
 
   getStartedCourses() {

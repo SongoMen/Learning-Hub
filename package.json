@@ -5,11 +5,12 @@
   "dependencies": {
     "codacy-coverage": "^3.4.0",
     "date-and-time": "^0.10.0",
+    "dotenv": "^8.2.0",
     "firebase": "^7.2.1",
     "html-react-parser": "^0.9.1",
     "humanize-duration": "^3.21.0",
     "node-sass": "^4.12.0",
-    "npm": "^6.12.0",
+    "npm": "^6.12.1",
     "ordinal": "^1.0.3",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",

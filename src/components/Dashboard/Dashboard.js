@@ -33,7 +33,8 @@ class Dashboard extends React.Component {
         {this.props.location.pathname === "/courses" && <Courses />}
         {this.props.location.pathname === "/devpanel" && <DevPanel />}
 
-        {this.props.rightBar && <Rightbar />}
+        {!window.matchMedia("(max-width: 800px)").matches &&
+          this.props.rightBar && <Rightbar />}
       </div>
     );
   }
