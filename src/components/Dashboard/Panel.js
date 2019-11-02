@@ -292,15 +292,17 @@ class Panel extends React.Component {
     ).getDate();
 
     datesWeek.push(String(lastDate).length === 1 ? "0" + lastDate : lastDate);
-
+    console.log(String(lastDate).length === 1 ? "0" + lastDate : lastDate);
     // MOVE BACKWARDS FROM CURRENT DATE
 
     while (backwards > 0) {
       if (lastDate <= 1) {
         datesWeek.push(-99 + " " + (lastDateY + 1 - 1));
         lastDateY--;
-      } else {
+      } else if (String(lastDate2 - 1).length !== 1) {
         datesWeek.push(lastDate - 1);
+      } else {
+        datesWeek.push("0" + (lastDate - 1));
       }
       lastDate--;
       backwards--;
@@ -322,7 +324,7 @@ class Panel extends React.Component {
     }
 
     datesWeek.sort();
-
+    console.log(datesWeek);
     let nextMonth = months[months.indexOf(date.format(now, "MMM")) + 1];
     let previousMonth = months[months.indexOf(date.format(now, "MMM")) - 1];
 
@@ -482,10 +484,9 @@ class Panel extends React.Component {
         width: right
       });
     }
-    if(window.matchMedia("(max-width: 800px)").matches){
-      status = false
+    if (window.matchMedia("(max-width: 800px)").matches) {
+      status = false;
       this.props.changeRightBar();
-  
     }
     this.loadLastLesson();
     this.loadCourses();
