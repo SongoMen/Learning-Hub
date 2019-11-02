@@ -16,3 +16,5 @@ Technologie stack:
 * react-router
 * node-sass
 * Jest
+<br>
+Note: This repository doesn't contain file named "auth.js" where are sensitive informations like api keys.
