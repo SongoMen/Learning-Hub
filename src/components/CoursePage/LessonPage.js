@@ -19,7 +19,6 @@ const dateNow = date.format(now, "DD MMM, dddd");
 const db = firebase.firestore();
 
 let lessonsId = [];
-let completedLessons = "";
 
 class LessonPage extends React.Component {
   refreshTimeInterval = () =>
@@ -209,24 +208,13 @@ class LessonPage extends React.Component {
         }
       })
       .then(() => {
-        db.collection("users")
-          .doc(user)
-          .collection("lessonsCompleted")
+        userLastLessons
+          .collection("lastcourse")
           .doc(courseName)
-          .get()
-          .then(doc => {
-            completedLessons = doc.data()["completed"];
+          .update({
+            lastLesson: this.state.title.split(".")[0],
+            lessonId: window.location.pathname.split("/")[3]
           });
-      })
-      .then(() => {
-          userLastLessons
-            .collection("lastcourse")
-            .doc(courseName)
-            .update({
-              lastLesson: this.state.title.split(".")[0],
-              lessonId: window.location.pathname.split("/")[3]
-            });
-        
         if (this._isMounted) this.setState({ timer: 0 });
       });
   }

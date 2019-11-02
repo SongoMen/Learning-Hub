@@ -58,6 +58,7 @@
         padding: 40px
         border-radius: 5px
         position: relative
+        min-width: 300px
         .form-btn
             width: 100%
         h4
@@ -76,10 +77,14 @@
         align-items: center
         position: absolute
         top: 0
+        @media only screen and (max-width: 500px) 
+            svg
+                margin-right: 5px!important
         svg
             width: 40px
             height: 40px
             width: auto!important
+
         h3
             font-weight: bold
     &__lesson
@@ -113,7 +118,9 @@
             svg
                 margin-right: 0
 .line
-      width: 2px
-      background-color: white
-      height: 20px
-      margin: 0 20px
+    width: 2px
+    background-color: white
+    height: 20px
+    margin: 0 20px
+    @media only screen and (max-width: 500px) 
+        margin: 0 5px

@@ -25,3 +25,13 @@
         background-color: $accentColor1
         color: white
         padding: 50px 0
+        min-width: 300px
+        &>a
+            top: 0
+            left: 0
+            position: absolute
+            display: none
+        @media only screen and (max-width: 600px) 
+            width: 100%
+            a
+                display: block
