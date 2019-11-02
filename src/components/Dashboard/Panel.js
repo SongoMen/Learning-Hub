@@ -292,7 +292,7 @@ class Panel extends React.Component {
     ).getDate();
 
     datesWeek.push(String(lastDate).length === 1 ? "0" + lastDate : lastDate);
-    console.log(String(lastDate).length === 1 ? "0" + lastDate : lastDate);
+
     // MOVE BACKWARDS FROM CURRENT DATE
 
     while (backwards > 0) {
@@ -324,7 +324,7 @@ class Panel extends React.Component {
     }
 
     datesWeek.sort();
-    console.log(datesWeek);
+
     let nextMonth = months[months.indexOf(date.format(now, "MMM")) + 1];
     let previousMonth = months[months.indexOf(date.format(now, "MMM")) - 1];
 

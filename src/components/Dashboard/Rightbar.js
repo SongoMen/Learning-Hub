@@ -206,7 +206,7 @@ class Rightbar extends React.Component {
                         "Rightbar__course " + courses.style[parseInt(indx)]
                       }
                     >
-                      {parse(courses.svg[parseInt(indx)])}
+                      {parse(String(courses.svg[parseInt(indx)]))}
                       <div>
                         <h5>{val}</h5>
                         <h5>Total lessons: {courses.length[parseInt(indx)]}</h5>

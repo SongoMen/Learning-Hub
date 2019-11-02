@@ -35,8 +35,18 @@ class LessonPage extends React.Component {
 
   saveLearningTimeInterval = () =>
     (this.saveToDb = setInterval(() => {
-      this.saveLearningTime(window.location.pathname.split("/")[2].replace(/%20/gi, " "));
+      this.saveLearningTime(
+        window.location.pathname.split("/")[2].replace(/%20/gi, " ")
+      );
     }, 5 * 1000));
+
+  saveDoneLesson = () =>
+    (this.done = setTimeout(() => {
+      this.lessonDone(
+        window.location.pathname.split("/")[2].replace(/%20/gi, " "),
+        window.location.pathname.split("/")[3]
+      );
+    }, 30000));
 
   _isMounted = false;
 
@@ -83,7 +93,10 @@ class LessonPage extends React.Component {
         break;
       case 39:
         if (typeof nextLesson !== "undefined") {
-          this.lessonDone(window.location.pathname.split("/")[2].replace(/%20/gi, " "),window.location.pathname.split("/")[3]);
+          this.lessonDone(
+            window.location.pathname.split("/")[2].replace(/%20/gi, " "),
+            window.location.pathname.split("/")[3]
+          );
           if (this._isMounted)
             this.setState(
               {
@@ -109,6 +122,7 @@ class LessonPage extends React.Component {
     clearInterval(this.refresh);
     clearInterval(this.counter);
     clearInterval(this.saveToDb);
+    clearInterval(this.done);
 
     document.removeEventListener("keydown", this._handleKey);
   }
@@ -125,9 +139,7 @@ class LessonPage extends React.Component {
     this.refreshTime();
     this.loadLessonContent();
     this.getNextLessonId();
-    setTimeout(() => {
-      this.lessonDone(window.location.pathname.split("/")[2].replace(/%20/gi, " "),window.location.pathname.split("/")[3]);
-    }, 30000);
+    this.saveDoneLesson();
   }
 
   componentDidUpdate(prevState) {
@@ -147,10 +159,7 @@ class LessonPage extends React.Component {
   saveLearningTime(name) {
     let user = firebase.auth().currentUser.uid;
     const today = date.format(now, "DD MMM YYYY");
-    completedLessons = "";
-    let courseName = name
-      .split("/")[2]
-      .replace(/%20/gi, " ");
+    let courseName = name;
     let timer;
     let userDates = db
       .collection("users")
@@ -185,9 +194,7 @@ class LessonPage extends React.Component {
       .doc(courseName)
       .get()
       .then(docSnapshot => {
-        if (
-          docSnapshot.exists
-        ) {
+        if (docSnapshot.exists) {
           userDates
             .collection("lessons")
             .doc(courseName)
@@ -212,11 +219,6 @@ class LessonPage extends React.Component {
           });
       })
       .then(() => {
-        if (
-          completedLessons
-            .split(",")
-            .indexOf(window.location.pathname.split("/")[3]) > -1
-        ) {
           userLastLessons
             .collection("lastcourse")
             .doc(courseName)
@@ -224,7 +226,7 @@ class LessonPage extends React.Component {
               lastLesson: this.state.title.split(".")[0],
               lessonId: window.location.pathname.split("/")[3]
             });
-        }
+        
         if (this._isMounted) this.setState({ timer: 0 });
       });
   }
@@ -272,7 +274,7 @@ class LessonPage extends React.Component {
       });
   }
 
-  lessonDone(name,id) {
+  lessonDone(name, id) {
     this.saveLearningTime(name);
     let user = firebase.auth().currentUser.uid;
     let lessons = "";
