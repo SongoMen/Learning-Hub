@@ -1,15 +1,13 @@
 import React from "react";
-import date from "date-and-time";
 import "firebase/firestore";
-import firebase from "firebase/app";
 import { changeRightBar } from "../../actions/actionsPanel";
 import { connect } from "react-redux";
 import Loader from "../elements/Loader";
 import parse from "html-react-parser";
 import { Link } from "react-router-dom";
+import firebase from "firebase/app";
+import TopPanel from "./TopPanel";
 
-const now = new Date();
-const formatDate = date.format(now, "DD MMM YYYY, dddd");
 let status;
 
 const mapStateToProps = state => ({
@@ -41,11 +39,6 @@ class Courses extends React.Component {
       courses: ""
     };
   }
-  rightBarChange() {
-    status = this.props.rightBar ? false : true;
-    this.props.changeRightBar();
-  }
-
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.rightBar !== this.props.rightBar) {
       let right = this.props.rightBar ? "" : "active";
@@ -116,62 +109,7 @@ class Courses extends React.Component {
   render() {
     return (
       <div className={"Courses " + this.state.width} id="Courses">
-        <div className="Courses__title">
-          <h3>All courses</h3>
-          <div className="Courses__time">
-            <h4 className="Courses__date">{formatDate}</h4>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="button first"
-              viewBox="0 0 24 24"
-            >
-              <circle cx="11" cy="11" r="8" />
-              <path d="M21 21L16.65 16.65" />
-            </svg>
-            {this.props.rightBar ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                className="button"
-                viewBox="0 0 24 24"
-                onClick={() => this.rightBarChange()}
-              >
-                <path d="M5 12L19 12" />
-                <path d="M12 5L19 12 12 19" />
-              </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                className="button backwards"
-                viewBox="0 0 24 24"
-                onClick={() => this.rightBarChange()}
-              >
-                <path d="M5 12L19 12" />
-                <path d="M12 5L19 12 12 19" />
-              </svg>
-            )}
-          </div>
-        </div>
+        <TopPanel name="All courses" />
         <div className="Courses__list">
           {this.state.courses === "" ? (
             <Loader />
