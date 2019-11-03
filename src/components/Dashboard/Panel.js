@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import ordinal from "ordinal";
 import "firebase/firestore";
 import humanizeDuration from "humanize-duration";
-import TopPanel from "./TopPanel"
+import TopPanel from "./TopPanel";
 import date from "date-and-time";
 
 let status;
@@ -522,7 +522,7 @@ class Panel extends React.Component {
     let user = firebase.auth().currentUser.displayName;
     return (
       <div className={"Panel " + this.state.width} id="Panel">
-        <TopPanel name="Dashboard"/>
+        <TopPanel name="Dashboard" />
         <div className="Panel__welcome">
           {!this.state.lastLessonLoader ? (
             this.state.lastLesson === "" ? (
