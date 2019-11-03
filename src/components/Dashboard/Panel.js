@@ -445,7 +445,7 @@ class Panel extends React.Component {
               maxValue: Math.max(...stats.time)
             });
           }
-        }, 1000);
+        }, 700);
       });
   }
 
@@ -965,7 +965,7 @@ class Panel extends React.Component {
         </div>
         <div className="Panel__more">
           <h3>More courses</h3>
-          {this.state.courses === 0 && <h3>No courses available.</h3>}
+          {this.state.courses === 0 && <h3 className="courses__error">No courses available.</h3>}
           {this.state.courses > 0 && (
             <div className="Panel__coursesContainer">
               {courses.name.map((val, indx) => {

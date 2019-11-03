@@ -38,7 +38,8 @@ class PopupDev extends React.Component {
       .set({
         name: this.course.value,
         style: this.style.value,
-        svg: this.svg.value
+        svg: this.svg.value,
+        length: 0
       })
       .then(() => {
         window.location.reload(false);
@@ -105,7 +106,7 @@ class PopupDev extends React.Component {
             </div>
             <input
               type="button"
-              className="form-btn" 
+              className="form-btn"
               value="CREATE"
               onClick={() => {
                 this.newCourse();
