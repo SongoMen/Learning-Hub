@@ -6,8 +6,9 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import Loader from "../elements/Loader";
 import parse from "html-react-parser";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import date from "date-and-time";
+import ErrorMessage from "../elements/ErrorMessage";
 
 const mapStateToProps = state => ({
   ...state
@@ -380,30 +381,7 @@ class LessonPage extends React.Component {
             </div>
           </div>
         )}
-        {this.state.loader === "error" && (
-          <div className="CoursePage__error">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <path d="M16 16s-1.5-2-4-2-4 2-4 2" />
-              <path d="M9 9L9.01 9" />
-              <path d="M15 9L15.01 9" />
-            </svg>
-            <h1>ERROR</h1>
-            <Link to="/dashboard">
-              <h4>Go back to dashboard</h4>
-            </Link>
-          </div>
-        )}
+        {this.state.loader === "error" && <ErrorMessage />}
       </div>
     );
   }
