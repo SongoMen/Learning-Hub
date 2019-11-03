@@ -390,7 +390,6 @@ class Panel extends React.Component {
     for (let i = 0; i < datesWeek.length; i++) {
       if (String(datesWeek[parseInt(i)]).split(" ").length === 1) {
         if (checkDate > 25) {
-          console.log(checkDate)
           this.getStats(
             `${datesWeek[parseInt(i)]} ${previousMonth} ${date.format(
               now,
@@ -947,7 +946,6 @@ class Panel extends React.Component {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
-                className="feather feather-frown"
                 viewBox="0 0 24 24"
               >
                 <circle cx="12" cy="12" r="10" />
