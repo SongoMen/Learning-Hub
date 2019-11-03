@@ -7,6 +7,7 @@ import parse from "html-react-parser";
 import { Link } from "react-router-dom";
 import firebase from "firebase/app";
 import TopPanel from "./TopPanel";
+import ErrorMessaage from "../elements/ErrorMessage";
 
 let status;
 
@@ -79,7 +80,7 @@ class Courses extends React.Component {
           }
         }
       })
-      .catch(() => {
+      .catch(err => {
         console.error(
           "%c%s",
           "color: white; background: red;padding: 3px 6px;border-radius: 5px",
@@ -88,6 +89,7 @@ class Courses extends React.Component {
         this.setState({
           courses: "err"
         });
+        console.log(err);
       });
   }
 
@@ -144,6 +146,7 @@ class Courses extends React.Component {
             ))
           )}
         </div>
+        {this.state.courses === "err" && <ErrorMessaage />}
       </div>
     );
   }

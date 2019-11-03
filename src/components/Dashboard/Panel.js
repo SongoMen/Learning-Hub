@@ -11,6 +11,7 @@ import "firebase/firestore";
 import humanizeDuration from "humanize-duration";
 import TopPanel from "./TopPanel";
 import date from "date-and-time";
+import ErrorMessage from "../elements/ErrorMessage";
 
 let status;
 
@@ -919,6 +920,7 @@ class Panel extends React.Component {
         </div>
         <div className="Panel__more">
           <h3>More courses</h3>
+          {this.state.courses === "err" && <ErrorMessage link="false" />}
           {this.state.courses === 0 && (
             <h3 className="courses__error">No courses available.</h3>
           )}

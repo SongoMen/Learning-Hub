@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const ErrorMessage = () => {
+const ErrorMessage = props => {
   return (
     <div className="CoursePage__error">
       <svg
@@ -21,9 +21,11 @@ const ErrorMessage = () => {
         <path d="M15 9L15.01 9" />
       </svg>
       <h1>ERROR</h1>
-      <Link to="/dashboard">
-        <h4>Go back to dashboard</h4>
-      </Link>
+      {typeof props.link === "undefined" && (
+        <Link to="/dashboard">
+          <h4>Go back to dashboard</h4>
+        </Link>
+      )}
     </div>
   );
 };
