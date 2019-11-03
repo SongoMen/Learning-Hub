@@ -373,6 +373,7 @@ class Panel extends React.Component {
     backwards = 6;
     let datesWeek = [];
     let lastDate = stats.date[0].split(" ")[1] - 1;
+    let checkDate = stats.date[0].split(" ")[1] - 1;
     stats.date = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     stats.time = [];
     stats.styles = [];
@@ -385,17 +386,31 @@ class Panel extends React.Component {
       backwards--;
     }
     datesWeek.sort((a, b) => a - b);
-
+    let previousMonth = months[months.indexOf(date.format(now, "MMM")) - 1];
     for (let i = 0; i < datesWeek.length; i++) {
       if (String(datesWeek[parseInt(i)]).split(" ").length === 1) {
-        this.getStats(
-          `${datesWeek[parseInt(i)]} ${date.format(now, "MMM YYYY")}`,
-          i
-        );
-        stats.date[parseInt(i)] += ` ${datesWeek[parseInt(i)]} ${date.format(
-          now,
-          "MMM"
-        )}`;
+        if (checkDate > 25) {
+          console.log(checkDate)
+          this.getStats(
+            `${datesWeek[parseInt(i)]} ${previousMonth} ${date.format(
+              now,
+              "YYYY"
+            )}`,
+            i
+          );
+          stats.date[parseInt(i)] += ` ${
+            datesWeek[parseInt(i)]
+          } ${previousMonth}`;
+        } else {
+          this.getStats(
+            `${datesWeek[parseInt(i)]} ${date.format(now, "MMM YYYY")}`,
+            i
+          );
+          stats.date[parseInt(i)] += ` ${datesWeek[parseInt(i)]} ${date.format(
+            now,
+            "MMM"
+          )}`;
+        }
       } else {
         this.getStats(
           `${String(datesWeek[parseInt(i)]).split(" ")[1]} ${date.format(
@@ -965,7 +980,9 @@ class Panel extends React.Component {
         </div>
         <div className="Panel__more">
           <h3>More courses</h3>
-          {this.state.courses === 0 && <h3 className="courses__error">No courses available.</h3>}
+          {this.state.courses === 0 && (
+            <h3 className="courses__error">No courses available.</h3>
+          )}
           {this.state.courses > 0 && (
             <div className="Panel__coursesContainer">
               {courses.name.map((val, indx) => {
