@@ -381,18 +381,16 @@ getLastWeekDates() {
     stats.names = [];
     stats.fullDates = [];
     let prevMonth = false;
+    
     datesWeek.push(String(lastDate).length === 1 ? "0" + lastDate : lastDate);
 
     while (backwards > 0) {      
 	if (String(lastDate).length === 1 && lastDate > 1) {
         datesWeek.push("0" + (lastDate - 1));
-        console.log("3", lastDate);
       } else if (lastDate > 1) {
         datesWeek.push("0 " + (lastDate - 1));
-        console.log("1", lastDate);
       } else {
         lastDate = lastDateY + 1;
-        console.log("2", lastDate);
 	prevMonth = true;
         datesWeek.push("0 " + (lastDate - 1));
       }
@@ -400,7 +398,6 @@ getLastWeekDates() {
       backwards--;
     }
     datesWeek.sort();
-    console.log(datesWeek);
     let previousMonth = months[months.indexOf(date.format(now, "MMM")) - 1];
     for (let i = 0; i < datesWeek.length; i++) {
       if (String(datesWeek[parseInt(i)]).split(" ").length === 1) {
