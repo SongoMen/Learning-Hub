@@ -167,11 +167,11 @@ class CoursePage extends React.Component {
               if (this._isMounted) this.setState({ started: true });
             }.bind(this)
           )
-          .catch(function(error) {
+          .catch(error => {
             console.error(error);
           });
       })
-      .catch(function(error) {
+      .catch(error => {
         console.error(error);
       });
   }
@@ -188,6 +188,9 @@ class CoursePage extends React.Component {
       .then(doc => {
         if (this._isMounted && typeof doc.data() !== "undefined")
           this.setState({ completedLessons: doc.data()["completed"] });
+      })
+      .catc(err => {
+        console.error(err);
       });
   }
 
