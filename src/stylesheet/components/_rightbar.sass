@@ -9,7 +9,7 @@
     @media only screen and (max-width: 600px) 
         display: none
     &__slider
-        width: 20%
+        width: 23%
         height: 4px
         background-color: $accentColor4
         border-radius: 20px
@@ -30,12 +30,17 @@
             background-color: $primaryColor
             border-radius: 20px
     &__currentCourses
+        display: flex
+        justify-content: center
+        align-items: center
+        flex-direction: column
         margin-top: 30px
     &__course
         background-color: transparent!important
         display: flex
         align-items: center
         justify-content: flex-start
+        width: 100%
         flex-wrap: wrap
         @media only screen and (max-width: 1500px) 
             justify-content: center
