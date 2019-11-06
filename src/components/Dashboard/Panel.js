@@ -365,7 +365,7 @@ class Panel extends React.Component {
     }
   }
 
-getLastWeekDates() {
+  getLastWeekDates() {
     let backwards = 0;
     backwards = 6;
     let datesWeek = [];
@@ -381,17 +381,17 @@ getLastWeekDates() {
     stats.names = [];
     stats.fullDates = [];
     let prevMonth = false;
-    
+
     datesWeek.push(String(lastDate).length === 1 ? "0" + lastDate : lastDate);
 
-    while (backwards > 0) {      
-	if (String(lastDate).length === 1 && lastDate > 1) {
+    while (backwards > 0) {
+      if (String(lastDate).length === 1 && lastDate > 1) {
         datesWeek.push("0" + (lastDate - 1));
       } else if (lastDate > 1) {
         datesWeek.push("0 " + (lastDate - 1));
       } else {
         lastDate = lastDateY + 1;
-	prevMonth = true;
+        prevMonth = true;
         datesWeek.push("0 " + (lastDate - 1));
       }
       lastDate--;
@@ -401,40 +401,39 @@ getLastWeekDates() {
     let previousMonth = months[months.indexOf(date.format(now, "MMM")) - 1];
     for (let i = 0; i < datesWeek.length; i++) {
       if (String(datesWeek[parseInt(i)]).split(" ").length === 1) {
+        this.getStats(
+          `${datesWeek[parseInt(i)]} ${date.format(now, "MMM YYYY")}`,
+          i
+        );
+        stats.date[parseInt(i)] += ` ${datesWeek[parseInt(i)]} ${date.format(
+          now,
+          "MMM"
+        )}`;
+      } else {
+        if (prevMonth && datesWeek[parseInt(i)].split(" ")[1] > 10) {
           this.getStats(
-            `${datesWeek[parseInt(i)]} ${date.format(now, "MMM YYYY")}`,
+            `${
+              datesWeek[parseInt(i)].split(" ")[1]
+            } ${previousMonth} ${date.format(now, "YYYY")}`,
             i
           );
-          stats.date[parseInt(i)] += ` ${datesWeek[parseInt(i)]} ${date.format(
-            now,
-            "MMM"
-          )}`;
-        
-      } else {
-        if (prevMonth && datesWeek[parseInt(i)].split(" ")[1] > 10) { 
-	 this.getStats(
-            `${datesWeek[parseInt(i)].split(" ")[1]} ${previousMonth} ${date.format(
+          stats.date[parseInt(i)] += ` ${
+            datesWeek[parseInt(i)].split(" ")[1]
+          } ${previousMonth}`;
+        } else {
+          this.getStats(
+            `${String(datesWeek[parseInt(i)]).split(" ")[1]} ${date.format(
               now,
-              "YYYY"
+              "MMM YYYY"
             )}`,
             i
           );
           stats.date[parseInt(i)] += ` ${
-            datesWeek[parseInt(i)]
-          } ${previousMonth}`;
-        } else {
-	 this.getStats(
-          `${String(datesWeek[parseInt(i)]).split(" ")[1]} ${date.format(
-            now,
-            "MMM YYYY"
-          )}`,
-          i
-        );
-        stats.date[parseInt(i)] += ` ${
-          String(datesWeek[parseInt(i)]).split(" ")[1]
-        } ${date.format(now, "MMM")}`;
+            String(datesWeek[parseInt(i)]).split(" ")[1]
+          } ${date.format(now, "MMM")}`;
+        }
       }
-    }}
+    }
   }
 
   getStats(date, i, nextMonth) {
