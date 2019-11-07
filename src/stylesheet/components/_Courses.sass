@@ -3,6 +3,8 @@
     width: 68%
     background-color: $panelColor
     transition: width .3s
+    @media only screen and (max-width: 1100px) 
+        padding: 10px
     @media only screen and (max-width: 1270px) 
         width: 74%
     &.active
@@ -13,7 +15,10 @@
         display: flex
         align-items: center
         width: 100%
+        flex-wrap: wrap
         a
-            margin: 5px 10px
+            margin: 0 5px
+        .courses__box
+            margin-top: 0!important
         svg
             width: auto!important

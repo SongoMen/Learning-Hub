@@ -918,17 +918,19 @@ class Panel extends React.Component {
             <Loader />
           ) : (
             <div className="Panel__days">
-              <h5>TIME SPENT ON LEARNING</h5>
+              <div className="title">
+                <h5>TIME SPENT ON LEARNING</h5>
+                <select
+                  value={this.state.selectValue}
+                  ref={select => (this.select = select)}
+                  onChange={this.changeWeek.bind(this)}
+                  className="Panel__selectWeek"
+                >
+                  <option value="This week">This week</option>
+                  <option value="Last week">Last week</option>
+                </select>
+              </div>
               <div className="Panel__chart">{this.statCharts()}</div>
-              <select
-                value={this.state.selectValue}
-                ref={select => (this.select = select)}
-                onChange={this.changeWeek.bind(this)}
-                className="Panel__selectWeek"
-              >
-                <option value="This week">This week</option>
-                <option value="Last week">Last week</option>
-              </select>
             </div>
           )}
         </div>
