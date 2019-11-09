@@ -44,12 +44,8 @@ class PopupDev extends React.Component {
       .then(() => {
         window.location.reload(false);
       })
-      .catch(() => {
-        console.error(
-          "%c%s",
-          "color: white; background: red;padding: 3px 6px;border-radius: 5px",
-          "Error"
-        );
+      .catch((err) => {
+        console.error(err);
       });
   }
 

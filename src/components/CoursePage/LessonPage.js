@@ -237,11 +237,6 @@ class LessonPage extends React.Component {
         }
       })
       .catch(err => {
-        console.error(
-          "%c%s",
-          "color: white; background: red;padding: 3px 6px;border-radius: 5px",
-          "Error"
-        );
         console.error(err);
         if (this._isMounted)
           this.setState({
