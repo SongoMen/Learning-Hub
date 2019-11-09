@@ -516,7 +516,7 @@ class Panel extends React.Component {
                 </h4>
                 {this.state.lastLessonNumber !== 0 ? (
                   <h4>
-                    You ended up on{" "}
+                    You ended up on
                     {ordinal(parseInt(this.state.lastLessonNumber))} lesson.
                   </h4>
                 ) : (
@@ -837,7 +837,6 @@ class Panel extends React.Component {
                   "/course/" + this.state.lastLesson + "/" + this.state.lessonId
                 }
               >
-                {" "}
                 <div>
                   <h5>QUICKSTART</h5>
                   <div className="title">

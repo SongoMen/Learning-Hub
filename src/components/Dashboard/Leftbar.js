@@ -63,7 +63,7 @@ class Leftbar extends React.Component {
         <ul>
           <li>
             <NavLink activeClassName="active" to="/dashboard">
-              {" "}
+              
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -78,13 +78,13 @@ class Leftbar extends React.Component {
                 <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
                 <path d="M3 9L21 9" />
                 <path d="M9 21L9 9" />
-              </svg>{" "}
+              </svg>
               <h4>Dashboard</h4>
             </NavLink>
           </li>
           <li>
             <NavLink to="/courses">
-              {" "}
+              
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -105,7 +105,7 @@ class Leftbar extends React.Component {
           {admin && this.state.loaded && (
             <li className="Leftbar__dev">
               <NavLink to="/devpanel">
-                {" "}
+                
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"

@@ -176,7 +176,7 @@ class Rightbar extends React.Component {
             <div className="Rightbar__user">
               {this.state.avatar !== "" ? (
                 <div className="Rightbar__image">
-                  <img alt={useruid} src={this.state.avatar} />{" "}
+                  <img alt={useruid} src={this.state.avatar} />
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"

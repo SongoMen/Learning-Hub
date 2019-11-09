@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { firebaseAuth } from "../auth";
 
@@ -13,7 +13,9 @@ const NavBar = props => {
       }
     });
   }
-  userCheck();
+  useEffect(() => {
+    userCheck();
+  }, []);
   return (
     <div className="NavBar">
       <Link to="/">
