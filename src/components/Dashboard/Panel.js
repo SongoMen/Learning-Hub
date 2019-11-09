@@ -12,6 +12,7 @@ import humanizeDuration from "humanize-duration";
 import TopPanel from "./TopPanel";
 import date from "date-and-time";
 import ErrorMessage from "../elements/ErrorMessage";
+import CourseWrapper from "../elements/CourseWrapper";
 
 let status;
 
@@ -86,22 +87,22 @@ class Panel extends React.Component {
               if (
                 (stats.fullDates[parseInt(indx)] ===
                   val2.split(" ")[0] +
-                  " " +
-                  val2.split(" ")[1] +
-                  " " +
-                  val2.split(" ")[2] ||
+                    " " +
+                    val2.split(" ")[1] +
+                    " " +
+                    val2.split(" ")[2] ||
                   stats.fullDates[parseInt(indx)] ===
-                  val2.split(" ")[1] +
-                  " " +
-                  val2.split(" ")[2] +
-                  " " +
-                  val2.split(" ")[3]) &&
+                    val2.split(" ")[1] +
+                      " " +
+                      val2.split(" ")[2] +
+                      " " +
+                      val2.split(" ")[3]) &&
                 stats[stats.names[parseInt(indx2)]] > 0
               ) {
                 let he =
                   (" ",
-                    stats[stats.names[parseInt(indx2)]] / this.state.maxValue) *
-                  100 +
+                  stats[stats.names[parseInt(indx2)]] / this.state.maxValue) *
+                    100 +
                   "%";
                 return (
                   <div
@@ -174,8 +175,8 @@ class Panel extends React.Component {
           }
         }
       })
-      .catch((err) => {
-        console.error(err)
+      .catch(err => {
+        console.error(err);
         if (this._isMounted) {
           this.setState({
             courses: "err"
@@ -226,15 +227,19 @@ class Panel extends React.Component {
       });
   }
 
-  getThisWeekDates() {
+  clearStatsArray() {
     stats.date = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     stats.time = [];
     stats.styles = [];
     stats.names = [];
     stats.fullDates = [];
+  }
+
+  getThisWeekDates() {
     const today = date.format(now, "DD MMM YYYY");
     let forward = 0;
     let backwards = 0;
+    this.clearStatsArray();
     switch (date.format(now, "dddd")) {
       case "Monday":
         backwards = 0;
@@ -351,11 +356,7 @@ class Panel extends React.Component {
       date.format(now, "M") - 1,
       0
     ).getDate();
-    stats.date = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-    stats.time = [];
-    stats.styles = [];
-    stats.names = [];
-    stats.fullDates = [];
+    this.clearStatsArray();
     let prevMonth = false;
 
     datesWeek.push(String(lastDate).length === 1 ? "0" + lastDate : lastDate);
@@ -441,8 +442,7 @@ class Panel extends React.Component {
         if (typeof snapshot.data() !== "undefined") {
           if (nextMonth)
             stats.styles.push("-1 " + date + " " + snapshot.data()["style"]);
-          else
-            stats.styles.push(date + " " + snapshot.data()["style"]);
+          else stats.styles.push(date + " " + snapshot.data()["style"]);
           stats.styles.sort();
         }
       });
@@ -509,24 +509,24 @@ class Panel extends React.Component {
                 </h4>
               </div>
             ) : (
-                <div className="left">
-                  <h2> Welcome back, {user}!</h2>
+              <div className="left">
+                <h2> Welcome back, {user}!</h2>
+                <h4>
+                  Your latest course was <b>{this.state.lastLesson}.</b>
+                </h4>
+                {this.state.lastLessonNumber !== 0 ? (
                   <h4>
-                    Your latest course was <b>{this.state.lastLesson}.</b>
+                    You ended up on{" "}
+                    {ordinal(parseInt(this.state.lastLessonNumber))} lesson.
                   </h4>
-                  {this.state.lastLessonNumber !== 0 ? (
-                    <h4>
-                      You ended up on{" "}
-                      {ordinal(parseInt(this.state.lastLessonNumber))} lesson.
-                  </h4>
-                  ) : (
-                      <h4>But you didn't complete any lesson.</h4>
-                    )}
-                </div>
-              )
+                ) : (
+                  <h4>But you didn't complete any lesson.</h4>
+                )}
+              </div>
+            )
           ) : (
-              <Loader />
-            )}
+            <Loader />
+          )}
           {!this.state.lastLessonLoader && (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -832,66 +832,66 @@ class Panel extends React.Component {
                 </div>
               </Link>
             ) : (
-                  <Link
-                    to={
-                      "/course/" + this.state.lastLesson + "/" + this.state.lessonId
-                    }
-                  >
-                    {" "}
-                    <div>
-                      <h5>QUICKSTART</h5>
-                      <div className="title">
-                        <span className="courseLogo">{parse(this.state.svg)}</span>
-                        <h3>{this.state.lastLesson}</h3>
-                        <h4>
-                          Lesson: {ordinal(parseInt(this.state.lastLessonNumber))}
-                        </h4>
-                      </div>
-                    </div>
-                  </Link>
-                )
-          ) : (
-                <div className="Panel__error">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M16 16s-1.5-2-4-2-4 2-4 2" />
-                    <path d="M9 9L9.01 9" />
-                    <path d="M15 9L15.01 9" />
-                  </svg>
-                  <h4>Looks like we couldn't connect to servers. Sorry!</h4>
+              <Link
+                to={
+                  "/course/" + this.state.lastLesson + "/" + this.state.lessonId
+                }
+              >
+                {" "}
+                <div>
+                  <h5>QUICKSTART</h5>
+                  <div className="title">
+                    <span className="courseLogo">{parse(this.state.svg)}</span>
+                    <h3>{this.state.lastLesson}</h3>
+                    <h4>
+                      Lesson: {ordinal(parseInt(this.state.lastLessonNumber))}
+                    </h4>
+                  </div>
                 </div>
-              )}
+              </Link>
+            )
+          ) : (
+            <div className="Panel__error">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M16 16s-1.5-2-4-2-4 2-4 2" />
+                <path d="M9 9L9.01 9" />
+                <path d="M15 9L15.01 9" />
+              </svg>
+              <h4>Looks like we couldn't connect to servers. Sorry!</h4>
+            </div>
+          )}
         </div>
         <div className="Panel__stats">
           {this.state.statsLoader ? (
             <Loader />
           ) : (
-              <div className="Panel__days">
-                <div className="title">
-                  <h5>TIME SPENT ON LEARNING</h5>
-                  <select
-                    value={this.state.selectValue}
-                    ref={select => (this.select = select)}
-                    onChange={this.changeWeek.bind(this)}
-                    className="Panel__selectWeek"
-                  >
-                    <option value="This week">This week</option>
-                    <option value="Last week">Last week</option>
-                  </select>
-                </div>
-                <div className="Panel__chart">{this.statCharts()}</div>
+            <div className="Panel__days">
+              <div className="title">
+                <h5>TIME SPENT ON LEARNING</h5>
+                <select
+                  value={this.state.selectValue}
+                  ref={select => (this.select = select)}
+                  onChange={this.changeWeek.bind(this)}
+                  className="Panel__selectWeek"
+                >
+                  <option value="This week">This week</option>
+                  <option value="Last week">Last week</option>
+                </select>
               </div>
-            )}
+              <div className="Panel__chart">{this.statCharts()}</div>
+            </div>
+          )}
         </div>
         <div className="Panel__more">
           <h3>More courses</h3>
@@ -901,38 +901,16 @@ class Panel extends React.Component {
           )}
           {this.state.courses > 0 && (
             <div className="Panel__coursesContainer">
-              {courses.name.map((val, indx) => {
-                return (
-                  <Link to={"/course/" + val} key={indx}>
-                    <div
-                      className={
-                        "courses__box " + courses.style[parseInt(indx)]
-                      }
-                    >
-                      {parse(courses.svg[parseInt(indx)])}
-                      <div className="courses__info">
-                        <h5>Total lessons: {courses.length[parseInt(indx)]}</h5>
-                        <h4>{val}</h4>
-                      </div>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="courses__arrow"
-                      >
-                        <line x1="0" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                      </svg>
-                    </div>
-                  </Link>
-                );
-              })}
+              {courses.name.map((val, indx) => (
+                <CourseWrapper
+                  name={val}
+                  index={indx}
+                  style={courses.style[parseInt(indx)]}
+                  length={courses.length[parseInt(indx)]}
+                  svg={courses.svg[parseInt(indx)]}
+                  key={indx}
+                />
+              ))}
             </div>
           )}
         </div>

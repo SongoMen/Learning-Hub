@@ -3,11 +3,10 @@ import "firebase/firestore";
 import { changeRightBar } from "../../actions/actionsPanel";
 import { connect } from "react-redux";
 import Loader from "../elements/Loader";
-import parse from "html-react-parser";
-import { Link } from "react-router-dom";
 import firebase from "firebase/app";
 import TopPanel from "./TopPanel";
 import ErrorMessaage from "../elements/ErrorMessage";
+import CourseWrapper from "../elements/CourseWrapper";
 
 let status;
 
@@ -112,32 +111,14 @@ class Courses extends React.Component {
             <Loader />
           ) : (
             courses.name.map((val, indx) => (
-              <Link to={"/course/" + val} key={indx}>
-                <div
-                  className={"courses__box " + courses.style[parseInt(indx)]}
-                >
-                  {parse(courses.svg[parseInt(indx)])}
-                  <div className="courses__info">
-                    <h5>Total lessons: {courses.length[parseInt(indx)]}</h5>
-                    <h4>{val}</h4>
-                  </div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="courses__arrow"
-                  >
-                    <line x1="0" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </div>
-              </Link>
+              <CourseWrapper
+                name={val}
+                index={indx}
+                style={courses.style[parseInt(indx)]}
+                length={courses.length[parseInt(indx)]}
+                svg={courses.svg[parseInt(indx)]}
+                key={indx}
+              />
             ))
           )}
         </div>
