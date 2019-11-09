@@ -168,7 +168,7 @@ class LessonPage extends React.Component {
       .doc(today);
     let userLastLessons = db.collection("users").doc(user);
 
-    if (typeof name !== "undefined")
+    if (typeof name !== "undefined") {
       userDates
         .collection("lessons")
         .doc(courseName)
@@ -189,35 +189,36 @@ class LessonPage extends React.Component {
             }
           });
         });
-    userDates
-      .collection("lessons")
-      .doc(courseName)
-      .get()
-      .then(docSnapshot => {
-        if (docSnapshot.exists) {
-          userDates
-            .collection("lessons")
+      userDates
+        .collection("lessons")
+        .doc(courseName)
+        .get()
+        .then(docSnapshot => {
+          if (docSnapshot.exists) {
+            userDates
+              .collection("lessons")
+              .doc(courseName)
+              .update({
+                time: parseInt(timer) + parseInt(this.state.timer)
+              });
+          } else {
+            userDates
+              .collection("lessons")
+              .doc(courseName)
+              .set({ time: this.state.timer });
+          }
+        })
+        .then(() => {
+          userLastLessons
+            .collection("lastcourse")
             .doc(courseName)
             .update({
-              time: parseInt(timer) + parseInt(this.state.timer)
+              lastLesson: this.state.title.split(".")[0],
+              lessonId: window.location.pathname.split("/")[3]
             });
-        } else {
-          userDates
-            .collection("lessons")
-            .doc(courseName)
-            .set({ time: this.state.timer });
-        }
-      })
-      .then(() => {
-        userLastLessons
-          .collection("lastcourse")
-          .doc(courseName)
-          .update({
-            lastLesson: this.state.title.split(".")[0],
-            lessonId: window.location.pathname.split("/")[3]
-          });
-        if (this._isMounted) this.setState({ timer: 0 });
-      });
+          if (this._isMounted) this.setState({ timer: 0 });
+        });
+    }
   }
 
   loadLessonContent() {
