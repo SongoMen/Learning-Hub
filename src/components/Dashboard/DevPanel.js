@@ -57,7 +57,8 @@ class DevPanel extends React.Component {
       addLesson: false,
       loaded: false,
       name: "",
-      courseId: ""
+      courseId: "",
+      lessonLoader: true
     };
   }
   rightBarChange() {
@@ -197,20 +198,22 @@ class DevPanel extends React.Component {
   }
 
   loadLessonContent(lesson, id) {
-    this.setState({ showLesson: true, edit: false });
+    this.setState({ showLesson: true, edit: false, lessonLoader: true });
     db.collection("courses")
       .doc(this.state.courseName)
       .collection("lessons")
       .doc(lesson)
       .get()
       .then(doc => {
-        content.content.push(doc.data()["content"]);
-        content.title.push(doc.data()["title"]);
+        content.content[parseInt(0)] = doc.data()["content"];
+        content.title[parseInt(0)] = doc.data()["title"];
         if (this._isMounted) this.setState({ lessonId: id });
+      })
+      .then(() => {
+        this.setState({ lessonLoader: false });
       })
       .catch(err => {
         console.error(err);
-
         console.error(
           "%c%s",
           "color: white; background: red;padding: 3px 6px;border-radius: 5px",
@@ -417,16 +420,12 @@ class DevPanel extends React.Component {
               <path d="M18 6L6 18" />
               <path d="M6 6L18 18" />
             </svg>
-            <div className="DevPanel__lessonText">
-              <h2>
-                {" "}
-                {parse(String(content.title[parseInt(this.state.lessonId)]))}
-              </h2>
-              <p>
-                {" "}
-                {parse(String(content.content[parseInt(this.state.lessonId)]))}
-              </p>
-            </div>
+            {!this.state.lessonLoader && (
+              <div className="DevPanel__lessonText">
+                <h2> {parse(String(content.title[parseInt(0)]))}</h2>
+                <p> {parse(String(content.content[parseInt(0)]))}</p>
+              </div>
+            )}
           </div>
         )}
         {this.state.addNewLesson && !this.state.showLesson && !this.state.edit && (
