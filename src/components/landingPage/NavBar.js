@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { firebaseAuth } from "../auth";
 
 const NavBar = () => {
+  const [logged, setUser] = useState(null);
+  function userCheck() {
+    firebaseAuth().onAuthStateChanged(user => {
+      if (user) {
+        setUser(true);
+      } else {
+        setUser(false);
+      }
+    });
+  }
+  userCheck();
   return (
     <div className="NavBar">
       <Link to="/">
@@ -27,18 +39,24 @@ const NavBar = () => {
         </div>
       </Link>
       <div className="NavBar__menu">
-        <ul>
-          <li>
-            <Link to="/login" className="form-btn">
-              Login
-            </Link>
-          </li>
-          <li>
-            <Link to="/register" className="form-btn">
-              Register
-            </Link>
-          </li>
-        </ul>
+        {!logged ? (
+          <ul>
+            <li>
+              <Link to="/login" className="form-btn">
+                Login
+              </Link>
+            </li>
+            <li>
+              <Link to="/register" className="form-btn">
+                Register
+              </Link>
+            </li>
+          </ul>
+        ) : (
+          <Link to="/dashboard" className="form-btn">
+            Dashboard
+          </Link>
+        )}
       </div>
     </div>
   );
