@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { firebaseAuth } from "../auth";
 
-const NavBar = () => {
+const NavBar = props => {
   const [logged, setUser] = useState(null);
   function userCheck() {
     firebaseAuth().onAuthStateChanged(user => {
@@ -38,26 +38,28 @@ const NavBar = () => {
           <h3>Learning Hub</h3>
         </div>
       </Link>
-      <div className="NavBar__menu">
-        {!logged ? (
-          <ul>
-            <li>
-              <Link to="/login" className="form-btn">
-                Login
-              </Link>
-            </li>
-            <li>
-              <Link to="/register" className="form-btn">
-                Register
-              </Link>
-            </li>
-          </ul>
-        ) : (
-          <Link to="/dashboard" className="form-btn">
-            Dashboard
-          </Link>
-        )}
-      </div>
+      {typeof props.menu === "undefined" && (
+        <div className="NavBar__menu">
+          {!logged ? (
+            <ul>
+              <li>
+                <Link to="/login" className="form-btn">
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link to="/register" className="form-btn">
+                  Register
+                </Link>
+              </li>
+            </ul>
+          ) : (
+            <Link to="/dashboard" className="form-btn">
+              Dashboard
+            </Link>
+          )}
+        </div>
+      )}
     </div>
   );
 };
