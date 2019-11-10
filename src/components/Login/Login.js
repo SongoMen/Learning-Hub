@@ -1,10 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
 import { login } from "../auth";
 import Loader from "../elements/Loader";
-import NavBar from "../LandingPage/NavBar";
-import { Logo, Mask } from "../_helpers";
+import { Logo, Mask, Input } from "../_helpers";
 
 export default class Login extends React.Component {
   _isMounted = false;
@@ -17,6 +15,19 @@ export default class Login extends React.Component {
     };
     this.handleClick = this.handleClick.bind(this);
   }
+
+  handleRefPassword = ref => {
+    this.setState({
+      password: ref
+    });
+  };
+
+  handleRefEmail = ref => {
+    this.setState({
+      email: ref
+    });
+  };
+
   handleClick(e) {
     e.preventDefault();
     if (this.state.loading === false) {
@@ -25,7 +36,7 @@ export default class Login extends React.Component {
           loading: true
         });
       }
-      login(this.email.value, this.password.value)
+      login(this.state.email, this.state.password)
         .then(() => {
           if (this._isMounted) {
             this.setState({
@@ -33,7 +44,7 @@ export default class Login extends React.Component {
             });
           }
         })
-        .catch(error => {
+        .catch(() => {
           if (this._isMounted) {
             this.setState({
               msg: "Wrong Email or password",
@@ -51,7 +62,6 @@ export default class Login extends React.Component {
   componentWillUnmount() {
     this._isMounted = false;
   }
-
   render() {
     return (
       <div className="Login">
@@ -62,23 +72,15 @@ export default class Login extends React.Component {
             <h1>Sign In</h1>
             <div className="form-line">
               <label htmlFor="email">Email</label>
-              <input
-                className="input"
-                type="text"
-                name="email"
-                required
-                ref={email => (this.email = email)}
-              />
+              <Input type="text" name="email" handleRef={this.handleRefEmail} />
             </div>
             <br />
             <div className="form-line" data-validate="Password is required">
               <label htmlFor="pass">Password</label>
-              <input
-                className="input"
+              <Input
                 type="password"
                 name="pass"
-                required
-                ref={password => (this.password = password)}
+                handleRef={this.handleRefPassword}
               />
             </div>
             <br />

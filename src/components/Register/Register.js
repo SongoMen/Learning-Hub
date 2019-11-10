@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import "firebase/firestore";
 import { auth } from "../auth";
 import Loader from "../elements/Loader";
-import NavBar from "../LandingPage/NavBar";
-import { Logo,Mask } from "../_helpers";
+import { Logo, Mask, Input } from "../_helpers";
 
 class Register extends Component {
   _isMounted = false;
@@ -16,6 +15,25 @@ class Register extends Component {
     };
     this.handleClickRegisterUser = this.handleClickRegisterUser.bind(this);
   }
+
+  handleRefPassword = ref => {
+    this.setState({
+      password: ref
+    });
+  };
+
+  handleRefUsername = ref => {
+    this.setState({
+      username: ref
+    });
+  };
+
+  handleRefEmail = ref => {
+    this.setState({
+      email: ref
+    });
+  };
+
   componentDidMount() {
     this._isMounted = true;
   }
@@ -30,12 +48,12 @@ class Register extends Component {
       });
     }
     if (
-      this.password.value.length > 6 &&
-      re.test(String(this.email.value).toLowerCase()) &&
+      this.state.password.length > 6 &&
+      re.test(String(this.state.email).toLowerCase()) &&
       this.state.loading !== true
     ) {
-      localStorage.setItem("user", this.username.value);
-      auth(this.email.value, this.password.value, this.username.value)
+      localStorage.setItem("user", this.state.username);
+      auth(this.state.email, this.state.password, this.state.username)
         .then(() => {
           if (this._isMounted) {
             this.setState({
@@ -53,7 +71,7 @@ class Register extends Component {
           }
         });
     }
-    if (this.password.value.length < 6) {
+    if (this.state.password.length < 6) {
       if (this._isMounted) {
         this.setState({
           msg: "Password must have at least 6 characters",
@@ -61,7 +79,7 @@ class Register extends Component {
         });
       }
     }
-    if (re.test(String(this.email.value).toLowerCase()) === false) {
+    if (re.test(String(this.state.email).toLowerCase()) === false) {
       if (this._isMounted) {
         this.setState({
           msg: "wrong email adress",
@@ -73,42 +91,29 @@ class Register extends Component {
   render() {
     return (
       <div className="Register">
-        <Mask/>
+        <Mask />
         <div className="wrapper">
           <Logo class="NavBar__logo mobile" />
           <form className="form">
             <h1>Sign Up</h1>
             <div className="form-line">
               <label htmlFor="username">Username</label>
-              <input
-                className="input"
+              <Input
                 type="text"
                 name="username"
-                required
-                ref={username => (this.username = username)}
+                handleRef={this.handleRefUsername}
               />
             </div>
             <br />
             <div className="form-line">
               <label htmlFor="email">Email</label>
-              <input
-                className="input"
-                type="text"
-                name="email"
-                required
-                ref={email => (this.email = email)}
-              />
+              <Input type="text" name="email" handleRef={this.handleRefEmail} />
             </div>
             <br />
             <div className="form-line" data-validate="Password is required">
               <label htmlFor="password">Password</label>
-              <input
-                className="input"
-                type="password"
-                name="pass"
-                required
-                ref={password => (this.password = password)}
-              />
+              <Input
+                type="password" name="password" handleRef={this.handleRefPassword}/>
             </div>
             <br />
             <br />
