@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import NavBar from "./LandingPage/NavBar";
 
 export function Logo(props) {
-  console.log(typeof props.link)
   return (
-    <Link to={typeof props.link === "undefined" ? "/" : "#"}>
+    <Link to={typeof props.link === "undefined" ? "/" : ""}>
       <div className={props.class}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -26,5 +26,14 @@ export function Logo(props) {
         <h3>Learning Hub</h3>
       </div>
     </Link>
+  );
+}
+
+export function Mask() {
+  return (
+    <div>
+      <div className="mask"></div>
+      <NavBar menu="1" />
+    </div>
   );
 }
