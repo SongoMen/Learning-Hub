@@ -4,18 +4,26 @@ import { firebaseAuth } from "../auth";
 import { Logo } from "../_helpers";
 
 const NavBar = props => {
+  let isMounted = "";
   const [logged, setUser] = useState(null);
   function userCheck() {
     firebaseAuth().onAuthStateChanged(user => {
-      if (user) {
+      if (user && isMounted) {
         setUser(true);
-      } else {
+      } else if(isMounted){
         setUser(false);
       }
     });
   }
   useEffect(() => {
-    userCheck();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    isMounted = true;
+    if (isMounted) {
+      userCheck();
+    }
+    return () => {
+      isMounted = false;
+    };
   }, []);
   return (
     <div className="NavBar">
