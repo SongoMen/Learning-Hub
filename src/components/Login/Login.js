@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { login } from "../auth";
 import Loader from "../elements/Loader";
 import NavBar from "../LandingPage/NavBar";
-import { MobileLogo } from "../_helpers";
+import { Logo } from "../_helpers";
 
 export default class Login extends React.Component {
   _isMounted = false;
@@ -58,7 +58,7 @@ export default class Login extends React.Component {
         <div className="mask"></div>
         <NavBar menu="1" />
         <div className="wrapper">
-          <MobileLogo />
+          <Logo class="NavBar__logo mobile"/>
           <form className="form">
             <h1>Sign In</h1>
 

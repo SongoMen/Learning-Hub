@@ -1,10 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export function MobileLogo() {
+export function Logo(props) {
+  console.log(typeof props.link)
   return (
-    <Link to="/">
-      <div className="NavBar__logo mobile">
+    <Link to={typeof props.link === "undefined" ? "/" : "#"}>
+      <div className={props.class}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"

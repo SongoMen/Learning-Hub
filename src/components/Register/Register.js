@@ -4,7 +4,7 @@ import "firebase/firestore";
 import { auth } from "../auth";
 import Loader from "../elements/Loader";
 import NavBar from "../LandingPage/NavBar";
-import { MobileLogo } from "../_helpers";
+import { Logo } from "../_helpers";
 class Register extends Component {
   _isMounted = false;
   constructor(props) {
@@ -75,13 +75,11 @@ class Register extends Component {
         <div className="mask"></div>
         <NavBar menu="1" />
         <div className="wrapper">
-          <MobileLogo />
+          <Logo class="NavBar__logo mobile" />
           <form className="form">
             <h1>Sign Up</h1>
-
             <div className="form-line">
               <label htmlFor="username">Username</label>
-
               <input
                 className="input"
                 type="text"
