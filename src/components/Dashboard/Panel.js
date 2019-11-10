@@ -516,8 +516,7 @@ class Panel extends React.Component {
                 </h4>
                 {this.state.lastLessonNumber !== 0 ? (
                   <h4>
-                    You ended up on
-                    {ordinal(parseInt(this.state.lastLessonNumber))} lesson.
+                    You ended up on {ordinal(parseInt(this.state.lastLessonNumber))} lesson.
                   </h4>
                 ) : (
                   <h4>But you didn't complete any lesson.</h4>
