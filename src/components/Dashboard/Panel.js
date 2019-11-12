@@ -74,6 +74,21 @@ let stats = {
   fullDates: []
 };
 
+function QuickstartPanel(props) {
+  return (
+    <Link to={props.url}>
+      <div>
+        <h5>QUICKSTART</h5>
+        <div className="title">
+          <span className="courseLogo">{parse(props.svg)}</span>
+          <h3>{props.course}</h3>
+          <h4>Lesson: {ordinal(parseInt(props.lastLesson))}</h4>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 class Panel extends React.Component {
   _isMounted = false;
 
@@ -516,7 +531,8 @@ class Panel extends React.Component {
                 </h4>
                 {this.state.lastLessonNumber !== 0 ? (
                   <h4>
-                    You ended up on {ordinal(parseInt(this.state.lastLessonNumber))} lesson.
+                    You ended up on{" "}
+                    {ordinal(parseInt(this.state.lastLessonNumber))} lesson.
                   </h4>
                 ) : (
                   <h4>But you didn't complete any lesson.</h4>
@@ -818,35 +834,19 @@ class Panel extends React.Component {
                 </h4>
               </div>
             ) : this.state.lastLesson > 0 ? (
-              <Link to={"/course/" + this.state.lastLesson}>
-                <div>
-                  <h5>QUICKSTART</h5>
-                  <div className="title">
-                    <span className="courseLogo">{parse(this.state.svg)}</span>
-                    <h3>{this.state.lastLesson}</h3>
-                    <h4>
-                      Lesson: {ordinal(parseInt(this.state.lastLessonNumber))}
-                    </h4>
-                  </div>
-                </div>
-              </Link>
+              <QuickstartPanel
+                svg={this.state.svg}
+                lastLesson={this.state.lastLessonNumber}
+                course={this.state.lastLesson}
+                url={"/course/" + this.state.lastLesson}
+              />
             ) : (
-              <Link
-                to={
-                  "/course/" + this.state.lastLesson + "/" + this.state.lessonId
-                }
-              >
-                <div>
-                  <h5>QUICKSTART</h5>
-                  <div className="title">
-                    <span className="courseLogo">{parse(this.state.svg)}</span>
-                    <h3>{this.state.lastLesson}</h3>
-                    <h4>
-                      Lesson: {ordinal(parseInt(this.state.lastLessonNumber))}
-                    </h4>
-                  </div>
-                </div>
-              </Link>
+              <QuickstartPanel
+                url={`/course/${this.state.lastLesson}/${this.state.lessonId}`}
+                svg={this.state.svg}
+                lastLesson={this.state.lastLessonNumber}
+                course={this.state.lastLesson}
+              />
             )
           ) : (
             <div className="Panel__error">
@@ -916,7 +916,4 @@ class Panel extends React.Component {
     );
   }
 }
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Panel);
+export default connect(mapStateToProps, mapDispatchToProps)(Panel);
