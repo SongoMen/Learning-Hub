@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import NavBar from "./LandingPage/NavBar";
+import firebase from "firebase/app";
 
 export function Logo(props) {
   return (
@@ -54,4 +55,15 @@ export function Input(props) {
       required
     />
   );
+}
+
+const db = firebase.firestore();
+
+export function lessonsRef(courseName) {
+  return db
+    .collection("courses")
+    .doc(courseName)
+    .collection("lessons")
+    .orderBy("title", "asc")
+    .get();
 }

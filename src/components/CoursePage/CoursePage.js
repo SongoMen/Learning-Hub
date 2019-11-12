@@ -8,6 +8,7 @@ import Loader from "../elements/Loader";
 import parse from "html-react-parser";
 import { Link } from "react-router-dom";
 import ErrorMessage from "../elements/ErrorMessage";
+import { lessonsRef } from "../_helpers";
 
 const mapStateToProps = state => ({
   ...state
@@ -83,11 +84,7 @@ class CoursePage extends React.Component {
             lessons.length.push(snapshot.data()["length"]);
           })
           .then(() => {
-            db.collection("courses")
-              .doc(this.state.name)
-              .collection("lessons")
-              .orderBy("title", "asc")
-              .get()
+            lessonsRef(this.state.name)
               .then(snapshot => {
                 if (snapshot.docs.length > 0 && this._isMounted) {
                   snapshot.forEach(doc => {

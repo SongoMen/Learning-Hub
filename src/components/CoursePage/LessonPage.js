@@ -9,6 +9,7 @@ import parse from "html-react-parser";
 import { Redirect } from "react-router-dom";
 import date from "date-and-time";
 import ErrorMessage from "../elements/ErrorMessage";
+import { lessonsRef } from "../_helpers";
 
 const mapStateToProps = state => ({
   ...state
@@ -245,18 +246,13 @@ class LessonPage extends React.Component {
       });
   }
   getNextLessonId() {
-    db.collection("courses")
-      .doc(window.location.pathname.split("/")[2].replace(/%20/gi, " "))
-      .collection("lessons")
-      .orderBy("title", "asc")
-      .get()
-      .then(snapshot => {
-        if (snapshot.docs.length > 0 && this._isMounted) {
-          snapshot.forEach(doc => {
-            lessonsId.push(doc.id);
-          });
-        }
-      });
+    lessonsRef(window.location.pathname.split("/")[2].replace(/%20/gi, " ")).then(snapshot => {
+      if (snapshot.docs.length > 0 && this._isMounted) {
+        snapshot.forEach(doc => {
+          lessonsId.push(doc.id);
+        });
+      }
+    });
   }
 
   lessonDone(name, id) {

@@ -7,7 +7,7 @@ import PopupDev from "../elements/PopupDev";
 import parse from "html-react-parser";
 import Loader from "../elements/Loader";
 import TopPanel from "./TopPanel";
-
+import { lessonsRef } from "../_helpers";
 let status;
 
 const mapStateToProps = state => ({
@@ -106,7 +106,7 @@ class DevPanel extends React.Component {
           }
         }
       })
-      .catch((err) => {
+      .catch(err => {
         console.error(err);
         this.setState({
           courses: "err"
@@ -122,11 +122,7 @@ class DevPanel extends React.Component {
     lessons.name = [];
     lessons.content = [];
     let i = 0;
-    db.collection("courses")
-      .doc(name)
-      .collection("lessons")
-      .orderBy("title", "asc")
-      .get()
+    lessonsRef(name)
       .then(snapshot => {
         if (snapshot.docs.length > 0 && this._isMounted) {
           snapshot.forEach(doc => {
@@ -163,7 +159,7 @@ class DevPanel extends React.Component {
     db.collection("users")
       .doc(user)
       .onSnapshot(
-        function (doc) {
+        function(doc) {
           if (typeof doc.data() !== "undefined") {
             admin = doc.data()["admin"];
             this.setState({
@@ -249,65 +245,65 @@ class DevPanel extends React.Component {
         {!this.state.loaded ? (
           <Loader />
         ) : (
-            admin &&
-            !this.state.edit &&
-            !this.state.showLesson &&
-            !this.state.addNewLesson && (
-              <div className="DevPanel__content">
-                <TopPanel name="Dev Panel" />
-                <div className="DevPanel__topNav">
-                  <button
-                    onClick={() => this.props.setPopupDev()}
-                    type="button"
-                    className="form-btn"
-                  >
-                    CREATE NEW COURSE
+          admin &&
+          !this.state.edit &&
+          !this.state.showLesson &&
+          !this.state.addNewLesson && (
+            <div className="DevPanel__content">
+              <TopPanel name="Dev Panel" />
+              <div className="DevPanel__topNav">
+                <button
+                  onClick={() => this.props.setPopupDev()}
+                  type="button"
+                  className="form-btn"
+                >
+                  CREATE NEW COURSE
                 </button>
-                </div>
-                <div className="DevPanel__list">
-                  <h2>Courses</h2>
-                  {this.state.courses === 0 && <h3>No courses available.</h3>}
-                  {this.state.courses > 0 &&
-                    courses.name.map((val, indx) => {
-                      return (
-                        <div
-                          key={indx}
-                          className={
-                            "courses__box " + courses.style[parseInt(indx)]
-                          }
-                          onClick={() => {
-                            this.courseView(indx);
-                          }}
-                        >
-                          {parse(courses.svg[parseInt(indx)])}
-                          <div className="courses__info">
-                            <h5>
-                              Total lessons: {courses.length[parseInt(indx)]}
-                            </h5>
-                            <h4>{val}</h4>
-                          </div>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="courses__arrow"
-                          >
-                            <line x1="0" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                          </svg>
-                        </div>
-                      );
-                    })}
-                </div>
               </div>
-            )
-          )}
+              <div className="DevPanel__list">
+                <h2>Courses</h2>
+                {this.state.courses === 0 && <h3>No courses available.</h3>}
+                {this.state.courses > 0 &&
+                  courses.name.map((val, indx) => {
+                    return (
+                      <div
+                        key={indx}
+                        className={
+                          "courses__box " + courses.style[parseInt(indx)]
+                        }
+                        onClick={() => {
+                          this.courseView(indx);
+                        }}
+                      >
+                        {parse(courses.svg[parseInt(indx)])}
+                        <div className="courses__info">
+                          <h5>
+                            Total lessons: {courses.length[parseInt(indx)]}
+                          </h5>
+                          <h4>{val}</h4>
+                        </div>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="courses__arrow"
+                        >
+                          <line x1="0" y1="12" x2="19" y2="12"></line>
+                          <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                      </div>
+                    );
+                  })}
+              </div>
+            </div>
+          )
+        )}
         {this.state.edit && (
           <div className="DevPanel__edit">
             <svg
@@ -467,7 +463,4 @@ class DevPanel extends React.Component {
     );
   }
 }
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DevPanel);
+export default connect(mapStateToProps, mapDispatchToProps)(DevPanel);
