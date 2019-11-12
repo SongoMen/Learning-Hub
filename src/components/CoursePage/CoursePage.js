@@ -41,6 +41,7 @@ class CoursePage extends React.Component {
   componentWillUnmount() {
     this._isMounted = false;
   }
+
   componentDidMount() {
     this._isMounted = true;
     this.loadLessons();

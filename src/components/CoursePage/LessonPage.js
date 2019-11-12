@@ -22,6 +22,10 @@ const db = firebase.firestore();
 
 let lessonsId = [];
 
+let courses = {
+  name: []
+};
+
 class LessonPage extends React.Component {
   refreshTimeInterval = () =>
     (this.refresh = setInterval(() => {
@@ -141,6 +145,7 @@ class LessonPage extends React.Component {
     this.loadLessonContent();
     this.getNextLessonId();
     this.saveDoneLesson();
+    this.loadAllCourses();
   }
 
   componentDidUpdate(prevState) {
@@ -148,6 +153,22 @@ class LessonPage extends React.Component {
       this.loadLessonContent();
       this.getNextLessonId();
     }
+  }
+
+  loadAllCourses() {
+    db.collection("courses")
+      .get()
+      .then(snapshot => {
+        courses.name = [];
+        if (snapshot.docs.length > 0) {
+          snapshot.forEach(doc => {
+            courses.name.push(doc.data()["name"]);
+          });
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }
 
   refreshTime() {
@@ -158,67 +179,69 @@ class LessonPage extends React.Component {
   }
 
   saveLearningTime(name) {
-    let user = firebase.auth().currentUser.uid;
-    const today = date.format(now, "DD MMM YYYY");
-    let courseName = name;
-    let timer;
-    let userDates = db
-      .collection("users")
-      .doc(user)
-      .collection("dates")
-      .doc(today);
-    let userLastLessons = db.collection("users").doc(user);
+    if (courses.name.indexOf(name) > -1) {
+      let user = firebase.auth().currentUser.uid;
+      const today = date.format(now, "DD MMM YYYY");
+      let courseName = name;
+      let timer;
+      let userDates = db
+        .collection("users")
+        .doc(user)
+        .collection("dates")
+        .doc(today);
+      let userLastLessons = db.collection("users").doc(user);
 
-    if (typeof name !== "undefined") {
-      userDates
-        .collection("lessons")
-        .doc(courseName)
-        .get()
-        .then(doc => {
-          if (typeof doc.data() !== "undefined")
-            timer = parseInt(doc.data()["time"]);
-        })
-        .then(() => {
-          userDates.get().then(docSnapshot => {
-            if (docSnapshot.exists) {
-              userDates.update({
-                doc: "doc",
-                date: new Date()
-              });
-            } else {
-              userDates.set({ doc: "doc", date: new Date() });
-            }
+      if (typeof name !== "undefined") {
+        userDates
+          .collection("lessons")
+          .doc(courseName)
+          .get()
+          .then(doc => {
+            if (typeof doc.data() !== "undefined")
+              timer = parseInt(doc.data()["time"]);
+          })
+          .then(() => {
+            userDates.get().then(docSnapshot => {
+              if (docSnapshot.exists) {
+                userDates.update({
+                  doc: "doc",
+                  date: new Date()
+                });
+              } else {
+                userDates.set({ doc: "doc", date: new Date() });
+              }
+            });
           });
-        });
-      userDates
-        .collection("lessons")
-        .doc(courseName)
-        .get()
-        .then(docSnapshot => {
-          if (docSnapshot.exists) {
-            userDates
-              .collection("lessons")
+        userDates
+          .collection("lessons")
+          .doc(courseName)
+          .get()
+          .then(docSnapshot => {
+            if (docSnapshot.exists) {
+              userDates
+                .collection("lessons")
+                .doc(courseName)
+                .update({
+                  time: parseInt(timer) + parseInt(this.state.timer)
+                });
+            } else {
+              userDates
+                .collection("lessons")
+                .doc(courseName)
+                .set({ time: this.state.timer });
+            }
+          })
+          .then(() => {
+            userLastLessons
+              .collection("lastcourse")
               .doc(courseName)
               .update({
-                time: parseInt(timer) + parseInt(this.state.timer)
+                lastLesson: this.state.title.split(".")[0],
+                lessonId: window.location.pathname.split("/")[3]
               });
-          } else {
-            userDates
-              .collection("lessons")
-              .doc(courseName)
-              .set({ time: this.state.timer });
-          }
-        })
-        .then(() => {
-          userLastLessons
-            .collection("lastcourse")
-            .doc(courseName)
-            .update({
-              lastLesson: this.state.title.split(".")[0],
-              lessonId: window.location.pathname.split("/")[3]
-            });
-          if (this._isMounted) this.setState({ timer: 0 });
-        });
+            if (this._isMounted) this.setState({ timer: 0 });
+          });
+      }
     }
   }
 
@@ -235,6 +258,11 @@ class LessonPage extends React.Component {
             content: doc.data()["content"],
             loader: false
           });
+        } else {
+          if (this._isMounted)
+            this.setState({
+              loader: "error"
+            });
         }
       })
       .catch(err => {
@@ -246,7 +274,9 @@ class LessonPage extends React.Component {
       });
   }
   getNextLessonId() {
-    lessonsRef(window.location.pathname.split("/")[2].replace(/%20/gi, " ")).then(snapshot => {
+    lessonsRef(
+      window.location.pathname.split("/")[2].replace(/%20/gi, " ")
+    ).then(snapshot => {
       if (snapshot.docs.length > 0 && this._isMounted) {
         snapshot.forEach(doc => {
           lessonsId.push(doc.id);
