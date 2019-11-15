@@ -9,10 +9,9 @@
     "firebase": "^7.2.3",
     "html-react-parser": "^0.9.2",
     "humanize-duration": "^3.21.0",
-    "istanbul": "^0.4.5",
-    "mocha": "^6.2.2",
+    "jest": "^24.9.0",
     "node-sass": "^4.13.0",
-    "npm": "^6.13.0",
+    "npm": "^6.12.1",
     "ordinal": "^1.0.3",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
@@ -28,8 +27,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "test:watch": "npm run test -- --watch",
-    "test-with-coverage": "jest --coverage && cat ./coverage/lcov.info | codacy-coverage"  },
+    "test:watch": "npm run test -- --watch"
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -48,7 +47,6 @@
   "devDependencies": {
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
-    "nyc": "^14.1.1",
     "react-test-renderer": "^16.11.0"
   },
   "snyk": true

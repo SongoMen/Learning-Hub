@@ -65,5 +65,4 @@ tags
 # Persistent undo
 [._]*.un~
 
-# env
 .env
