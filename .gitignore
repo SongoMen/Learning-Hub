@@ -66,3 +66,4 @@ tags
 [._]*.un~
 
 .env
+.travis.yml
