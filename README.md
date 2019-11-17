@@ -14,7 +14,7 @@ Technologie stack:
 * React
 * Firebase
 * react-router
-* node-sass
+* Sass
 * Jest
 <br>
 Note: This repository doesn't contain file named "auth.js" where are sensitive informations like api keys.
