@@ -456,8 +456,8 @@ class Panel extends React.Component {
       .then(snapshot => {
         if (typeof snapshot.data() !== "undefined") {
           if (nextMonth)
-            stats.styles.push("-1 " + date + " " + snapshot.data()["style"]);
-          else stats.styles.push(date + " " + snapshot.data()["style"]);
+            stats.styles.push(`-1 ${date} ${snapshot.data()["style"]}`);
+          else stats.styles.push(`${date} ${snapshot.data()["style"]}`);
           stats.styles.sort();
         }
       });
