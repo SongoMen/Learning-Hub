@@ -879,7 +879,6 @@ class Panel extends React.Component {
                 <h5>TIME SPENT ON LEARNING</h5>
                 <select
                   value={this.state.selectValue}
-                  ref={select => (this.select = select)}
                   onChange={this.changeWeek.bind(this)}
                   className="Panel__selectWeek"
                 >
