@@ -429,8 +429,8 @@ class Panel extends React.Component {
           this.getCourseStyle(doc.id, date, nextMonth);
           if (doc.exists === true) {
             sum += doc.data()["time"];
-            stats.names.push(date + " " + doc.id);
-            stats[date + " " + doc.id] = doc.data()["time"];
+            stats.names.push(`${date} ${doc.id});
+            stats[`${date} ${doc.id}] = doc.data()["time"];
           } else {
             stats.time.push(0);
           }
