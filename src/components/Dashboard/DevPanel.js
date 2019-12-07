@@ -241,7 +241,7 @@ class DevPanel extends React.Component {
 
   render() {
     return (
-      <div className={"DevPanel " + this.state.width} id="DevPanel">
+      <div className={`${DevPanel} this.state.width`} id="DevPanel">
         {!this.state.loaded ? (
           <Loader />
         ) : (
@@ -269,7 +269,7 @@ class DevPanel extends React.Component {
                       <div
                         key={indx}
                         className={
-                          "courses__box " + courses.style[parseInt(indx)]
+                          `courses__box ${courses.style[parseInt(indx)}`]
                         }
                         onClick={() => {
                           this.courseView(indx);
