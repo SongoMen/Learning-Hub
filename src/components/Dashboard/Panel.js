@@ -101,11 +101,7 @@ class Panel extends React.Component {
             stats.styles.map((val2, indx2) => {
               if (
                 (stats.fullDates[parseInt(indx)] ===
-                  val2.split(" ")[0] +
-                    " " +
-                    val2.split(" ")[1] +
-                    " " +
-                    val2.split(" ")[2] ||
+                  `${val2.split(" ")[0]} ${val2.split(" ")[1]} ${val2.split(" ")[2]}` ||
                   stats.fullDates[parseInt(indx)] ===
                     val2.split(" ")[1] +
                       " " +
