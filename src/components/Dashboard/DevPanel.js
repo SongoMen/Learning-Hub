@@ -269,7 +269,7 @@ class DevPanel extends React.Component {
                       <div
                         key={indx}
                         className={
-                          `courses__box ${courses.style[parseInt(indx)}`]
+                          `courses__box ${courses.style[parseInt(indx)]}`
                         }
                         onClick={() => {
                           this.courseView(indx);
