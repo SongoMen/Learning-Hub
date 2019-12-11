@@ -2,6 +2,7 @@
   "name": "learning-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://learning-a4a51.web.app/",
   "dependencies": {
     "codacy-coverage": "^3.4.0",
     "date-and-time": "^0.10.0",

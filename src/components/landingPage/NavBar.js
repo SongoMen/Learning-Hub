@@ -26,7 +26,7 @@ const NavBar = props => {
     };
   }, []);
   return (
-    <div className="NavBar">
+    <nav className="NavBar">
       <Logo class="NavBar__logo" />
       {typeof props.menu === "undefined" && (
         <div className="NavBar__menu">
@@ -50,7 +50,7 @@ const NavBar = props => {
           )}
         </div>
       )}
-    </div>
+    </nav>
   );
 };
 

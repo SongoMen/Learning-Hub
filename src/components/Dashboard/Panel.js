@@ -76,7 +76,7 @@ let stats = {
 
 function QuickstartPanel(props) {
 	return (
-		<Link to={props.url}>
+		<Link aria-label="Your last started course" to={props.url}>
 		<div>
 		<h5>QUICKSTART</h5>
 		<div className="title">
@@ -867,7 +867,9 @@ class Panel extends React.Component {
 				<div className="Panel__days">
 				<div className="title">
 				<h5>TIME SPENT ON LEARNING</h5>
-				<select
+				<label htmlFor="select"></label>
+                <select
+                name="select"
 				value={this.state.selectValue}
 				onChange={this.changeWeek.bind(this)}
 				className="Panel__selectWeek"
