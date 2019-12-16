@@ -15,14 +15,6 @@ const mapStateToProps = state => ({
 });
 
 class Dashboard extends React.Component {
-  _isMounted = false;
-
-  componentWillUnmount() {
-    this._isMounted = false;
-  }
-  componentDidMount() {
-    this._isMounted = true;
-  }
 
   render() {
     return (
