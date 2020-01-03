@@ -8,6 +8,9 @@ import parse from "html-react-parser";
 import Loader from "../elements/Loader";
 import TopPanel from "./TopPanel";
 import { lessonsRef } from "../_helpers";
+import { ReactComponent as Refresh } from "../../svgs/refresh.svg";
+import { ReactComponent as X } from "../../svgs/x.svg";
+
 let status;
 
 const mapStateToProps = state => ({
@@ -268,9 +271,9 @@ class DevPanel extends React.Component {
                     return (
                       <div
                         key={indx}
-                        className={
-                          `courses__box ${courses.style[parseInt(indx)]}`
-                        }
+                        className={`courses__box ${
+                          courses.style[parseInt(indx)]
+                        }`}
                         onClick={() => {
                           this.courseView(indx);
                         }}
@@ -306,43 +309,16 @@ class DevPanel extends React.Component {
         )}
         {this.state.edit && (
           <div className="DevPanel__edit">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="button refresh"
+            <Refresh
               onClick={() => {
                 this.loadAllLessonsFromCourse(this.state.courseName);
               }}
-            >
-              <polyline points="23 4 23 10 17 10"></polyline>
-              <polyline points="1 20 1 14 7 14"></polyline>
-              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-            </svg>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="button x"
-              viewBox="0 0 24 24"
+            ></Refresh>
+            <X
               onClick={() => {
                 if (this._isMounted) this.setState({ edit: false });
               }}
-            >
-              <path d="M18 6L6 18" />
-              <path d="M6 6L18 18" />
-            </svg>
+            />
             <div className="DevPanel__lessons">
               {lessons.name.map((val, indx) => (
                 <div
@@ -383,25 +359,12 @@ class DevPanel extends React.Component {
         )}
         {this.state.showLesson && !this.state.addNewLesson && !this.state.edit && (
           <div className="DevPanel__lessonContent">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="button x"
-              viewBox="0 0 24 24"
+            <X
               onClick={() => {
                 if (this._isMounted)
-                  this.setState({ edit: true, showLesson: false });
+                  this.setState({ edit: false, showLesson: false });
               }}
-            >
-              <path d="M18 6L6 18" />
-              <path d="M6 6L18 18" />
-            </svg>
+            />
             {!this.state.lessonLoader && (
               <div className="DevPanel__lessonText">
                 <h2> {parse(String(content.title[parseInt(0)]))}</h2>
@@ -412,17 +375,7 @@ class DevPanel extends React.Component {
         )}
         {this.state.addNewLesson && !this.state.showLesson && !this.state.edit && (
           <div className="DevPanel__lessonContent">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="button x"
-              viewBox="0 0 24 24"
+            <X
               onClick={() => {
                 if (this._isMounted)
                   this.setState({
@@ -431,10 +384,7 @@ class DevPanel extends React.Component {
                     addNewLesson: false
                   });
               }}
-            >
-              <path d="M18 6L6 18" />
-              <path d="M6 6L18 18" />
-            </svg>
+            />
             <div className="DevPanel__lessonText new">
               <input
                 type="text"

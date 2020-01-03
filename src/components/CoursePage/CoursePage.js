@@ -10,6 +10,9 @@ import { Link } from "react-router-dom";
 import ErrorMessage from "../elements/ErrorMessage";
 import { lessonsRef } from "../_helpers";
 
+import { ReactComponent as Tick } from "../../svgs/tick.svg";
+import { ReactComponent as Arrow } from "../../svgs/arrow.svg";
+
 const mapStateToProps = state => ({
   ...state
 });
@@ -212,34 +215,10 @@ class CoursePage extends React.Component {
                     {this.state.completedLessons
                       .split(",")
                       .indexOf(lessons.id[parseInt(indx)]) > -1 && (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        x="0"
-                        y="0"
-                        enableBackground="new 0 0 512 512"
-                        version="1.1"
-                        viewBox="0 0 512 512"
-                        xmlSpace="preserve"
-                      >
-                        <path d="M504.502 75.496c-9.997-9.998-26.205-9.998-36.204 0L161.594 382.203 43.702 264.311c-9.997-9.998-26.205-9.997-36.204 0-9.998 9.997-9.998 26.205 0 36.203l135.994 135.992c9.994 9.997 26.214 9.99 36.204 0L504.502 111.7c9.998-9.997 9.997-26.206 0-36.204z"></path>
-                      </svg>
+                        <Tick/>
                     )}
                   </div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="lessons__arrow"
-                  >
-                    <line x1="0" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
+<Arrow/>
                 </div>
               </Link>
             ))}

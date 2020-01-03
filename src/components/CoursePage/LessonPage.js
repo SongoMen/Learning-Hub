@@ -10,6 +10,8 @@ import { Redirect } from "react-router-dom";
 import date from "date-and-time";
 import ErrorMessage from "../elements/ErrorMessage";
 import { lessonsRef } from "../_helpers";
+import { ReactComponent as ArrowBackwards } from "../../svgs/lessonArrow.svg";
+import { ReactComponent as Arrow } from "../../svgs/lessonArrow2.svg";
 
 const mapStateToProps = state => ({
   ...state
@@ -366,39 +368,11 @@ class LessonPage extends React.Component {
         {this.state.loader !== "error" && !this.state.loader && (
           <div className="LessonPage__controls">
             <div className="LessonPage__option">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                className="backwards"
-                viewBox="0 0 24 24"
-              >
-                <path d="M19 12L5 12"></path>
-                <path d="M12 19L5 12 12 5"></path>
-              </svg>
+<ArrowBackwards/>
               <h5>Previous lesson</h5>
             </div>
             <div className="LessonPage__option">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                className="forward"
-              >
-                <path d="M5 12L19 12"></path>
-                <path d="M12 5L19 12 12 19"></path>
-              </svg>
+<Arrow/>
               <h5>Next lesson</h5>
             </div>
           </div>
