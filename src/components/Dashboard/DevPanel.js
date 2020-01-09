@@ -244,7 +244,7 @@ class DevPanel extends React.Component {
 
   render() {
     return (
-      <div className={`${DevPanel} this.state.width`} id="DevPanel">
+      <div className={`DevPanel ${this.state.width}`} id="DevPanel">
         {!this.state.loaded ? (
           <Loader />
         ) : (
