@@ -17,4 +17,4 @@ Technologie stack:
 * Sass
 * Jest
 <br>
-Note: This repository doesn't contain file named "auth.js" where are sensitive informations like api keys.
+Note: This repository doesn't contain file named "auth.js" where are sensitive informations like api keys. Soon I will add template of this file.
