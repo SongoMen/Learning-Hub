@@ -2,9 +2,6 @@
     width: 100%
     height: 100%
     padding: 20px
-    svg:last-child
-      width: 20%
-      fill: white
     &__banner
       display: flex
       justify-content: center
@@ -12,11 +9,24 @@
       flex-direction: column
       color: white
       height: 90%
+      z-index: 1
+      position: relative
+      h1
+        z-index: 1
     &__buttons
       width: 100%
       display: flex
       justify-content: center
       align-items: center
+      z-index: 1
       .form-btn
         width: 10%
         margin: 10px 20px
+    & .logo
+      stroke: $panelColor
+      width: 100%
+      height: 100%
+      position: absolute
+      z-index: 0
+      opacity: .5
+      user-select: none
