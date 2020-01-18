@@ -2,6 +2,7 @@ import React from "react";
 import { withRouter, NavLink } from "react-router-dom";
 import firebase from "firebase/app";
 import "firebase/firestore";
+import parse from "html-react-parser";
 import { Logo } from "../_helpers";
 import { ReactComponent as DashboardIcon } from "../../svgs/dashboardIcon.svg";
 import { ReactComponent as CoursesIcon } from "../../svgs/coursesIcon.svg";
@@ -16,12 +17,25 @@ class Leftbar extends React.Component {
   constructor() {
     super();
     this.state = {
-      loaded: false
+      loaded: false,
+      svg: ""
     };
   }
   componentDidMount() {
     this._isMounted = true;
+
     let user = firebase.auth().currentUser.uid;
+    if (typeof window.location.href.split("/")[4] !== "undefined") {
+      db.collection("courses")
+        .doc(window.location.href.split("/")[4].replace(/%20/gi, " "))
+        .get()
+        .then(snapshot => {
+          if (this._isMounted && typeof snapshot.data() !== "undefined")
+            this.setState({
+              svg: snapshot.data()["svg"]
+            });
+        });
+    }
 
     db.collection("users")
       .doc(user)
@@ -66,6 +80,14 @@ class Leftbar extends React.Component {
             <li className="Leftbar__dev">
               <NavLink to="/devpanel" aria-label="Dev panel">
                 <DevIcon />
+                <h4>Dev Panel</h4>
+              </NavLink>
+            </li>
+          )}
+          {this.state.svg !== "" && (
+            <li className="Leftbar__course active">
+              <NavLink to={`/course/${window.location.href.split("/")[4].replace(/%20/gi, " ")}`} aria-label="Course">
+                {parse(this.state.svg)}
                 <h4>Dev Panel</h4>
               </NavLink>
             </li>
