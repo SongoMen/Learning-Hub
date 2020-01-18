@@ -30,6 +30,9 @@
     "eject": "react-scripts eject",
     "test:watch": "npm run test -- --watch"
   },
+  "engines": {
+    "node": "8"
+    },
   "eslintConfig": {
     "extends": "react-app"
   },
