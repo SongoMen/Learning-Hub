@@ -41,6 +41,7 @@ class Register extends Component {
     this._isMounted = false;
   }
   handleClickRegisterUser(e) {
+    e.preventDefault();
     var re = /^(([^<>()\\.,;:\s@"]+(\.[^<>()\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (this._isMounted) {
       this.setState({
@@ -48,7 +49,7 @@ class Register extends Component {
       });
     }
     if (
-      this.state.password.length > 6 &&
+      this.state.password.length >= 6 &&
       re.test(String(this.state.email).toLowerCase()) &&
       this.state.loading !== true
     ) {
@@ -65,7 +66,7 @@ class Register extends Component {
         .catch(() => {
           if (this._isMounted) {
             this.setState({
-              msg: "Error",
+              msg: "This email i already registered.",
               loading: false
             });
           }
@@ -82,7 +83,7 @@ class Register extends Component {
     if (re.test(String(this.state.email).toLowerCase()) === false) {
       if (this._isMounted) {
         this.setState({
-          msg: "wrong email adress",
+          msg: "Wrong email adress",
           loading: false
         });
       }
@@ -119,7 +120,7 @@ class Register extends Component {
             <br />
             <div>
               <button
-                type="button"
+                type="submit"
                 className="form-btn"
                 onClick={event =>
                   this.handleClickRegisterUser(event, this.props.role)
@@ -129,6 +130,7 @@ class Register extends Component {
               </button>
             </div>
           </form>
+          {this.state.msg}
           <h4 className="underForm bottom">
             Already have an account?
             <Link to="login">

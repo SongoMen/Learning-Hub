@@ -244,7 +244,7 @@ class DevPanel extends React.Component {
 
   render() {
     return (
-      <div className={`DevPanel ${this.state.width}`} id="DevPanel">
+      <section className={`Dev-panel ${this.state.width}`} id="Dev-panel">
         {!this.state.loaded ? (
           <Loader />
         ) : (
@@ -252,9 +252,9 @@ class DevPanel extends React.Component {
           !this.state.edit &&
           !this.state.showLesson &&
           !this.state.addNewLesson && (
-            <div className="DevPanel__content">
+            <div className="Dev-panel__content">
               <TopPanel name="Dev Panel" />
-              <div className="DevPanel__topNav">
+              <div className="Dev-panel__topNav">
                 <button
                   onClick={() => this.props.setPopupDev()}
                   type="button"
@@ -263,52 +263,54 @@ class DevPanel extends React.Component {
                   CREATE NEW COURSE
                 </button>
               </div>
-              <div className="DevPanel__list">
+              <div className="Dev-panel__list">
                 <h2>Courses</h2>
                 {this.state.courses === 0 && <h3>No courses available.</h3>}
-                {this.state.courses > 0 &&
-                  courses.name.map((val, indx) => {
-                    return (
-                      <div
-                        key={indx}
-                        className={`courses__box ${
-                          courses.style[parseInt(indx)]
-                        }`}
-                        onClick={() => {
-                          this.courseView(indx);
-                        }}
-                      >
-                        {parse(courses.svg[parseInt(indx)])}
-                        <div className="courses__info">
-                          <h5>
-                            Total lessons: {courses.length[parseInt(indx)]}
-                          </h5>
-                          <h4>{val}</h4>
-                        </div>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="courses__arrow"
+                <div className="Dev-panel__all">
+                  {this.state.courses > 0 &&
+                    courses.name.map((val, indx) => {
+                      return (
+                        <div
+                          key={indx}
+                          className={`courses__box ${
+                            courses.style[parseInt(indx)]
+                          }`}
+                          onClick={() => {
+                            this.courseView(indx);
+                          }}
                         >
-                          <line x1="0" y1="12" x2="19" y2="12"></line>
-                          <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                      </div>
-                    );
-                  })}
+                          {parse(courses.svg[parseInt(indx)])}
+                          <div className="courses__info">
+                            <h5>
+                              Total lessons: {courses.length[parseInt(indx)]}
+                            </h5>
+                            <h4>{val}</h4>
+                          </div>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="courses__arrow"
+                          >
+                            <line x1="0" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                          </svg>
+                        </div>
+                      );
+                    })}
+                </div>
               </div>
             </div>
           )
         )}
         {this.state.edit && (
-          <div className="DevPanel__edit">
+          <div className="Dev-panel__edit">
             <Refresh
               onClick={() => {
                 this.loadAllLessonsFromCourse(this.state.courseName);
@@ -319,11 +321,11 @@ class DevPanel extends React.Component {
                 if (this._isMounted) this.setState({ edit: false });
               }}
             />
-            <div className="DevPanel__lessons">
+            <div className="Dev-panel__lessons">
               {lessons.name.map((val, indx) => (
                 <div
                   key={indx}
-                  className="DevPanel__lesson"
+                  className="Dev-panel__lesson"
                   onClick={() =>
                     this.loadLessonContent(lessons.id[parseInt(indx)], indx)
                   }
@@ -358,7 +360,7 @@ class DevPanel extends React.Component {
           </div>
         )}
         {this.state.showLesson && !this.state.addNewLesson && !this.state.edit && (
-          <div className="DevPanel__lessonContent">
+          <div className="Dev-panel__lessonContent">
             <X
               onClick={() => {
                 if (this._isMounted)
@@ -366,7 +368,7 @@ class DevPanel extends React.Component {
               }}
             />
             {!this.state.lessonLoader && (
-              <div className="DevPanel__lessonText">
+              <div className="Dev-panel__lessonText">
                 <h2> {parse(String(content.title[parseInt(0)]))}</h2>
                 <p> {parse(String(content.content[parseInt(0)]))}</p>
               </div>
@@ -374,7 +376,7 @@ class DevPanel extends React.Component {
           </div>
         )}
         {this.state.addNewLesson && !this.state.showLesson && !this.state.edit && (
-          <div className="DevPanel__lessonContent">
+          <div className="Dev-panel__lessonContent">
             <X
               onClick={() => {
                 if (this._isMounted)
@@ -385,7 +387,7 @@ class DevPanel extends React.Component {
                   });
               }}
             />
-            <div className="DevPanel__lessonText new">
+            <div className="Dev-panel__lessonText new">
               <input
                 type="text"
                 placeholder="Title"
@@ -409,7 +411,7 @@ class DevPanel extends React.Component {
           </div>
         )}
         {this.props.popupDev === true && <PopupDev />}
-      </div>
+      </section>
     );
   }
 }
