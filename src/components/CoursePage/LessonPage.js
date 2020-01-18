@@ -368,11 +368,11 @@ class LessonPage extends React.Component {
         {this.state.loader !== "error" && !this.state.loader && (
           <div className="LessonPage__controls">
             <div className="LessonPage__option">
-<ArrowBackwards/>
+              <ArrowBackwards />
               <h5>Previous lesson</h5>
             </div>
             <div className="LessonPage__option">
-<Arrow/>
+              <Arrow />
               <h5>Next lesson</h5>
             </div>
           </div>
