@@ -2,27 +2,27 @@
     width: 100%
     height: 100%
     padding: 20px
-    &__link
-      width: 10%
-      margin: 10px 20px
-    &__banner
-      @include flex1
-      flex-direction: column
-      color: white
-      height: 90%
-      z-index: 1
-      position: relative
-      .logo
-        stroke: $panelColor
-        width: 100%
-        height: 100%
-        position: absolute
-        z-index: 0
-        opacity: .5
-        user-select: none
-      h1
-        z-index: 1
-    &__buttons
-      width: 100%
-      @include flex1
-      z-index: 1
+.Banner
+  @include flex1
+  flex-direction: column
+  color: white
+  height: 90%
+  z-index: 1
+  position: relative
+  &__link
+    width: 10%
+    margin: 10px 20px
+  .logo
+    stroke: $panelColor
+    width: 100%
+    height: 100%
+    position: absolute
+    z-index: 0
+    opacity: .5
+    user-select: none
+  h1
+    z-index: 1
+  &__buttons
+    width: 100%
+    @include flex1
+    z-index: 1
