@@ -225,6 +225,7 @@
     justify-content: flex-start
     align-items: center
     position: relative
+    user-select: none
     @media only screen and (max-width: 1500px) 
         padding: 20px 30px
     @media only screen and (max-width: 1300px) 
@@ -243,9 +244,11 @@
     h2
         color: $primaryColor
         margin: 0
+        user-select: none
     .left
         h4
             margin-bottom: 0
+            user-select: none
         h4:nth-child(3)
             margin: 0
     h4 b

@@ -17,37 +17,92 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Topbar extends React.Component {
+  _isMounted = false;
+
+  constructor() {
+    super();
+    this.state = {
+      isSearchActive: false
+    };
+    this.searchbar = React.createRef();
+    this.searchbarText = React.createRef();
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   handleBarChange() {
     status = this.props.rightBar ? false : true;
     this.props.changeRightBar();
   }
-  handleSearch(){
-    console.log("jd")
+
+  handleSearch() {
+    let searchbarClass = this.searchbar.current.classList;
+    if (searchbarClass.contains("active")) {
+      searchbarClass.remove("active");
+      if (this._isMounted) {
+        this.setState({
+          isSearchActive: false
+        });
+      }
+    } else {
+      searchbarClass.add("active");
+      if (this._isMounted) {
+        this.setState({
+          isSearchActive: true
+        });
+      }
+    }
   }
 
   render() {
     return (
-      <div className="Topbar__title">
+      <div className="Topbar">
+        <div className="Topbar__searchbar" ref={this.searchbar}>
+          <input type="text" className="Topbar__searchInput"></input>
+        </div>
         <h3>{this.props.name}</h3>
         <div className="Topbar__time">
           <h4 className="Topbar__date">{formatDate}</h4>
-          <div className=""></div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            className="button first"
-            viewBox="0 0 24 24"
-            onClick={()=>this.handleSearch()}
-          >
-            <circle cx="11" cy="11" r="8" />
-            <path d="M21 21L16.65 16.65" />
-          </svg>
+          {!this.state.isSearchActive ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              className="button first"
+              viewBox="0 0 24 24"
+              onClick={() => this.handleSearch()}
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="M21 21L16.65 16.65" />
+            </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              className="button first"
+              viewBox="0 0 24 24"
+              onClick={() => this.handleSearch()}
+            >
+              <path d="M18 6L6 18" />
+              <path d="M6 6L18 18" />
+            </svg>
+          )}
           {this.props.rightBar ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +143,4 @@ class Topbar extends React.Component {
     );
   }
 }
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Topbar);
+export default connect(mapStateToProps, mapDispatchToProps)(Topbar);
