@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import ordinal from "ordinal";
 import "firebase/firestore";
 import humanizeDuration from "humanize-duration";
-import TopPanel from "./TopPanel";
+import TopPanel from "./Topbar";
 import date from "date-and-time";
 import ErrorMessage from "../elements/ErrorMessage";
 import CourseWrapper from "../elements/CourseWrapper";

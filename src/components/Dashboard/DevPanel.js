@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import PopupDev from "../elements/PopupDev";
 import parse from "html-react-parser";
 import Loader from "../elements/Loader";
-import TopPanel from "./TopPanel";
+import TopPanel from "./Topbar";
 import { lessonsRef } from "../_helpers";
 import { ReactComponent as Refresh } from "../../svgs/refresh.svg";
 import { ReactComponent as X } from "../../svgs/x.svg";

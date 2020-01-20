@@ -4,7 +4,7 @@ import { changeRightBar } from "../../actions/actionsPanel";
 import { connect } from "react-redux";
 import Loader from "../elements/Loader";
 import firebase from "firebase/app";
-import TopPanel from "./TopPanel";
+import TopPanel from "./Topbar";
 import ErrorMessaage from "../elements/ErrorMessage";
 import CourseWrapper from "../elements/CourseWrapper";
 
