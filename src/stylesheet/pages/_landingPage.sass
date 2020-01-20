@@ -2,10 +2,11 @@
     width: 100%
     height: 100%
     padding: 20px
+    &__link
+      width: 10%
+      margin: 10px 20px
     &__banner
-      display: flex
-      justify-content: center
-      align-items: center
+      @include flex1
       flex-direction: column
       color: white
       height: 90%
@@ -23,10 +24,5 @@
         z-index: 1
     &__buttons
       width: 100%
-      display: flex
-      justify-content: center
-      align-items: center
+      @include flex1
       z-index: 1
-      .form-btn
-        width: 10%
-        margin: 10px 20px

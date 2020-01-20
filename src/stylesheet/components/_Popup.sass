@@ -29,9 +29,7 @@
   height: 50%
   width: 50%
   &__content
-    display: flex
-    justify-content: center
-    align-items: center
+    @include flex1
     flex-direction: column
     height: 100%
   .form-btn
@@ -53,9 +51,7 @@
     background-color: $primaryColorbg
     cursor: pointer
     border-radius: 10px
-    display: flex
-    justify-content: center
-    align-items: center
+    @include flex1
     .preview
       width: 150px
       height: 150px

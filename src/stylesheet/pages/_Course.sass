@@ -19,9 +19,7 @@
     background-color: $panelColor
     transition: width .3s
     height: 100%
-    display: flex
-    justify-content: center
-    align-items: center
+    @include flex1
     flex-direction: column
     position: relative
     @media only screen and (max-width: 600px) 
@@ -32,9 +30,7 @@
         overflow-y: auto
         overflow-x: hidden
         width: 70%
-        display: flex
-        flex-direction: column
-        align-items: center
+        @include flex1
         height: 100%
         margin-top: 40px
         @media only screen and (max-width: 700px) 
@@ -42,9 +38,7 @@
         a:first-child
             margin-top: 90px
     &__error
-        display: flex
-        justify-content: center
-        align-items: center
+        @include flex1
         flex-direction: column
         width: 100%
         height: 100%
@@ -79,9 +73,7 @@
             position: absolute
     &__course
         width: 100%
-        display: flex
-        justify-content: center
-        align-items: center
+        @include flex1
         position: absolute
         top: 0
         @media only screen and (max-width: 500px) 
@@ -109,9 +101,7 @@
             padding: 5px 5px
             width: 100%
         div
-            display: flex
-            justify-content: space-between
-            align-items: center
+            @include flex1
             div
                 svg
                     width: 35px
