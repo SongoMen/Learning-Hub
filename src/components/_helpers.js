@@ -6,7 +6,7 @@ import { ReactComponent as LogoSvg } from "../svgs/logo.svg";
 
 export function Logo(props) {
   return (
-    <Link to={typeof props.link === "undefined" ? "/" : ""}>
+    <Link to={typeof props.link === "undefined" ? "/" : "/dashboard"}>
       <div className={props.class}>
         <LogoSvg />
         <h3>Learning Hub</h3>

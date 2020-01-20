@@ -10,7 +10,7 @@ const NavBar = props => {
     firebaseAuth().onAuthStateChanged(user => {
       if (user && isMounted) {
         setUser(true);
-      } else if(isMounted){
+      } else if (isMounted) {
         setUser(false);
       }
     });
@@ -26,26 +26,26 @@ const NavBar = props => {
     };
   }, []);
   return (
-    <nav className="NavBar">
-      <Logo class="NavBar__logo" />
+    <nav className="Nav-bar">
+      <Logo class="Nav-bar__logo" />
       {typeof props.menu === "undefined" && (
-        <div className="NavBar__menu">
+        <div className="Nav-bar__menu">
           {!logged ? (
             <ul>
               <li>
-                <Link to="/login" className="form-btn">
-                  Login
+                <Link to="/login" className="Nav-bar__link">
+                  <button className="form-btn">Login</button>
                 </Link>
               </li>
               <li>
-                <Link to="/register" className="form-btn">
-                  Register
+                <Link to="/register" className="Nav-bar__link">
+                  <button className="form-btn">Register</button>
                 </Link>
               </li>
             </ul>
           ) : (
-            <Link to="/dashboard" className="form-btn">
-              Dashboard
+            <Link to="/dashboard" className="Nav-bar__link">
+              <button className="form-btn">Dashboard</button>
             </Link>
           )}
         </div>
