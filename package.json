@@ -13,6 +13,7 @@
     "jest": "^24.9.0",
     "node-sass": "^4.13.1",
     "npm": "^6.13.6",
+    "nyc": "^15.0.0",
     "ordinal": "^1.0.3",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
@@ -28,7 +29,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --coverage",
     "eject": "react-scripts eject",
-    "test:watch": "npm run test -- --watch"
+    "test:watch": "npm run test -- --watch",
+    "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov --token=a1e8d0fa-3743-4fe9-9057-55c8e244f1f7"
   },
   "engines": {
     "node": "8"
@@ -37,7 +39,11 @@
     "extends": "react-app"
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -48,6 +54,5 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "react-test-renderer": "^16.11.0"
-  },
-  "snyk": true
+  }
 }

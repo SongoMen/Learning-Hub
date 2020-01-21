@@ -67,3 +67,5 @@ tags
 
 .env
 .travis.yml
+.nyc_output
+coverage.lcov
