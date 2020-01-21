@@ -1,9 +1,0 @@
-language:
-  node_js
-install:
-  - npm install -g codecov
-script:
-  - istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
-  - codecov
-
-#codecov -f coverage/clover.xml -t a1e8d0fa-3743-4fe9-9057-55c8e244f1f7
