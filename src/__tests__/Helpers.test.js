@@ -10,14 +10,4 @@ describe("Test helpers", () => {
     let tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
-  test("logo renders correctly", () => {
-    const component = renderer.create(<Router><helpers.Logo/></Router>);
-    let tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
-  });
-  test("mask renders correctly", () => {
-    const component = renderer.create(<Router><helpers.Mask/></Router>);
-    let tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
-  });
 });

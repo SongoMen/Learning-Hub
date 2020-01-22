@@ -26,12 +26,7 @@ export function Mask() {
   );
 }
 export function Input(props) {
-  const childRef = React.useRef(null);
-
-  React.useEffect(() => {
-    props.handleRef(childRef.current.value);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const childRef = React.useRef();
   return (
     <input
       className="input"
