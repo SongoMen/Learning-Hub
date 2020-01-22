@@ -69,3 +69,5 @@ tags
 .travis.yml
 .nyc_output
 coverage.lcov
+__snapshots__/
+
