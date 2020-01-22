@@ -16,4 +16,33 @@ Technologie stack:
 * Sass
 * Jest
 <br>
-Note: This repository doesn't contain file named "auth.js" where are sensitive informations like api keys. Soon I will add template of this file.
+
+## Running
+1. Create file firebaseAuth.js inside components directory with your firebase informations:
+
+```
+// firebaseAuth.js file template
+
+const config = {
+  apiKey: "XXX",
+  authDomain: "XXX",
+  databaseURL: "XXX",
+  projectId: "XXX",
+  storageBucket: "XXX",
+  messagingSenderId: "XXX",
+  appId: "XXX",
+  measurementId: "XXX"
+};
+
+export default config;
+```
+2. Install required modules:
+```
+$ npm install
+```
+3. Start application:
+```
+$ npm start
+```
+4. Open web browser to: http://localhost:3000/
+
