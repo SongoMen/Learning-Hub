@@ -14,7 +14,7 @@ import Register from "./Register/Register";
 import Dashboard from "./Dashboard/Dashboard";
 import CourseContainer from "./CoursePage/CourseContainer";
 import Page404 from "./404page/404";
-
+import ErrorBoundary from "../ErrorBoundary";
 function PrivateRoute({ component: Component, authed, ...rest }) {
   return (
     <Route
@@ -81,53 +81,55 @@ class App extends Component {
     return this.state.loading ? (
       <Loader />
     ) : (
-      <Router>
-        <div className="container">
-          <Switch>
-            <Route exact path="/" component={LandingPage} />
-            <PublicRoute
-              authed={this.state.authed}
-              path="/login"
-              component={Login}
-            />
-            <PublicRoute
-              authed={this.state.authed}
-              path="/register"
-              component={Register}
-            />
-            <PrivateRoute
-              authed={this.state.authed}
-              path="/dashboard"
-              component={Dashboard}
-            />
-            <PrivateRoute
-              authed={this.state.authed}
-              path="/courses"
-              component={Dashboard}
-            />
-            <PrivateRoute
-              authed={this.state.authed}
-              path="/devpanel"
-              component={Dashboard}
-            />
-            <PrivateRoute
-              authed={this.state.authed}
-              path="/course/:name"
-              component={CourseContainer}
-              exact
-              name={window.location.pathname.split("/")[2]}
-            />
-            <PrivateRoute
-              authed={this.state.authed}
-              path="/course/:name/:id"
-              exact
-              component={CourseContainer}
-              id={window.location.pathname.split("/")[3]}
-            />
-            <Route component={Page404} />
-          </Switch>
-        </div>
-      </Router>
+      <ErrorBoundary>
+        <Router>
+          <div className="container">
+            <Switch>
+              <Route exact path="/" component={LandingPage} />
+              <PublicRoute
+                authed={this.state.authed}
+                path="/login"
+                component={Login}
+              />
+              <PublicRoute
+                authed={this.state.authed}
+                path="/register"
+                component={Register}
+              />
+              <PrivateRoute
+                authed={this.state.authed}
+                path="/dashboard"
+                component={Dashboard}
+              />
+              <PrivateRoute
+                authed={this.state.authed}
+                path="/courses"
+                component={Dashboard}
+              />
+              <PrivateRoute
+                authed={this.state.authed}
+                path="/devpanel"
+                component={Dashboard}
+              />
+              <PrivateRoute
+                authed={this.state.authed}
+                path="/course/:name"
+                component={CourseContainer}
+                exact
+                name={window.location.pathname.split("/")[2]}
+              />
+              <PrivateRoute
+                authed={this.state.authed}
+                path="/course/:name/:id"
+                exact
+                component={CourseContainer}
+                id={window.location.pathname.split("/")[3]}
+              />
+              <Route component={Page404} />
+            </Switch>
+          </div>
+        </Router>
+      </ErrorBoundary>
     );
   }
 }

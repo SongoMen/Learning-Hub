@@ -8,7 +8,7 @@ const db = firebase.firestore();
 
 export function Logo(props) {
   return (
-    <Link key={1} to={typeof props.link === "undefined" ? "/" : "/dashboard"}>
+    <Link to={typeof props.link === "undefined" ? "/" : "/dashboard"}>
       <div className={props.class}>
         <LogoSvg />
         <h3>Learning Hub</h3>
