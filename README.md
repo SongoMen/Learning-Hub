@@ -17,7 +17,9 @@ Technologie stack:
 * Jest
 <br>
 
-## Running
+## Live version: https://learning-a4a51.web.app/
+ 
+## Running locally
 1. Create file firebaseAuth.js inside components directory with your firebase informations:
 
 ```
