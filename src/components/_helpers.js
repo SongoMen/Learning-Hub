@@ -30,11 +30,11 @@ export function Input(props) {
   return (
     <input
       className="input"
-      onChange={() => props.handleRef(childRef.current.value)}
       ref={childRef}
       type={props.type}
       name={props.name}
       required
+      onChange={() => props.handleRef(childRef.current.value)}
     />
   );
 }
