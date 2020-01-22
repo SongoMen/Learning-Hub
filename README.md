@@ -9,7 +9,7 @@
 Fast and easy learning platform where you can start courses and track your progress.  
   <br>
   
-Technologie stack: 
+Technology stack: 
 * React
 * Firebase
 * react-router
