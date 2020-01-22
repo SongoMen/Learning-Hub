@@ -1,6 +1,6 @@
 {
   "name": "learning-app",
-  "version": "0.1.0",
+  "version": "0.5.0",
   "private": true,
   "homepage": "https://learning-a4a51.web.app/",
   "dependencies": {
@@ -29,16 +29,21 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --coverage",
+    "test": "react-scripts test --coverage --watchAll",
     "eject": "react-scripts eject",
-    "test:watch": "npm run test --watch",
-    "report-coverage": "jest --config jestconfig.json && codecov --disable=gcov --token=a1e8d0fa-3743-4fe9-9057-55c8e244f1f7"
+    "test:watch": "npm run test --watch"
   },
   "engines": {
     "node": "8"
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!src/index.js"
+    ]
   },
   "browserslist": {
     "production": [

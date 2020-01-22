@@ -6,7 +6,25 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 describe("Test helpers", () => {
   test("input renders correctly", () => {
-    const component = renderer.create(<helpers.Input/>);
+    const component = renderer.create(<helpers.Input />);
+    let tree = component.toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+  test("mask renders correctly", () => {
+    const component = renderer.create(
+      <Router>
+        <helpers.Mask />
+      </Router>
+    );
+    let tree = component.toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+  test("Logo renders correctly", () => {
+    const component = renderer.create(
+      <Router>
+        <helpers.Logo />
+      </Router>
+    );
     let tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
