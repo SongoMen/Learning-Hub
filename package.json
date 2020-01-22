@@ -32,7 +32,7 @@
     "test": "react-scripts test --coverage",
     "eject": "react-scripts eject",
     "test:watch": "npm run test --watch",
-    "report-coverage": "jest --config jestconfig.json && codecov --token=a1e8d0fa-3743-4fe9-9057-55c8e244f1f7"
+    "report-coverage": "jest --config jestconfig.json && codecov --disable=gcov --token=a1e8d0fa-3743-4fe9-9057-55c8e244f1f7"
   },
   "engines": {
     "node": "8"
@@ -54,6 +54,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.8.3",
+    "@babel/polyfill": "^7.8.3",
     "@babel/preset-env": "^7.8.3",
     "@babel/preset-flow": "^7.8.3",
     "@babel/preset-react": "^7.8.3",
@@ -64,6 +66,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
+    "jest-transform-stub": "^2.0.0",
     "react-test-renderer": "^16.11.0"
   }
 }
