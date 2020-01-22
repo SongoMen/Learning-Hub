@@ -18,6 +18,7 @@ Technologie stack:
 <br>
 
 ## Live version: https://learning-a4a51.web.app/
+<br>
  
 ## Running locally
 1. Create file firebaseAuth.js inside components directory with your firebase informations:
