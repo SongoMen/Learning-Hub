@@ -4,9 +4,11 @@ import NavBar from "./LandingPage/NavBar";
 import firebase from "firebase/app";
 import { ReactComponent as LogoSvg } from "../svgs/logo.svg";
 
+const db = firebase.firestore();
+
 export function Logo(props) {
   return (
-    <Link to={typeof props.link === "undefined" ? "/" : "/dashboard"}>
+    <Link key={1} to={typeof props.link === "undefined" ? "/" : "/dashboard"}>
       <div className={props.class}>
         <LogoSvg />
         <h3>Learning Hub</h3>
@@ -41,8 +43,6 @@ export function Input(props) {
     />
   );
 }
-
-const db = firebase.firestore();
 
 export function lessonsRef(courseName) {
   return db

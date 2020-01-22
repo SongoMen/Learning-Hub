@@ -21,6 +21,7 @@ class Leftbar extends React.Component {
       svg: ""
     };
   }
+  
   componentDidMount() {
     this._isMounted = true;
 

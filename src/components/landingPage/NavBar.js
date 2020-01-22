@@ -27,7 +27,7 @@ const NavBar = props => {
   }, []);
   return (
     <nav className="Nav-bar">
-      <Logo class="Nav-bar__logo" />
+      <Logo class="Nav-bar__logo"/>
       {typeof props.menu === "undefined" && (
         <div className="Nav-bar__menu">
           {!logged ? (
