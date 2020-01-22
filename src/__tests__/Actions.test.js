@@ -18,11 +18,11 @@ describe("Panel actions", () => {
     expect(actions.setPopup(popup)).toEqual(expectedAction);
   });
   it("should create an action to hide/show dev popup", () => {
-    const popup = "true";
+    const popupDev = "true";
     const expectedAction = {
       type: actions.SET_POPUP_DEV,
-      payload: popup
+      payload: popupDev
     };
-    expect(actions.setPopupDev(popup)).toEqual(expectedAction);
+    expect(actions.setPopupDev(popupDev)).toEqual(expectedAction);
   });
 });
