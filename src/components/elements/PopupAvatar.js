@@ -22,13 +22,16 @@ class PopupAvatar extends React.Component {
       img: false,
       imgSrc: ""
     };
+    this.file = React.createRef()
+    this.preview = React.createRef()
+
   }
 
   upload() {
     if (this._isMounted && this.state.uploading === false) {
       let user = firebase.auth().currentUser.uid;
       var storageRef = firebase.storage().ref(user);
-      var file = document.getElementById("file").files[0];
+      var file = this.file.current.files[0];
 
       storageRef.put(file).then(function() {
         window.location.reload(false);
@@ -39,9 +42,9 @@ class PopupAvatar extends React.Component {
   showPreview() {
     var reader = new FileReader();
     reader.onload = function(e) {
-      document.getElementById("preview").src = e.target.result;
+      this.preview.current.src = e.target.result;
     };
-    reader.readAsDataURL(document.getElementById("file").files[0]);
+    reader.readAsDataURL(this.file.current.files[0]);
     if (this._isMounted) {
       this.setState({
         img: true
@@ -80,6 +83,7 @@ class PopupAvatar extends React.Component {
             <input
               type="file"
               id="file"
+              ref={this.file}
               onChange={() => {
                 this.showPreview();
               }}
@@ -88,7 +92,7 @@ class PopupAvatar extends React.Component {
             <div
               className="upload"
               onClick={() => {
-                document.getElementById("file").click();
+                this.file.current.click();
               }}
             >
               {this.state.img === false ? (
@@ -110,7 +114,7 @@ class PopupAvatar extends React.Component {
                   <path d="M9 15L15 15" />
                 </svg>
               ) : (
-                <img alt="preview" className="preview" id="preview"></img>
+                <img alt="preview" className="preview" ref={this.preview} id="preview"></img>
               )}
             </div>
             <h3>Upload profile picture</h3>
