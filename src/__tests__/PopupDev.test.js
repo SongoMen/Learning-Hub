@@ -1,21 +1,20 @@
-import Courses from "../components/Dashboard/Courses";
+import PopupDev from "../components/elements/PopupDev";
 import renderer from "react-test-renderer";
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { mount, shallow, configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import config from "../components/firebaseAuth";
-import * as firebase from "firebase/app";
+import configureStore from "../store";
+import { Provider } from "react-redux";
 
 configure({ adapter: new Adapter() });
-describe("Test courses page", () => {
-  test("site renders correctly", () => {
 
+describe("Test Register page", () => {
+  test("site renders correctly", () => {
     const component = renderer.create(
-      <Router>
-        {firebase.initializeApp(config)}
-        <Courses />
-      </Router>
+      <Provider store={configureStore()}>
+        <PopupDev />
+      </Provider>
     );
     let tree = component.toJSON();
     expect(tree).toMatchSnapshot();
