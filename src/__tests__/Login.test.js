@@ -17,14 +17,43 @@ describe("Test Login page", () => {
     let tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
-  test("loading is false on default", () => {
 
+  test("loading is false on default", () => {
     const wrapper = shallow(
       <Router>
-        <Login/>
+        <Login />
+      </Router>
+    );
+    const result = wrapper.find("Login").dive();
+    expect(result.state("loading")).toBe(false);
+  });
+
+  test("when button is clicked on click function is called and loading equals true", () => {
+    const wrapper = shallow(
+      <Router>
+        <Login />
       </Router>
     );
 
-    expect(wrapper.find("Login").dive().state("loading")).toBe(false);
+    const component = wrapper.find("Login").dive();
+    const button = component.find("button");
+    
+    component.setState({ email: "test", password: "test" });
+    button.simulate("click");
+
+    expect(component.state("loading")).toBe(true)
+  });
+
+  test("unmount function works", () => {
+    const wrapper = shallow(
+      <Router>
+        <Login />
+      </Router>
+    );
+    const component = wrapper.find("Login").dive();
+    const onUnmountSpy = jest.spyOn(component.instance(), "componentWillUnmount");
+
+    component.instance().componentWillUnmount()
+    expect(onUnmountSpy).toHaveBeenCalled()
   });
 });

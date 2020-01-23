@@ -11,7 +11,9 @@ export default class Login extends React.Component {
     super(props);
     this.state = {
       msg: "",
-      loading: false
+      loading: false,
+      password: "",
+      email: ""
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -28,8 +30,7 @@ export default class Login extends React.Component {
     });
   };
 
-  handleClick(e) {
-    e.preventDefault();
+  handleClick() {
     if (this.state.loading === false) {
       if (this._isMounted) {
         this.setState({
@@ -53,6 +54,7 @@ export default class Login extends React.Component {
           }
         });
     }
+    return false;
   }
 
   componentDidMount() {
@@ -62,7 +64,7 @@ export default class Login extends React.Component {
   componentWillUnmount() {
     this._isMounted = false;
   }
-  
+
   render() {
     return (
       <div className="Login">
@@ -73,7 +75,12 @@ export default class Login extends React.Component {
             <h1>Sign In</h1>
             <div className="form-line">
               <label htmlFor="email">Email</label>
-              <Input type="text" name="email" handleRef={this.handleRefEmail} />
+              <Input
+                className="email"
+                type="text"
+                name="email"
+                handleRef={this.handleRefEmail}
+              />
             </div>
             <br />
             <div className="form-line" data-validate="Password is required">
@@ -88,7 +95,7 @@ export default class Login extends React.Component {
             <br />
             <div>
               <button
-                type="submit"
+                type="button"
                 className="form-btn"
                 onClick={event => this.handleClick(event)}
               >
