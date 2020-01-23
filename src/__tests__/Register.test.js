@@ -68,9 +68,10 @@ describe("Test Register page", () => {
       </Router>
     );
     const component = wrapper.find("Register").dive();
-    const form = component.find("form").simulate("keypress", { key: "Enter" });
+    component.find("form").simulate("keypress", { key: "Enter" });
+
     setTimeout(() => {
-      expect(result.state("loading")).toBe(true);
+      expect(component.state("loading")).toBe(true);
     }, 0);
   });
 });
