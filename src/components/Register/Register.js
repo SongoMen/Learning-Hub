@@ -11,9 +11,13 @@ class Register extends Component {
     super(props);
     this.state = {
       msg: "",
-      loading: false
+      loading: false,
+      password: "",
+      username: "",
+      email: ""
     };
-    this.handleClickRegisterUser = this.handleClickRegisterUser.bind(this);
+    this.handleRegisterUser = this.handleRegisterUser.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   handleRefPassword = ref => {
@@ -34,14 +38,7 @@ class Register extends Component {
     });
   };
 
-  componentDidMount() {
-    this._isMounted = true;
-  }
-  componentWillUnmount() {
-    this._isMounted = false;
-  }
-  handleClickRegisterUser(e) {
-    e.preventDefault();
+  handleRegisterUser() {
     var re = /^(([^<>()\\.,;:\s@"]+(\.[^<>()\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (this._isMounted) {
       this.setState({
@@ -89,13 +86,27 @@ class Register extends Component {
       }
     }
   }
+
+  handleKeyPress(target) {
+    if (target.charCode === 13) {
+      this.handleRegisterUser();
+    }
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   render() {
     return (
       <div className="Register">
         <Mask />
         <div className="wrapper">
           <Logo class="NavBar__logo mobile" />
-          <form className="form">
+          <form className="form" onKeyPress={this.handleKeyPress}>
             <h1>Sign Up</h1>
             <div className="form-line">
               <label htmlFor="username">Username</label>
@@ -114,16 +125,19 @@ class Register extends Component {
             <div className="form-line" data-validate="Password is required">
               <label htmlFor="password">Password</label>
               <Input
-                type="password" name="password" handleRef={this.handleRefPassword}/>
+                type="password"
+                name="password"
+                handleRef={this.handleRefPassword}
+              />
             </div>
             <br />
             <br />
             <div>
               <button
-                type="submit"
+                type="button"
                 className="form-btn"
                 onClick={event =>
-                  this.handleClickRegisterUser(event, this.props.role)
+                  this.handleRegisterUser(event, this.props.role)
                 }
               >
                 {this.state.loading ? <Loader /> : <span>SIGNUP</span>}
