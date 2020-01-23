@@ -16,6 +16,7 @@ export default class Login extends React.Component {
       email: ""
     };
     this.handleClick = this.handleClick.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   handleRefPassword = ref => {
@@ -57,6 +58,12 @@ export default class Login extends React.Component {
     return false;
   }
 
+  handleKeyPress(target) {
+    if(target.charCode===13){
+      this.handleClick()    
+    } 
+  }
+
   componentDidMount() {
     this._isMounted = true;
   }
@@ -71,7 +78,7 @@ export default class Login extends React.Component {
         <Mask />
         <div className="wrapper">
           <Logo class="NavBar__logo mobile" />
-          <form className="form">
+          <form className="form" onKeyPress={this.handleKeyPress}>
             <h1>Sign In</h1>
             <div className="form-line">
               <label htmlFor="email">Email</label>
