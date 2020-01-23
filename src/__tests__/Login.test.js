@@ -1,23 +1,30 @@
-import Courses from "../components/Dashboard/Courses";
+import Login from "../components/Login/Login";
 import renderer from "react-test-renderer";
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { mount, shallow, configure } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import config from "../components/firebaseAuth";
-import * as firebase from "firebase/app";
 
 configure({ adapter: new Adapter() });
-describe("Test courses page", () => {
-  test("site renders correctly", () => {
-    App.initializeApp(config);
 
+describe("Test Login page", () => {
+  test("site renders correctly", () => {
     const component = renderer.create(
       <Router>
-        <Courses />
+        <Login />
       </Router>
     );
     let tree = component.toJSON();
     expect(tree).toMatchSnapshot();
+  });
+  test("loading is false on default", () => {
+
+    const wrapper = shallow(
+      <Router>
+        <Login/>
+      </Router>
+    );
+
+    expect(wrapper.find("Login").dive().state("loading")).toBe(false);
   });
 });

@@ -8,6 +8,7 @@
     "date-and-time": "^0.10.0",
     "dotenv": "^8.2.0",
     "firebase": "^7.7.0",
+    "firebase-mock": "^2.3.2",
     "html-react-parser": "^0.9.2",
     "humanize-duration": "^3.21.0",
     "jest": "^24.9.0",
