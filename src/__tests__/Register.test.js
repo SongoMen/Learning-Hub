@@ -37,11 +37,12 @@ describe("Test Register page", () => {
 
     const component = wrapper.find("Register").dive();
     const button = component.find("button");
-    
-    component.setState({ email: "test", password: "test" });
-    button.simulate("click");
 
-    expect(component.state("loading")).toBe(true)
+    component.setState({ email: "test", password: "test", username: "" });
+    button.simulate("click");
+    setTimeout(() => {
+      expect(component.state("loading")).toBe(true);
+    }, 0);
   });
 
   test("unmount function works", () => {
@@ -51,9 +52,25 @@ describe("Test Register page", () => {
       </Router>
     );
     const component = wrapper.find("Register").dive();
-    const onUnmountSpy = jest.spyOn(component.instance(), "componentWillUnmount");
+    const onUnmountSpy = jest.spyOn(
+      component.instance(),
+      "componentWillUnmount"
+    );
 
-    component.instance().componentWillUnmount()
-    expect(onUnmountSpy).toHaveBeenCalled()
+    component.instance().componentWillUnmount();
+    expect(onUnmountSpy).toHaveBeenCalled();
+  });
+
+  test("test register on enter", () => {
+    const wrapper = shallow(
+      <Router>
+        <Register />
+      </Router>
+    );
+    const component = wrapper.find("Register").dive();
+    const form = component.find("form").simulate("keypress", { key: "Enter" });
+    setTimeout(() => {
+      expect(result.state("loading")).toBe(true);
+    }, 0);
   });
 });

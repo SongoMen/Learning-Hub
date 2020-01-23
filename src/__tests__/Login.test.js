@@ -58,4 +58,17 @@ describe("Test Login page", () => {
     component.instance().componentWillUnmount();
     expect(onUnmountSpy).toHaveBeenCalled();
   });
+
+  test("test login on enter", () => {
+    const wrapper = shallow(
+      <Router>
+        <Login />
+      </Router>
+    );
+    const component = wrapper.find("Login").dive();
+    const form = component.find("form").simulate("keypress", { key: "Enter" });
+    setTimeout(() => {
+      expect(result.state("loading")).toBe(true);
+    }, 0);
+  });
 });

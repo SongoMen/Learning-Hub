@@ -11,7 +11,10 @@ class Register extends Component {
     super(props);
     this.state = {
       msg: "",
-      loading: false
+      loading: false,
+      password: "",
+      username: "",
+      email: ""
     };
     this.handleRegisterUser = this.handleRegisterUser.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -85,9 +88,9 @@ class Register extends Component {
   }
 
   handleKeyPress(target) {
-    if(target.charCode===13){
-      this.handleRegisterUser()    
-    } 
+    if (target.charCode === 13) {
+      this.handleRegisterUser();
+    }
   }
 
   componentDidMount() {
@@ -122,7 +125,10 @@ class Register extends Component {
             <div className="form-line" data-validate="Password is required">
               <label htmlFor="password">Password</label>
               <Input
-                type="password" name="password" handleRef={this.handleRefPassword}/>
+                type="password"
+                name="password"
+                handleRef={this.handleRefPassword}
+              />
             </div>
             <br />
             <br />
