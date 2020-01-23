@@ -15,6 +15,7 @@ Technology stack:
 * react-router
 * Sass
 * Jest
+* Enzyme
 <br>
 
 ## Live version: https://learning-a4a51.web.app/
