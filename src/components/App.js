@@ -81,8 +81,8 @@ class App extends Component {
     return this.state.loading ? (
       <Loader />
     ) : (
-      <ErrorBoundary>
         <Router>
+            <ErrorBoundary>
           <div className="container">
             <Switch>
               <Route exact path="/" component={LandingPage} />
@@ -128,8 +128,9 @@ class App extends Component {
               <Route component={Page404} />
             </Switch>
           </div>
-        </Router>
+
       </ErrorBoundary>
+        </Router>
     );
   }
 }

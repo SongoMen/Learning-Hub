@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 const ErrorMessage = props => {
   return (
@@ -13,8 +13,7 @@ const ErrorMessage = props => {
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"
-        viewBox="0 0 24 24"
-      >
+        viewBox="0 0 24 24">
         <circle cx="12" cy="12" r="10" />
         <path d="M16 16s-1.5-2-4-2-4 2-4 2" />
         <path d="M9 9L9.01 9" />

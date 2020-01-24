@@ -16,8 +16,9 @@ const mapStateToProps = state => ({
 
 class Dashboard extends React.Component {
 
+
   render() {
-    return (
+      return (
       <div className="Dashboard">
         {this.props.popupAvatar === true && <PopupAvatar />}
         <Leftbar />
