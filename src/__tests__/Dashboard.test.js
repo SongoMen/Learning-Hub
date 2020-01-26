@@ -41,20 +41,20 @@ describe("Test Dashboard page", () => {
     let tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
+
   test("unmount function works", () => {
-    const wrapper = shallow(
+    const wrapper = renderer.create(
       <Router>
         <Provider store={configureStore()}>
           <Panel />
         </Provider>
       </Router>,
     );
-    console.log(wrapper.debug());
-    const component = wrapper.find("Connect(Panel)").dive();
+
     const onUnmountSpy = jest.spyOn(
       component.instance(),
       "componentWillUnmount",
-    );
+    )
 
     component.instance().componentWillUnmount();
     expect(onUnmountSpy).toHaveBeenCalled();

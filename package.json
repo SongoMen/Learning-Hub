@@ -25,6 +25,7 @@
     "react-scripts": "^3.3.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
+    "sinon": "^8.1.1",
     "snyk": "^1.279.0"
   },
   "scripts": {
