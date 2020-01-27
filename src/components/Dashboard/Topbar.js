@@ -1,6 +1,9 @@
 import React from "react";
 import date from "date-and-time";
 import { connect } from "react-redux";
+import "firebase/firestore";
+import firebase from "firebase/app";
+
 import { changeRightBar } from "../../actions/actionsPanel";
 
 const now = new Date();
@@ -16,6 +19,13 @@ const mapDispatchToProps = dispatch => ({
   changeRightBar: () => dispatch(changeRightBar(status))
 });
 
+let courses = {
+  name: [],
+  length: [],
+  style: [],
+  svg: []
+};
+
 class Topbar extends React.Component {
   _isMounted = false;
 
@@ -26,13 +36,6 @@ class Topbar extends React.Component {
     };
     this.searchbar = React.createRef();
     this.searchbarText = React.createRef();
-  }
-
-  componentDidMount() {
-    this._isMounted = true;
-  }
-  componentWillUnmount() {
-    this._isMounted = false;
   }
 
   handleBarChange() {
@@ -59,11 +62,48 @@ class Topbar extends React.Component {
     }
   }
 
+  fetchAllCourses(){
+    firebase
+      .firestore()
+      .collection("courses")
+      .get()
+      .then(snapshot => {
+        courses.name = [];
+        courses.style = [];
+        courses.svg = [];
+        courses.length = [];
+        if (snapshot.docs.length > 0) {
+          snapshot.forEach(doc => {
+            courses.name.push(doc.data()["name"]);
+            courses.style.push(doc.data()["style"]);
+            courses.svg.push(doc.data()["svg"]);
+            courses.length.push(doc.data()["length"]);
+          });
+        } else {
+          if (this._isMounted) {
+            this.setState({
+              courses: 0
+            });
+          }
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   render() {
     return (
       <div className="Topbar">
         <div className="Topbar__searchbar" ref={this.searchbar}>
-          <input type="text" className="Topbar__searchInput"></input>
+          <input placeholder="Search for courses" type="text" className="Topbar__searchInput"></input>
         </div>
         <h3>{this.props.name}</h3>
         <div className="Topbar__time">
