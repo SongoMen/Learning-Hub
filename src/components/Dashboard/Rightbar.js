@@ -1,19 +1,19 @@
 import React from "react";
 import firebase from "firebase/app";
 import "firebase/storage";
-import { logout } from "../auth";
+import {logout} from "../auth";
 import "firebase/firestore";
 import Loader from "../elements/Loader";
-import { setPopup } from "../../actions/actionsPanel";
-import { connect } from "react-redux";
+import {setPopup} from "../../actions/actionsPanel";
+import {connect} from "react-redux";
 import parse from "html-react-parser";
 
 const mapStateToProps = state => ({
-  rightBar: state.rightBar
+  rightBar: state.rightBar,
 });
 
 const mapDispatchToProps = dispatch => ({
-  setPopup: () => dispatch(setPopup(true))
+  setPopup: () => dispatch(setPopup(true)),
 });
 
 let courses = {
@@ -21,7 +21,7 @@ let courses = {
   length: [],
   style: [],
   svg: [],
-  completedLessons: []
+  completedLessons: [],
 };
 
 const db = firebase.firestore();
@@ -34,7 +34,7 @@ class Rightbar extends React.Component {
       avatar: "",
       show: false,
       width: "",
-      coursesLoader: true
+      coursesLoader: true,
     };
   }
   getUserInfo() {
@@ -47,16 +47,16 @@ class Rightbar extends React.Component {
         function(url) {
           if (this._isMounted) {
             this.setState({
-              avatar: url
+              avatar: url,
             });
           }
-        }.bind(this)
+        }.bind(this),
       )
       .catch(() => {
         if (this._isMounted) {
           this.setState({
             avatar:
-              "https://firebasestorage.googleapis.com/v0/b/learning-a4a51.appspot.com/o/download.png?alt=media&token=7053ef8a-57ad-4ec8-accf-1c10becd0195"
+              "https://firebasestorage.googleapis.com/v0/b/learning-a4a51.appspot.com/o/download.png?alt=media&token=7053ef8a-57ad-4ec8-accf-1c10becd0195",
           });
         }
       });
@@ -67,7 +67,7 @@ class Rightbar extends React.Component {
       let right = this.props.rightBar ? "20%" : "0";
       if (this._isMounted) {
         this.setState({
-          width: right
+          width: right,
         });
       }
     }
@@ -87,12 +87,12 @@ class Rightbar extends React.Component {
     this.getStartedCourses();
     if (this._isMounted) {
       this.setState({
-        width: "0"
+        width: "0",
       });
       setTimeout(() => {
         this.setState({
           show: true,
-          width: "20%"
+          width: "20%",
         });
       }, 300);
     }
@@ -115,7 +115,7 @@ class Rightbar extends React.Component {
             if (i < 3) {
               courses.name.push(doc.id);
               courses.completedLessons.push(
-                doc.data()["completed"].split(",").length - 1
+                doc.data()["completed"].split(",").length - 1,
               );
               this.getLengthOfUserCourses(doc.id);
               i++;
@@ -139,19 +139,20 @@ class Rightbar extends React.Component {
         }
       })
       .then(() => {
-        if (this._isMounted) this.setState({ coursesLoader: false });
+        if (this._isMounted) this.setState({coursesLoader: false});
       });
   }
 
   render() {
     let user = firebase.auth().currentUser.displayName;
     let useruid = firebase.auth().currentUser.uid;
+
+    if (user.length > 24) {
+      user = user.substring(0, 24) + "...";
+    }
+
     return (
-      <div
-        style={{ width: this.state.width }}
-        className="Rightbar"
-        id="RightBar"
-      >
+      <div style={{width: this.state.width}} className="Rightbar" id="RightBar">
         {this.state.show && (
           <div>
             <div className="Rightbar__logout">
@@ -167,8 +168,7 @@ class Rightbar extends React.Component {
                 strokeWidth="2"
                 viewBox="0 0 24 24"
                 onClick={() => logout()}
-                aria-label="Sign out"
-              >
+                aria-label="Sign out">
                 <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
                 <path d="M16 17L21 12 16 7" />
                 <path d="M21 12L9 12" />
@@ -188,8 +188,7 @@ class Rightbar extends React.Component {
                     strokeLinejoin="round"
                     strokeWidth="2"
                     onClick={() => this.uploadImage()}
-                    viewBox="0 0 24 24"
-                  >
+                    viewBox="0 0 24 24">
                     <path d="M12 5L12 19" />
                     <path d="M5 12L19 12" />
                   </svg>
@@ -203,12 +202,7 @@ class Rightbar extends React.Component {
               <div className="Rightbar__currentCourses">
                 {courses.name.map((val, indx) => {
                   return (
-                    <div
-                      key={indx}
-                      className={
-                        "Rightbar__course"
-                      }
-                    >
+                    <div key={indx} className={"Rightbar__course"}>
                       {parse(String(courses.svg[parseInt(indx)]))}
                       <div>
                         <h5>{val}</h5>
@@ -221,9 +215,8 @@ class Rightbar extends React.Component {
                               (courses.completedLessons[parseInt(indx)] /
                                 courses.length[parseInt(indx)]) *
                                 100 +
-                              "%"
-                          }}
-                        ></span>
+                              "%",
+                          }}></span>
                       </span>
                     </div>
                   );
@@ -236,7 +229,4 @@ class Rightbar extends React.Component {
     );
   }
 }
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Rightbar);
+export default connect(mapStateToProps, mapDispatchToProps)(Rightbar);
