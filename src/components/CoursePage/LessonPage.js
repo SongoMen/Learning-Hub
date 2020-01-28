@@ -8,6 +8,8 @@ import Loader from "../elements/Loader";
 import parse from "html-react-parser";
 import { Redirect } from "react-router-dom";
 import date from "date-and-time";
+import PropTypes from 'prop-types';
+
 import ErrorMessage from "../elements/ErrorMessage";
 import { lessonsRef } from "../_helpers";
 import { ReactComponent as ArrowBackwards } from "../../svgs/lessonArrow.svg";
@@ -381,6 +383,10 @@ class LessonPage extends React.Component {
       </div>
     );
   }
+}
+
+LessonPage.propTypes = {
+  id: PropTypes.string
 }
 
 export default withRouter(connect(mapStateToProps)(LessonPage));
