@@ -125,20 +125,20 @@ class Topbar extends React.Component {
       results.style.display = "none";
     } else {
       for (let i = 0; i < courses.name.length; i++) {
-        let splitSymbol = courses.name[parseInt(i)].split("");
+        let splitSymbol = courses.name[parseInt(i)].toUpperCase().split("");
         let splitFilter = filter.split("");
         for (let a = 0; a < splitFilter.length; a++) {
           if (
-            courses.name[parseInt(i)].indexOf(filter) > -1 &&
-            splitSymbol[parseInt(a)] === splitFilter[parseInt(a)]
+            courses.name[parseInt(i)].toUpperCase().indexOf(filter) > -1 &&
+            splitSymbol[parseInt(a)].toUpperCase() === splitFilter[parseInt(a)]
           ) {
             if (a === 0) {
               console.log(courses.svg[parseInt(i)])
               results.style.display = "flex";
               let el = document.createElement("li");
-              el.innerHTML = `<li><a href="/stocks/${
+              el.innerHTML = `<a href="/stocks/${
                 courses.name[parseInt(i)]
-              }">${parse(courses.svg[parseInt(i)])}<h4>${courses.name[parseInt(i)]}</h4></a></li>`;
+              }">${parse(courses.svg[parseInt(i)])}<h4>${courses.name[parseInt(i)]}</h4></a>`;
               results.appendChild(el);
               b++;
             }
