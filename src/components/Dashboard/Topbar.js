@@ -133,12 +133,14 @@ class Topbar extends React.Component {
             splitSymbol[parseInt(a)].toUpperCase() === splitFilter[parseInt(a)]
           ) {
             if (a === 0) {
-              console.log(courses.svg[parseInt(i)])
+              console.log(courses.svg[parseInt(i)]);
+              console.log()
               results.style.display = "flex";
               let el = document.createElement("li");
-              el.innerHTML = `<a href="/stocks/${
-                courses.name[parseInt(i)]
-              }">${parse(courses.svg[parseInt(i)])}<h4>${courses.name[parseInt(i)]}</h4></a>`;
+              console.log(courses.name[parseInt(i)])
+              el.innerHTML = `<a href=course/${courses.name[parseInt(i)].replace(" ", "%20")}>${parse(
+                courses.svg[parseInt(i)],
+              )}<h4>${courses.name[parseInt(i)]}</h4></a>`;
               results.appendChild(el);
               b++;
             }
