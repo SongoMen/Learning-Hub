@@ -1,10 +1,11 @@
 import React from "react";
 import date from "date-and-time";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import "firebase/firestore";
 import firebase from "firebase/app";
+import parse from "html-react-parser";
 
-import { changeRightBar } from "../../actions/actionsPanel";
+import {changeRightBar} from "../../actions/actionsPanel";
 
 const now = new Date();
 const formatDate = date.format(now, "DD MMM YYYY, dddd");
@@ -12,18 +13,18 @@ const formatDate = date.format(now, "DD MMM YYYY, dddd");
 let status;
 
 const mapStateToProps = state => ({
-  ...state
+  ...state,
 });
 
 const mapDispatchToProps = dispatch => ({
-  changeRightBar: () => dispatch(changeRightBar(status))
+  changeRightBar: () => dispatch(changeRightBar(status)),
 });
 
 let courses = {
   name: [],
   length: [],
   style: [],
-  svg: []
+  svg: [],
 };
 
 class Topbar extends React.Component {
@@ -32,16 +33,26 @@ class Topbar extends React.Component {
   constructor() {
     super();
     this.state = {
-      isSearchActive: false
+      isSearchActive: false,
     };
     this.searchbar = React.createRef();
-    this.searchbarText = React.createRef();
+    this.searchbarInput = React.createRef();
+    this.results = React.createRef();
+    this.searchCourses = this.searchCourses.bind(this);
   }
+
+  /*
+   * closes/opens right bar
+   */
 
   handleBarChange() {
     status = this.props.rightBar ? false : true;
     this.props.changeRightBar();
   }
+
+  /*
+   * opens/closes search bar
+   */
 
   handleSearch() {
     let searchbarClass = this.searchbar.current.classList;
@@ -49,20 +60,24 @@ class Topbar extends React.Component {
       searchbarClass.remove("active");
       if (this._isMounted) {
         this.setState({
-          isSearchActive: false
+          isSearchActive: false,
         });
       }
     } else {
       searchbarClass.add("active");
       if (this._isMounted) {
         this.setState({
-          isSearchActive: true
+          isSearchActive: true,
         });
       }
     }
   }
 
-  fetchAllCourses(){
+  /*
+   * get all courses and save to object
+   */
+
+  fetchAllCourses() {
     firebase
       .firestore()
       .collection("courses")
@@ -82,7 +97,7 @@ class Topbar extends React.Component {
         } else {
           if (this._isMounted) {
             this.setState({
-              courses: 0
+              courses: 0,
             });
           }
         }
@@ -92,8 +107,53 @@ class Topbar extends React.Component {
       });
   }
 
+  /*
+   * searches courses and appends to DOM
+   * @param {e} value to search for
+   */
+
+  searchCourses(e) {
+    let results = this.results.current;
+    results.innerHTML = "";
+    let b = 0;
+    let filter = this.searchbarInput.current.value.toUpperCase();
+    if (e.key === "Enter") {
+      window.location = `/stocks/${filter}`;
+    }
+    if (filter.length === 0) {
+      results.innerHTML = "";
+      results.style.display = "none";
+    } else {
+      for (let i = 0; i < courses.name.length; i++) {
+        let splitSymbol = courses.name[parseInt(i)].split("");
+        let splitFilter = filter.split("");
+        for (let a = 0; a < splitFilter.length; a++) {
+          if (
+            courses.name[parseInt(i)].indexOf(filter) > -1 &&
+            splitSymbol[parseInt(a)] === splitFilter[parseInt(a)]
+          ) {
+            if (a === 0) {
+              console.log(courses.svg[parseInt(i)])
+              results.style.display = "flex";
+              let el = document.createElement("li");
+              el.innerHTML = `<li><a href="/stocks/${
+                courses.name[parseInt(i)]
+              }">${parse(courses.svg[parseInt(i)])}<h4>${courses.name[parseInt(i)]}</h4></a></li>`;
+              results.appendChild(el);
+              b++;
+            }
+          }
+        }
+        if (b === 10) {
+          break;
+        }
+      }
+    }
+  }
+
   componentDidMount() {
     this._isMounted = true;
+    this.fetchAllCourses();
   }
   componentWillUnmount() {
     this._isMounted = false;
@@ -102,8 +162,17 @@ class Topbar extends React.Component {
   render() {
     return (
       <div className="Topbar">
-        <div className="Topbar__searchbar" ref={this.searchbar}>
-          <input placeholder="Search for courses" type="text" className="Topbar__searchInput"></input>
+        <div
+          className="Topbar__searchbar"
+          onKeyUp={this.searchCourses}
+          ref={this.searchbar}>
+          <input
+            ref={this.searchbarInput}
+            placeholder="Search for courses"
+            type="text"
+            className="Topbar__searchInput"
+          />
+          <ul className="Topbar__results" ref={this.results}></ul>
         </div>
         <h3>{this.props.name}</h3>
         <div className="Topbar__time">
@@ -120,8 +189,7 @@ class Topbar extends React.Component {
               strokeWidth="2"
               className="button first"
               viewBox="0 0 24 24"
-              onClick={() => this.handleSearch()}
-            >
+              onClick={() => this.handleSearch()}>
               <circle cx="11" cy="11" r="8" />
               <path d="M21 21L16.65 16.65" />
             </svg>
@@ -137,8 +205,7 @@ class Topbar extends React.Component {
               strokeWidth="2"
               className="button first"
               viewBox="0 0 24 24"
-              onClick={() => this.handleSearch()}
-            >
+              onClick={() => this.handleSearch()}>
               <path d="M18 6L6 18" />
               <path d="M6 6L18 18" />
             </svg>
@@ -155,8 +222,7 @@ class Topbar extends React.Component {
               strokeWidth="2"
               className="button"
               viewBox="0 0 24 24"
-              onClick={() => this.handleBarChange()}
-            >
+              onClick={() => this.handleBarChange()}>
               <path d="M5 12L19 12" />
               <path d="M12 5L19 12 12 19" />
             </svg>
@@ -172,8 +238,7 @@ class Topbar extends React.Component {
               strokeWidth="2"
               className="button backwards"
               viewBox="0 0 24 24"
-              onClick={() => this.handleBarChange()}
-            >
+              onClick={() => this.handleBarChange()}>
               <path d="M5 12L19 12" />
               <path d="M12 5L19 12 12 19" />
             </svg>
