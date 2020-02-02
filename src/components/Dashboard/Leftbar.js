@@ -3,6 +3,7 @@ import { withRouter, NavLink } from "react-router-dom";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import parse from "html-react-parser";
+
 import { Logo } from "../_helpers";
 import { ReactComponent as DashboardIcon } from "../../svgs/dashboardIcon.svg";
 import { ReactComponent as CoursesIcon } from "../../svgs/coursesIcon.svg";

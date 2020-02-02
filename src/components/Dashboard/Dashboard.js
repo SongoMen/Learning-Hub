@@ -4,11 +4,11 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 import Leftbar from "./Leftbar";
-import Panel from "./Panel";
+import Panel from "../Panel/Panel";
 import Rightbar from "./Rightbar";
-import PopupAvatar from "../elements/PopupAvatar";
-import Courses from "./Courses";
-import DevPanel from "./DevPanel";
+import PopupAvatar from "./PopupAvatar";
+import Courses from "../Courses/Courses";
+import DevPanel from "../DevPanel/DevPanel";
 
 const mapStateToProps = state => ({
   ...state

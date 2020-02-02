@@ -256,7 +256,6 @@ class Topbar extends React.Component {
 
 Topbar.propTypes = {
   name: PropTypes.string,
-  rightBar: PropTypes.bool,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Topbar);
