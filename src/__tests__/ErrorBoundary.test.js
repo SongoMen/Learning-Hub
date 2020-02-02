@@ -1,5 +1,6 @@
 import ErrorBoundary from "../ErrorBoundary"
 import {mount} from "enzyme";
+import React from 'react';
 
 const Something = () => null;
 
@@ -15,4 +16,4 @@ describe('ErrorBoundary', () => {
 
     wrapper.find(Something).simulateError(error);
   })
-}
+})

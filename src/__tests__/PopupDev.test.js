@@ -1,4 +1,4 @@
-import PopupDev from "../components/elements/PopupDev";
+import PopupDev from "../components/DevPanel/PopupDev";
 import renderer from "react-test-renderer";
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";

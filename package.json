@@ -8,7 +8,6 @@
     "date-and-time": "^0.10.0",
     "dotenv": "^8.2.0",
     "firebase": "^7.8.0",
-    "firebase-mock": "^2.3.2",
     "html-react-parser": "^0.9.2",
     "humanize-duration": "^3.21.0",
     "jest": "^24.9.0",
@@ -73,6 +72,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
+    "firebase-mock": "^2.3.2",
     "jest-transform-stub": "^2.0.0",
     "react-test-renderer": "^16.12.0"
   }
