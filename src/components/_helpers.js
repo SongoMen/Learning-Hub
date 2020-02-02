@@ -1,8 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import NavBar from "./LandingPage/NavBar";
 import firebase from "firebase/app";
-import { ReactComponent as LogoSvg } from "../svgs/logo.svg";
+import PropTypes from "prop-types";
+
+import {ReactComponent as LogoSvg} from "../svgs/logo.svg";
 
 const db = firebase.firestore();
 
@@ -17,6 +19,11 @@ export function Logo(props) {
   );
 }
 
+Logo.propTypes = {
+  class: PropTypes.string,
+  link: PropTypes.string
+}
+
 export function Mask() {
   return (
     <div>
@@ -25,6 +32,7 @@ export function Mask() {
     </div>
   );
 }
+
 export function Input(props) {
   const childRef = React.useRef();
   return (
@@ -38,6 +46,12 @@ export function Input(props) {
     />
   );
 }
+
+Input.propTypes = {
+  name: PropTypes.string,
+  handleRef: PropTypes.func,
+  type: PropTypes.string,
+};
 
 export function lessonsRef(courseName) {
   return db
