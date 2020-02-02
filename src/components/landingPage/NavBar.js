@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { firebaseAuth } from "../auth";
-import { Logo } from "../_helpers";
+import React, {useState, useEffect} from "react";
+import {Link} from "react-router-dom";
+import {firebaseAuth} from "../auth";
+import {Logo} from "../_helpers";
+import PropTypes from "prop-types";
 
 const NavBar = props => {
   let isMounted = "";
@@ -27,7 +28,7 @@ const NavBar = props => {
   }, []);
   return (
     <nav className="Nav-bar">
-      <Logo class="Nav-bar__logo"/>
+      <Logo class="Nav-bar__logo" />
       {typeof props.menu === "undefined" && (
         <div className="Nav-bar__menu">
           {!logged ? (
@@ -52,6 +53,10 @@ const NavBar = props => {
       )}
     </nav>
   );
+};
+
+NavBar.propTypes = {
+  menu: PropTypes.string,
 };
 
 export default NavBar;

@@ -1,5 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import PropTypes from 'prop-types';
 
 const ErrorMessage = props => {
   return (
@@ -28,4 +29,9 @@ const ErrorMessage = props => {
     </div>
   );
 };
+
+ErrorMessage.propTypes = {
+  link: PropTypes.string
+}
+
 export default ErrorMessage;

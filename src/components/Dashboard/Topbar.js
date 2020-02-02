@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import "firebase/firestore";
 import firebase from "firebase/app";
 import parse from "html-react-parser";
+import PropTypes from "prop-types";
 
 import {changeRightBar} from "../../actions/actionsPanel";
 
@@ -134,13 +135,15 @@ class Topbar extends React.Component {
           ) {
             if (a === 0) {
               console.log(courses.svg[parseInt(i)]);
-              console.log()
+              console.log();
               results.style.display = "flex";
               let el = document.createElement("li");
-              console.log(courses.name[parseInt(i)])
-              el.innerHTML = `<a href=course/${courses.name[parseInt(i)].replace(" ", "%20")}>${parse(
-                courses.svg[parseInt(i)],
-              )}<h4>${courses.name[parseInt(i)]}</h4></a>`;
+              console.log(courses.name[parseInt(i)]);
+              el.innerHTML = `<a href=course/${courses.name[
+                parseInt(i)
+              ].replace(" ", "%20")}>${parse(courses.svg[parseInt(i)])}<h4>${
+                courses.name[parseInt(i)]
+              }</h4></a>`;
               results.appendChild(el);
               b++;
             }
@@ -250,4 +253,10 @@ class Topbar extends React.Component {
     );
   }
 }
+
+Topbar.propTypes = {
+  name: PropTypes.string,
+  rightBar: PropTypes.bool,
+};
+
 export default connect(mapStateToProps, mapDispatchToProps)(Topbar);

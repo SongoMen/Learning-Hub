@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import parse from "html-react-parser";
+import PropTypes from 'prop-types';
 
 const CourseWrapper = props => {
   return (
@@ -30,4 +31,13 @@ const CourseWrapper = props => {
     </Link>
   );
 };
+
+CourseWrapper.propTypes = {
+  index: PropTypes.number,
+  name: PropTypes.string,
+  style: PropTypes.string,
+  length: PropTypes.number,
+  svg: PropTypes.string
+}
+
 export default CourseWrapper;
