@@ -1,5 +1,5 @@
 import Dashboard from "../components/Dashboard/Dashboard";
-import Panel from "../components/Dashboard/Panel";
+import Panel from "../components/Panel/Panel";
 import renderer from "react-test-renderer";
 import React from "react";
 import {BrowserRouter as Router} from "react-router-dom";
