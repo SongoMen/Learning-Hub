@@ -1,6 +1,7 @@
 import React from "react";
 import ordinal from "ordinal";
 import Loader from "../elements/Loader";
+import PropTypes from "prop-types"
 
 import {ReactComponent as WelcomeSvg} from "../../svgs/Welcome.svg";
 
@@ -40,4 +41,11 @@ const UserWelcome = props => {
     </div>
   );
 };
+UserWelcome.propTypes = {
+  user: PropTypes.string,
+  lastLesson: PropTypes.string,
+  lastLessonNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  lastLessonLoader: PropTypes.bool
+}
+
 export default UserWelcome;

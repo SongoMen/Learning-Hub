@@ -13,8 +13,7 @@ import UserWelcome from "./UserWelcome";
 import {changeRightBar} from "../../actions/actionsPanel";
 import Loader from "../elements/Loader";
 import Topbar from "../Dashboard/Topbar";
-import ErrorMessage from "../elements/ErrorMessage";
-import CourseWrapper from "../elements/CourseWrapper";
+import More from "./More"
 
 let status;
 
@@ -474,10 +473,9 @@ class Panel extends React.Component {
 
   componentDidMount() {
     this._isMounted = true;
-    let isOpen = this.props.rightBar ? "" : "active"; // adds class to control width of panel
     if (this._isMounted) {
       this.setState({
-        width: isOpen,
+        width: this.props.rightBar ? "" : "active"
       });
     }
     if (window.matchMedia("(max-width: 800px)").matches) {
@@ -491,10 +489,9 @@ class Panel extends React.Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.rightBar !== this.props.rightBar) {
-      let isOpen = this.props.rightBar ? "" : "active"; // adds class to control width of panel
       if (this._isMounted) {
         this.setState({
-          width: isOpen,
+          width: this.props.rightBar ? "" : "active"
         });
       }
     }
@@ -599,27 +596,7 @@ class Panel extends React.Component {
             </div>
           )}
         </div>
-        <div className="Panel__more">
-          <h3>More courses</h3>
-          {this.state.courses === "err" && <ErrorMessage link="false" />}
-          {this.state.courses === 0 && (
-            <h3 className="courses__error">No courses available.</h3>
-          )}
-          {this.state.courses > 0 && (
-            <div className="Panel__coursesContainer">
-              {courses.name.map((val, indx) => (
-                <CourseWrapper
-                  name={val}
-                  index={indx}
-                  style={courses.style[parseInt(indx)]}
-                  length={courses.length[parseInt(indx)]}
-                  svg={courses.svg[parseInt(indx)]}
-                  key={indx}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+        <More courses={courses} coursesCounter={this.state.courses} />
       </div>
     );
   }
