@@ -32,8 +32,10 @@ const More = props => {
     </div>
   );
 };
+
 More.propTypes = {
   coursesCounter: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   courses: PropTypes.object,
 };
+
 export default More;

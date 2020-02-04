@@ -7,17 +7,6 @@
     padding-bottom: 10px
     height: 10%
     align-items: center
-    &__results
-        z-index: 5
-        background-color: $accentColor1
-        list-style-type: none
-        margin: 0
-        border-bottom-left-radius: 5px
-        border-bottom-right-radius: 5px
-        a
-            display: flex
-            justify-content: flex-start
-            align-items: center
     h3
         font-weight: 500
     &__date
@@ -37,6 +26,8 @@
     &__date
         @media only screen and (max-width: 600px)
             margin: 0
+    &__results
+        display: none!important
     &__searchbar
         position: absolute
         background-color: $accentColor1
@@ -52,6 +43,24 @@
                 width: 50%
             @media only screen and (max-width: 600px) 
                 width: 60%
+            .Topbar__results
+                display: flex!important
+                z-index: 5
+                background-color: $accentColor1
+                list-style-type: none
+                margin: 0
+                padding-left: 15px
+                border-bottom-left-radius: 5px
+                border-bottom-right-radius: 5px
+                a
+                    display: flex
+                    justify-content: flex-start
+                    align-items: center
+                    svg
+                        width: 25px
+                        height: 100%
+                        fill: $primaryColor
+                        margin-right: 10px
             input
                 display: flex
     &__searchInput

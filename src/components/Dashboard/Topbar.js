@@ -3,7 +3,6 @@ import date from "date-and-time";
 import {connect} from "react-redux";
 import "firebase/firestore";
 import firebase from "firebase/app";
-import parse from "html-react-parser";
 import PropTypes from "prop-types";
 
 import {changeRightBar} from "../../actions/actionsPanel";
@@ -118,9 +117,9 @@ class Topbar extends React.Component {
     results.innerHTML = "";
     let b = 0;
     let filter = this.searchbarInput.current.value.toUpperCase();
-    if (e.key === "Enter") {
+    /*    if (e.key === "Enter") {
       window.location = `/stocks/${filter}`;
-    }
+    }*/
     if (filter.length === 0) {
       results.innerHTML = "";
       results.style.display = "none";
@@ -134,14 +133,11 @@ class Topbar extends React.Component {
             splitSymbol[parseInt(a)].toUpperCase() === splitFilter[parseInt(a)]
           ) {
             if (a === 0) {
-              console.log(courses.svg[parseInt(i)]);
-              console.log();
               results.style.display = "flex";
               let el = document.createElement("li");
-              console.log(courses.name[parseInt(i)]);
               el.innerHTML = `<a href=course/${courses.name[
                 parseInt(i)
-              ].replace(" ", "%20")}>${parse(courses.svg[parseInt(i)])}<h4>${
+              ].replace(" ", "%20")}>${(courses.svg[parseInt(i)])}<h4>${
                 courses.name[parseInt(i)]
               }</h4></a>`;
               results.appendChild(el);
