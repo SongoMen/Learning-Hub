@@ -16,7 +16,6 @@ describe('ErrorBoundary', () => {
     );
 
     const error = new Error('test');
-
     wrapper.find(Something).simulateError(error);
   })
 })
