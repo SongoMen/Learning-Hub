@@ -1,6 +1,9 @@
 import ErrorBoundary from "../ErrorBoundary"
-import {mount} from "enzyme";
+import {mount,configure} from "enzyme";
 import React from 'react';
+import Adapter from "enzyme-adapter-react-16";
+
+configure({adapter: new Adapter()});
 
 const Something = () => null;
 

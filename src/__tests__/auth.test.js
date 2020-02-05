@@ -1,27 +1,31 @@
 import React from "react";
 import {MockFirebase} from "firebase-mock";
-
+import config from "../components/firebaseAuth";
+import * as firebase from "firebase/app";
 // Login Actions
 import {auth, logout, login, resetPassword} from "../components/auth";
 
-function mockFirebaseService() {
-  return new Promise(resolve => resolve(true));
-}
-
-jest.mock('firebase', () => new Promise(resolve => resolve(true)));
-
 describe("auth actions", () => {
-
-  beforeEach(() => {
-    mockAuth = new MockFirebase();
+  it("login should work", () => {
+    login("example@domain.com", "12")
+      .then((signedInUser: firebase.auth.UserCredential) => {
+        let userInfo = signedInUser.user;
+        if (userInfo != null) {
+          expect(userInfo.email).toEqual("example@domain.com");
+        }
+      })
+      .catch(e => {
+        console.log(e);
+      });
   });
-
-  it("signIn should call firebase", () => {
-    const user = {
-      email: "first.last@yum.com",
-      password: "abd123",
-    };
-    auth(user.email, user.password);
-    expect(mockFirebaseService).toHaveBeenCalled();
+  it("sign out should work", () => {
+    logout()
+      .then((signedInUser: firebase.auth.UserCredential) => {
+        let userInfo = signedInUser;
+        expect(userInfo).toEqual(undefined);
+      })
+      .catch(e => {
+        console.log(e);
+      });
   });
 });

@@ -10,7 +10,7 @@ import { Provider } from "react-redux";
 configure({ adapter: new Adapter() });
 
 describe("Test Register page", () => {
-  test("site renders correctly", () => {
+  test("component renders correctly", () => {
     const component = renderer.create(
       <Provider store={configureStore()}>
         <PopupDev />

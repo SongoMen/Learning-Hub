@@ -7,15 +7,11 @@ import Adapter from "enzyme-adapter-react-16";
 import config from "../components/firebaseAuth";
 import * as firebase from "firebase/app";
 
+firebase.initializeApp(config);
 configure({adapter: new Adapter()});
 
 describe("Test courses page", () => {
-  beforeAll(() => {
-    firebase.initializeApp(config);
-  });
   test("site renders correctly", () => {
-
-    firebase.initializeApp(config);
     const component = renderer.create(
       <Router>
         <Courses />
