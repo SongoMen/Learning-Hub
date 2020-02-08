@@ -1,22 +1,22 @@
 import React from "react";
 import "firebase/firestore";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import {connect} from "react-redux";
+import {withRouter} from "react-router-dom";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import Loader from "../elements/Loader";
 import parse from "html-react-parser";
-import { Redirect } from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import date from "date-and-time";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 import ErrorMessage from "../elements/ErrorMessage";
-import { lessonsRef } from "../_helpers";
-import { ReactComponent as ArrowBackwards } from "../../svgs/lessonArrow.svg";
-import { ReactComponent as Arrow } from "../../svgs/lessonArrow2.svg";
+import {lessonsRef} from "../_helpers";
+import {ReactComponent as ArrowBackwards} from "../../svgs/lessonArrow.svg";
+import {ReactComponent as Arrow} from "../../svgs/lessonArrow2.svg";
 
 const mapStateToProps = state => ({
-  ...state
+  ...state,
 });
 
 const now = new Date();
@@ -27,7 +27,7 @@ const db = firebase.firestore();
 let lessonsId = [];
 
 let courses = {
-  name: []
+  name: [],
 };
 
 class LessonPage extends React.Component {
@@ -39,13 +39,13 @@ class LessonPage extends React.Component {
   timeCounterInterval = () =>
     (this.counter = setInterval(() => {
       if (!document.hidden && this._isMounted)
-        this.setState({ timer: parseInt(this.state.timer) + 1 });
+        this.setState({timer: parseInt(this.state.timer) + 1});
     }, 1000));
 
   saveLearningTimeInterval = () =>
     (this.saveToDb = setInterval(() => {
       this.saveLearningTime(
-        window.location.pathname.split("/")[2].replace(/%20/gi, " ")
+        window.location.pathname.split("/")[2].replace(/%20/gi, " "),
       );
     }, 5 * 1000));
 
@@ -53,7 +53,7 @@ class LessonPage extends React.Component {
     (this.done = setTimeout(() => {
       this.lessonDone(
         window.location.pathname.split("/")[2].replace(/%20/gi, " "),
-        window.location.pathname.split("/")[3]
+        window.location.pathname.split("/")[3],
       );
     }, 30000));
 
@@ -68,8 +68,7 @@ class LessonPage extends React.Component {
       content: "",
       time: "",
       timer: 0,
-      nextLesson: "",
-      redirect: ""
+      redirect: "",
     };
     this._handleKey = this._handleKey.bind(this);
   }
@@ -81,47 +80,55 @@ class LessonPage extends React.Component {
       lessonsId[lessonsId.indexOf(window.location.pathname.split("/")[3]) + 1];
     switch (e.keyCode) {
       case 37:
-        if (typeof previousLesson !== "undefined") {
-          this.lessonDone(
-            window.location.pathname.split("/")[2].replace(/%20/gi, " "),
-            window.location.pathname.split("/")[3]
-          );
-          if (this._isMounted)
-            this.setState(
-              {
-                redirect: "previous",
-                loader: true
-              },
-              () => {
-                this.setState({
-                  redirect: ""
-                });
-              }
-            );
-        }
+        this.previousLesson(previousLesson);
         break;
       case 39:
-        if (typeof nextLesson !== "undefined") {
-          this.lessonDone(
-            window.location.pathname.split("/")[2].replace(/%20/gi, " "),
-            window.location.pathname.split("/")[3]
-          );
-          if (this._isMounted)
-            this.setState(
-              {
-                redirect: "next",
-                loader: true
-              },
-              () => {
-                this.setState({
-                  redirect: ""
-                });
-              }
-            );
-        }
+        this.nextLesson(nextLesson);
         break;
       default:
         break;
+    }
+  }
+
+  nextLesson(nextLesson) {
+    if (typeof nextLesson !== "undefined") {
+      this.lessonDone(
+        window.location.pathname.split("/")[2].replace(/%20/gi, " "),
+        window.location.pathname.split("/")[3],
+      );
+      if (this._isMounted) {
+        this.setState(
+          {
+            redirect: "next",
+            loader: true,
+          },
+          () => {
+            this.setState({
+              redirect: "",
+            });
+          },
+        );
+      }
+    }
+  }
+  previousLesson(previousLesson) {
+    if (typeof previousLesson !== "undefined") {
+      this.lessonDone(
+        window.location.pathname.split("/")[2].replace(/%20/gi, " "),
+        window.location.pathname.split("/")[3],
+      );
+      if (this._isMounted)
+        this.setState(
+          {
+            redirect: "previous",
+            loader: true,
+          },
+          () => {
+            this.setState({
+              redirect: "",
+            });
+          },
+        );
     }
   }
 
@@ -178,7 +185,7 @@ class LessonPage extends React.Component {
   refreshTime() {
     if (this._isMounted) {
       const now = new Date();
-      this.setState({ time: date.format(now, "HH:mm:ss, ") });
+      this.setState({time: date.format(now, "HH:mm:ss, ")});
     }
   }
 
@@ -209,10 +216,10 @@ class LessonPage extends React.Component {
               if (docSnapshot.exists) {
                 userDates.update({
                   doc: "doc",
-                  date: new Date()
+                  date: new Date(),
                 });
               } else {
-                userDates.set({ doc: "doc", date: new Date() });
+                userDates.set({doc: "doc", date: new Date()});
               }
             });
           });
@@ -226,13 +233,13 @@ class LessonPage extends React.Component {
                 .collection("lessons")
                 .doc(courseName)
                 .update({
-                  time: parseInt(timer) + parseInt(this.state.timer)
+                  time: parseInt(timer) + parseInt(this.state.timer),
                 });
             } else {
               userDates
                 .collection("lessons")
                 .doc(courseName)
-                .set({ time: this.state.timer });
+                .set({time: this.state.timer});
             }
           })
           .then(() => {
@@ -241,9 +248,9 @@ class LessonPage extends React.Component {
               .doc(courseName)
               .update({
                 lastLesson: this.state.title.split(".")[0],
-                lessonId: window.location.pathname.split("/")[3]
+                lessonId: window.location.pathname.split("/")[3],
               });
-            if (this._isMounted) this.setState({ timer: 0 });
+            if (this._isMounted) this.setState({timer: 0});
           });
       }
     }
@@ -260,26 +267,25 @@ class LessonPage extends React.Component {
           this.setState({
             title: doc.data()["title"],
             content: doc.data()["content"],
-            loader: false
+            loader: false,
           });
         } else {
           if (this._isMounted)
             this.setState({
-              loader: "error"
+              loader: "error",
             });
         }
       })
       .catch(err => {
-        console.error(err);
         if (this._isMounted)
           this.setState({
-            loader: "error"
+            loader: "error",
           });
       });
   }
   getNextLessonId() {
     lessonsRef(
-      window.location.pathname.split("/")[2].replace(/%20/gi, " ")
+      window.location.pathname.split("/")[2].replace(/%20/gi, " "),
     ).then(snapshot => {
       if (snapshot.docs.length > 0 && this._isMounted) {
         snapshot.forEach(doc => {
@@ -309,7 +315,7 @@ class LessonPage extends React.Component {
             if (typeof lessons !== "undefined") {
               if (lessons.split(",").indexOf(id) === -1) {
                 lessonsCompleted.update({
-                  completed: lessons + "," + id
+                  completed: lessons + "," + id,
                 });
               }
             }
@@ -317,43 +323,41 @@ class LessonPage extends React.Component {
       } else {
         if (typeof window.location.pathname.split("/")[3] !== "undefined")
           lessonsCompleted.set({
-            completed: lessons + "," + id
+            completed: lessons + "," + id,
           });
       }
     });
   }
 
   render() {
-    let previousLesson =
+    let previousLessonId =
       lessonsId[
         lessonsId.indexOf(
-          window.location.pathname.split("/")[3].replace(/%20/gi, " ")
+          window.location.pathname.split("/")[3].replace(/%20/gi, " "),
         ) - 1
       ];
-    let nextLesson =
+    let nextLessonId =
       lessonsId[
         lessonsId.indexOf(
-          window.location.pathname.split("/")[3].replace(/%20/gi, " ")
+          window.location.pathname.split("/")[3].replace(/%20/gi, " "),
         ) + 1
       ];
     return (
       <div className="LessonPage">
-        {this.state.redirect === "next" &&
-          typeof nextLesson !== "undefined" && (
-            <Redirect
-              to={`/course/${window.location.pathname
-                .split("/")[2]
-                .replace(/%20/gi, " ")}/${nextLesson}`}
-            />
-          )}
-        {this.state.redirect === "previous" &&
-          typeof nextLesson !== "undefined" && (
-            <Redirect
-              to={`/course/${window.location.pathname
-                .split("/")[2]
-                .replace(/%20/gi, " ")}/${previousLesson}`}
-            />
-          )}
+        {this.state.redirect === "next" && (
+          <Redirect
+            to={`/course/${window.location.pathname
+              .split("/")[2]
+              .replace(/%20/gi, " ")}/${nextLessonId}`}
+          />
+        )}
+        {this.state.redirect === "previous" && (
+          <Redirect
+            to={`/course/${window.location.pathname
+              .split("/")[2]
+              .replace(/%20/gi, " ")}/${previousLessonId}`}
+          />
+        )}
         {this.state.loader && this.state.loader !== "error" && <Loader />}
         {!this.state.loader && this.state.loader !== "error" && (
           <div className="LessonPage__time">
@@ -369,11 +373,15 @@ class LessonPage extends React.Component {
         )}
         {this.state.loader !== "error" && !this.state.loader && (
           <div className="LessonPage__controls">
-            <div className="LessonPage__option">
+            <div
+              className="LessonPage__option"
+              onClick={() => this.previousLesson(previousLessonId)}>
               <ArrowBackwards />
               <h5>Previous lesson</h5>
             </div>
-            <div className="LessonPage__option">
+            <div
+              className="LessonPage__option"
+              onClick={() => this.nextLesson(nextLessonId)}>
               <Arrow />
               <h5>Next lesson</h5>
             </div>
@@ -386,7 +394,7 @@ class LessonPage extends React.Component {
 }
 
 LessonPage.propTypes = {
-  id: PropTypes.string
-}
+  id: PropTypes.string,
+};
 
 export default withRouter(connect(mapStateToProps)(LessonPage));
