@@ -6,16 +6,16 @@ import PropTypes from "prop-types";
 
 const More = props => {
   return (
-    <div className="Panel__more">
+    <div className="More">
       {props.coursesCounter === "" && <Loader />}
       {props.coursesCounter === "err" && <ErrorMessage link="false" />}
       {props.coursesCounter === 0 && (
         <h3 className="courses__error">No courses available.</h3>
       )}
       {props.coursesCounter > 0 && (
-        <div>
+        <div className="More__content">
           <h3>More courses</h3>
-          <div className="Panel__coursesContainer">
+          <div className="More__coursesContainer">
             {props.courses.name.map((val, indx) => (
               <CourseWrapper
                 name={val}
