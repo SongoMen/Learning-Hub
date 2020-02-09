@@ -7,10 +7,10 @@ import {ReactComponent as WelcomeSvg} from "../../svgs/Welcome.svg";
 
 const UserWelcome = props => {
   return (
-    <div className="Panel__welcome">
+    <div className="Welcome">
       {!props.lastLessonLoader ? (
         props.lastLesson === "" ? (
-          <div className="left">
+          <div className="Welcome__left">
             <h2> Welcome, {props.user}!</h2>
             <h4>
               Looks like you didn't do any lessons yet
@@ -19,7 +19,7 @@ const UserWelcome = props => {
             </h4>
           </div>
         ) : (
-          <div className="left">
+          <div className="Welcome__left">
             <h2> Welcome back, {props.user}!</h2>
             <h4>
               Your latest course was <b>{props.lastLesson}.</b>
