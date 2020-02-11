@@ -18,97 +18,6 @@
         width: 88%
         @media only screen and (max-width: 1270px) 
             width: 94%
-    &__days
-        display: flex
-        justify-content: center
-        height: 100%
-        flex-direction: column
-        .title
-            height: 10%
-    &__selectWeek
-        position: absolute
-        top: 10px
-        right: 15px
-        background-color: $accentColor2
-        border: 0
-        color: white
-        padding: 5px 10px
-        cursor: pointer
-        font-family: Poppins
-        border: 0px
-        outline: 0px
-        @media only screen and (max-width: 500px) 
-            width: 70px
-            height: 30px
-        &:active, &:hover 
-            outline: none
-        option
-            padding: 120px
-            border: 0
-            &:active, &:hover 
-                outline: none
-            &:hover
-                box-shadow: 0 0 10px 100px $primaryColor inset
-    &__chart
-        display: flex
-        justify-content: space-between
-        width: 100%
-        height: 90%
-        align-items: center
-    &__stats
-        background-color: $accentColor1
-        width: 67%
-        height: 30%
-        border-radius: 10px
-        position: relative
-        transition: all .3s
-        padding: 15px
-        margin-top: 20px
-        float: right
-        position: relative
-        @media only screen and (max-width: 600px) 
-            padding: 10px
-            height: 25%
-        h5
-            color: $accentColor3
-            margin-top: 0
-        .Panel__days > h5:nth-child(1)
-            top: 15px
-            position: absolute
-            color: white
-            left: 15px
-    &__slider
-        width: 8px
-        height: 55%
-        background-color: $accentColor2
-        border-radius: 20px
-        position: relative
-        display: flex
-        justify-content: flex-end
-        align-items: flex-end
-        flex-direction: column
-        &-active
-            background-color: $primaryColor
-            width: 100%
-            border-radius: 0
-            &:nth-child(1)
-                border-top-left-radius: 20px!important
-                border-top-right-radius: 20px!important
-            &:last-child
-                border-bottom-left-radius: 20px
-                border-bottom-right-radius: 20px
-    &__day
-        @include flex1
-        flex-direction: column
-        height: 100%
-        h6
-            margin-bottom: 10px
-            margin: 5px 0
-            color: $accentColor3
-    &__first
-        @media only screen and (max-width: 840px)
-            display: none    
-
     &__quickstart
         background-color: $accentColor1
         width: 30%
@@ -273,3 +182,95 @@
             width: auto
     h3
         margin-bottom: 10px
+
+.Stats
+    background-color: $accentColor1
+    width: 67%
+    height: 30%
+    border-radius: 10px
+    position: relative
+    transition: all .3s
+    padding: 15px
+    margin-top: 20px
+    float: right
+    position: relative
+    @media only screen and (max-width: 600px) 
+        padding: 10px
+        height: 25%
+    h5
+        color: $accentColor3
+        margin-top: 0
+    &__days > h5:nth-child(1)
+        top: 15px
+        position: absolute
+        color: white
+        left: 15px
+    &__days
+        display: flex
+        justify-content: center
+        height: 100%
+        flex-direction: column
+        .title
+            height: 10%
+    &__selectWeek
+        position: absolute
+        top: 10px
+        right: 15px
+        background-color: $accentColor2
+        border: 0
+        color: white
+        padding: 5px 10px
+        cursor: pointer
+        font-family: Poppins
+        border: 0px
+        outline: 0px
+        @media only screen and (max-width: 500px) 
+            width: 70px
+            height: 30px
+        &:active, &:hover 
+            outline: none
+        option
+            padding: 120px
+            border: 0
+            &:active, &:hover 
+                outline: none
+            &:hover
+                box-shadow: 0 0 10px 100px $primaryColor inset
+    &__chart
+        display: flex
+        justify-content: space-between
+        width: 100%
+        height: 90%
+        align-items: center
+    &__slider
+        width: 8px
+        height: 55%
+        background-color: $accentColor2
+        border-radius: 20px
+        position: relative
+        display: flex
+        justify-content: flex-end
+        align-items: flex-end
+        flex-direction: column
+        &-active
+            background-color: $primaryColor
+            width: 100%
+            border-radius: 0
+            &:nth-child(1)
+                border-top-left-radius: 20px!important
+                border-top-right-radius: 20px!important
+            &:last-child
+                border-bottom-left-radius: 20px
+                border-bottom-right-radius: 20px
+    &__day
+        @include flex1
+        flex-direction: column
+        height: 100%
+        h6
+            margin-bottom: 10px
+            margin: 5px 0
+            color: $accentColor3
+    &__first
+        @media only screen and (max-width: 840px)
+            display: none    
+

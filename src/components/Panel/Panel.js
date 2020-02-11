@@ -6,34 +6,19 @@ import parse from "html-react-parser";
 import {Link} from "react-router-dom";
 import ordinal from "ordinal";
 import "firebase/firestore";
-import humanizeDuration from "humanize-duration";
 import date from "date-and-time";
 
 import UserWelcome from "./UserWelcome";
 import {changeRightBar} from "../../actions/actionsPanel";
 import Loader from "../elements/Loader";
 import Topbar from "../Dashboard/Topbar";
-import More from "./More"
+import More from "./More";
+import Stats from "./Stats";
 
 let status;
 
 const now = new Date();
 
-const shortEnglishHumanizer = humanizeDuration.humanizer({
-  language: "shortEn",
-  languages: {
-    shortEn: {
-      y: () => "y",
-      mo: () => "mo",
-      w: () => "w",
-      d: () => "d",
-      h: () => "h",
-      m: () => "m",
-      s: () => "s",
-      ms: () => "ms",
-    },
-  },
-});
 
 const months = [
   "Jan",
@@ -93,49 +78,6 @@ function QuickstartPanel(props) {
 class Panel extends React.Component {
   _isMounted = false;
 
-  statCharts = () => {
-    return stats.date.map((val, indx) => (
-      <div className="Panel__day" key={indx}>
-        <h6><span className="Panel__first">{val.split(" ")[0]}</span> {val.split(" ")[1]} {val.split(" " )[2]}</h6>
-        <div className="Panel__slider">
-          {stats.time[parseInt(indx)] > 0 &&
-            stats.styles.map((val2, indx2) => {
-              if (
-                (stats.fullDates[parseInt(indx)] ===
-                  `${val2.split(" ")[0]} ${val2.split(" ")[1]} ${
-                    val2.split(" ")[2]
-                  }` ||
-                  stats.fullDates[parseInt(indx)] ===
-                    `${val2.split(" ")[1]} ${val2.split(" ")[2]} ${
-                      val2.split(" ")[3]
-                    }`) &&
-                stats[stats.names[parseInt(indx2)]] > 0
-              ) {
-                let he =
-                  (" ",
-                  stats[stats.names[parseInt(indx2)]] / this.state.maxValue) *
-                    100 +
-                  "%";
-                return (
-                  <div
-                    key={indx2}
-                    className={"Panel__slider-active " + val2}
-                    style={{
-                      height: he,
-                    }}></div>
-                );
-              } else return "";
-            })}
-        </div>
-        <h6>
-          {shortEnglishHumanizer(parseInt(stats.time[parseInt(indx)] * 1000), {
-            largest: 2,
-            round: true,
-          })}
-        </h6>
-      </div>
-    ));
-  };
 
   constructor() {
     super();
@@ -475,7 +417,7 @@ class Panel extends React.Component {
     this._isMounted = true;
     if (this._isMounted) {
       this.setState({
-        width: this.props.rightBar ? "" : "active"
+        width: this.props.rightBar ? "" : "active",
       });
     }
     if (window.matchMedia("(max-width: 800px)").matches) {
@@ -491,7 +433,7 @@ class Panel extends React.Component {
     if (prevProps.rightBar !== this.props.rightBar) {
       if (this._isMounted) {
         this.setState({
-          width: this.props.rightBar ? "" : "active"
+          width: this.props.rightBar ? "" : "active",
         });
       }
     }
@@ -575,27 +517,13 @@ class Panel extends React.Component {
             </div>
           )}
         </div>
-        <div className="Panel__stats">
-          {this.state.statsLoader ? (
-            <Loader />
-          ) : (
-            <div className="Panel__days">
-              <div className="title">
-                <h5>TIME SPENT ON LEARNING</h5>
-                <label htmlFor="select"></label>
-                <select
-                  name="select"
-                  value={this.state.selectValue}
-                  onChange={this.changeWeek.bind(this)}
-                  className="Panel__selectWeek">
-                  <option value="This week">This week</option>
-                  <option value="Last week">Last week</option>
-                </select>
-              </div>
-              <div className="Panel__chart">{this.statCharts()}</div>
-            </div>
-          )}
-        </div>
+        <Stats
+          stats = {stats}
+          statsLoader={this.state.statsLoader}
+          selectValue={this.state.selectValue}
+          changeWeek={this.changeWeek.bind(this)}
+        maxValue={this.state.maxValue}
+        />
         <More courses={courses} coursesCounter={this.state.courses} />
       </div>
     );
