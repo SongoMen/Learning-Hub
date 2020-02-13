@@ -1,6 +1,6 @@
 import React from "react";
 import humanizeDuration from "humanize-duration";
-import PropTypes from "prop-types"
+import PropTypes from "prop-types";
 
 import Loader from "../elements/Loader";
 
@@ -67,14 +67,13 @@ function statCharts(stats, maxValue) {
 
 const Stats = props => {
   const {statsLoader, selectValue, changeWeek, stats, maxValue} = props;
-  console.log(props)
   return (
     <div className="Stats">
       {statsLoader ? (
         <Loader />
       ) : (
         <div className="Stats__days">
-          <div className="title">
+          <div className="Stats__title">
             <h5>TIME SPENT ON LEARNING</h5>
             <label htmlFor="select"></label>
             <select
@@ -92,11 +91,13 @@ const Stats = props => {
     </div>
   );
 };
+
 Stats.propTypes = {
   statsLoader: PropTypes.bool,
   selectValue: PropTypes.string,
   changeWeek: PropTypes.func,
   stats: PropTypes.object,
-  maxValue: PropTypes.oneOfType([PropTypes.number,PropTypes.string])
-}
+  maxValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+};
+
 export default Stats;
