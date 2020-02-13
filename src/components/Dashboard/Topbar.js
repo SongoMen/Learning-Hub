@@ -5,6 +5,7 @@ import "firebase/firestore";
 import firebase from "firebase/app";
 import PropTypes from "prop-types";
 
+import {logout} from "../auth";
 import {changeRightBar} from "../../actions/actionsPanel";
 
 const now = new Date();
@@ -137,7 +138,7 @@ class Topbar extends React.Component {
               let el = document.createElement("li");
               el.innerHTML = `<a href=course/${courses.name[
                 parseInt(i)
-              ].replace(" ", "%20")}>${(courses.svg[parseInt(i)])}<h4>${
+              ].replace(" ", "%20")}>${courses.svg[parseInt(i)]}<h4>${
                 courses.name[parseInt(i)]
               }</h4></a>`;
               results.appendChild(el);
@@ -211,6 +212,23 @@ class Topbar extends React.Component {
               <path d="M6 6L18 18" />
             </svg>
           )}
+          <svg
+            className="Topbar__logout button first"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            onClick={() => logout()}
+            aria-label="Sign out">
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+            <path d="M16 17L21 12 16 7" />
+            <path d="M21 12L9 12" />
+          </svg>
           {this.props.rightBar ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
