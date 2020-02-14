@@ -17,8 +17,15 @@ import Stats from "./Stats";
 
 let status;
 
-const now = new Date();
+const mapStateToProps = state => ({
+  ...state,
+});
 
+const mapDispatchToProps = dispatch => ({
+  changeRightBar: () => dispatch(changeRightBar(status)),
+});
+
+const now = new Date();
 
 const months = [
   "Jan",
@@ -34,14 +41,6 @@ const months = [
   "Nov",
   "Dec",
 ];
-
-const mapStateToProps = state => ({
-  ...state,
-});
-
-const mapDispatchToProps = dispatch => ({
-  changeRightBar: () => dispatch(changeRightBar(status)),
-});
 
 const db = firebase.firestore();
 
@@ -77,7 +76,6 @@ function QuickstartPanel(props) {
 
 class Panel extends React.Component {
   _isMounted = false;
-
 
   constructor() {
     super();
@@ -192,7 +190,9 @@ class Panel extends React.Component {
     const today = date.format(now, "DD MMM YYYY");
     let forward = 0;
     let backwards = 0;
+
     this.clearStatsArray();
+
     switch (date.format(now, "dddd")) {
       case "Monday":
         backwards = 0;
@@ -226,6 +226,7 @@ class Panel extends React.Component {
         forward = 0;
         backwards = 0;
     }
+
     let datesWeek = [];
     let lastDateX = 0; //TO SORT CORRECTLY WHILE TRANSITION BETWEEN ONE MONTH TO ANOTHER
     let lastDateY = new Date(
@@ -272,27 +273,27 @@ class Panel extends React.Component {
       lastDate2++;
       forward--;
     }
-
     datesWeek.sort();
 
     let nextMonth = months[months.indexOf(date.format(now, "MMM")) + 1];
     let previousMonth = months[months.indexOf(date.format(now, "MMM")) - 1];
+    let monthYear = date.format(now, "MMM YYYY");
+    let month = date.format(now, "MMM");
+    let year = date.format(now, "YYYY");
 
     for (let i = 0; i < datesWeek.length; i++) {
-      let day = String(datesWeek[parseInt(i)]).split(" ")[1];
-      let monthYear = date.format(now, "MMM YYYY");
-      let month = date.format(now, "MMM");
-      let year = date.format(now, "YYYY");
+      let daysThisWeek = datesWeek[parseInt(i)];
+      let day = String(daysThisWeek).split(" ")[1];
 
-      if (String(datesWeek[parseInt(i)]).split(" ").length === 1) {
-        this.getStats(`${datesWeek[parseInt(i)]} ${monthYear}`, i, false);
-        stats.date[parseInt(i)] += ` ${datesWeek[parseInt(i)]} ${month}`;
-      } else if (String(datesWeek[parseInt(i)]).split(" ")[0] !== "-99") {
-        if (String(datesWeek[parseInt(i)]).split(" ").length > 1) {
+      if (String(daysThisWeek).split(" ").length === 1) {
+        this.getStats(`${daysThisWeek} ${monthYear}`, i, false);
+        stats.date[parseInt(i)] += ` ${daysThisWeek} ${month}`;
+      } else if (String(daysThisWeek).split(" ")[0] !== "-99") {
+        if (String(daysThisWeek).split(" ").length > 1) {
           this.getStats(`${day} ${nextMonth} ${year}`, i, false);
           stats.date[parseInt(i)] += ` ${day} ${nextMonth}`;
         }
-      } else if (String(datesWeek[parseInt(i)]).split(" ")[0] === "-99") {
+      } else if (String(daysThisWeek).split(" ")[0] === "-99") {
         this.getStats(`${day} ${previousMonth} ${year}`, i, true);
         stats.date[parseInt(i)] += ` ${day} ${previousMonth}`;
       }
@@ -310,6 +311,7 @@ class Panel extends React.Component {
       0,
     ).getDate();
     this.clearStatsArray();
+
     let prevMonth = false;
 
     datesWeek.push(String(lastDate).length === 1 ? "0" + lastDate : lastDate);
@@ -327,16 +329,19 @@ class Panel extends React.Component {
       lastDate--;
       backwards--;
     }
+
     datesWeek.sort();
     let previousMonth = months[months.indexOf(date.format(now, "MMM")) - 1];
-    for (let i = 0; i < datesWeek.length; i++) {
-      let day = String(datesWeek[parseInt(i)]).split(" ")[1];
-      let monthYear = date.format(now, "MMM YYYY");
-      let month = date.format(now, "MMM");
+    let monthYear = date.format(now, "MMM YYYY");
+    let month = date.format(now, "MMM");
 
-      if (String(datesWeek[parseInt(i)]).split(" ").length === 1) {
-        this.getStats(`${datesWeek[parseInt(i)]} ${monthYear}`, i);
-        stats.date[parseInt(i)] += ` ${datesWeek[parseInt(i)]} ${month}`;
+    for (let i = 0; i < datesWeek.length; i++) {
+      let daysThisWeek = datesWeek[parseInt(i)];
+      let day = String(daysThisWeek).split(" ")[1];
+
+      if (String(daysThisWeek).split(" ").length === 1) {
+        this.getStats(`${daysThisWeek} ${monthYear}`, i);
+        stats.date[parseInt(i)] += ` ${daysThisWeek} ${month}`;
       } else {
         if (prevMonth && day > 10) {
           this.getStats(`${day} ${previousMonth}`, i);
@@ -518,15 +523,16 @@ class Panel extends React.Component {
           )}
         </div>
         <Stats
-          stats = {stats}
+          stats={stats}
           statsLoader={this.state.statsLoader}
           selectValue={this.state.selectValue}
           changeWeek={this.changeWeek.bind(this)}
-        maxValue={this.state.maxValue}
+          maxValue={this.state.maxValue}
         />
         <More courses={courses} coursesCounter={this.state.courses} />
       </div>
     );
   }
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(Panel);

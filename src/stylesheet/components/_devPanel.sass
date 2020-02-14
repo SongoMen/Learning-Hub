@@ -3,17 +3,22 @@
     width: 68%
     background-color: $panelColor
     transition: width .3s
+    @media only screen and (max-width: 1100px) 
+        padding: 10px
     @media only screen and (max-width: 1270px) 
         width: 74%
     &.active
         width: 88%
         @media only screen and (max-width: 1270px) 
             width: 94%
+    @media only screen and (max-width: 750px) 
+        width: 94%
     &__content
         height: 100%
     &__list
-        height: 79%
+        height: 80%
     &__all
+        flex-wrap: wrap
         display: flex
         .courses__box:first-child
             margin-left: 0
@@ -21,14 +26,21 @@
             margin-right: 0
         .courses__box 
             margin: 0 10px
+            @media screen and (max-width: 600px)
+              margin: 10px 0
+        @media screen and (max-width: 600px)
+          justify-content: center
     &__topNav
-        height: 10%
+        height: 5%
     &__title
         height: 10%
         margin: 0
     .form-btn
         min-height: 40px
+        min-width: 170px
         width: 20%
+        @media only screen and (max-width: 600px)
+          margin: 0 auto
     &__edit
         height: 100%
         width: 100%
