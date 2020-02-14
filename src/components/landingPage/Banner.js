@@ -1,7 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
-import { ReactComponent as LogoSvg } from "../../svgs/logo.svg";
+import {ReactComponent as LogoSvg} from "../../svgs/logo.svg";
 
 const LandingPage = () => {
   return (

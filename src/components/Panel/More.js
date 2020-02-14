@@ -4,25 +4,25 @@ import Loader from "../elements/Loader";
 import ErrorMessage from "../elements/ErrorMessage";
 import PropTypes from "prop-types";
 
-const More = props => {
+const More = ({coursesCounter, courses}) => {
   return (
     <div className="More">
-      {props.coursesCounter === "" && <Loader />}
-      {props.coursesCounter === "err" && <ErrorMessage link="false" />}
-      {props.coursesCounter === 0 && (
+      {coursesCounter === "" && <Loader />}
+      {coursesCounter === "err" && <ErrorMessage link="false" />}
+      {coursesCounter === 0 && (
         <h3 className="courses__error">No courses available.</h3>
       )}
-      {props.coursesCounter > 0 && (
+      {coursesCounter > 0 && (
         <div className="More__content">
           <h3>More courses</h3>
           <div className="More__coursesContainer">
-            {props.courses.name.map((val, indx) => (
+            {courses.name.map((val, indx) => (
               <CourseWrapper
                 name={val}
                 index={indx}
-                style={props.courses.style[parseInt(indx)]}
-                length={props.courses.length[parseInt(indx)]}
-                svg={props.courses.svg[parseInt(indx)]}
+                style={courses.style[parseInt(indx)]}
+                length={courses.length[parseInt(indx)]}
+                svg={courses.svg[parseInt(indx)]}
                 key={indx}
               />
             ))}

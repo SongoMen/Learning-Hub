@@ -1,10 +1,10 @@
 import React from "react";
 import "firebase/firestore";
-import { changeRightBar } from "../../actions/actionsPanel";
-import { connect } from "react-redux";
-import Loader from "../elements/Loader";
+import {connect} from "react-redux";
 import firebase from "firebase/app";
 
+import {changeRightBar} from "../../actions/actionsPanel";
+import Loader from "../elements/Loader";
 import TopPanel from "../Dashboard/Topbar";
 import ErrorMessaage from "../elements/ErrorMessage";
 import CourseWrapper from "../elements/CourseWrapper";
@@ -12,11 +12,11 @@ import CourseWrapper from "../elements/CourseWrapper";
 let status;
 
 const mapStateToProps = state => ({
-  ...state
+  ...state,
 });
 
 const mapDispatchToProps = dispatch => ({
-  changeRightBar: () => dispatch(changeRightBar(status))
+  changeRightBar: () => dispatch(changeRightBar(status)),
 });
 
 const db = firebase.firestore();
@@ -25,7 +25,7 @@ let courses = {
   name: [],
   length: [],
   style: [],
-  svg: []
+  svg: [],
 };
 
 class Courses extends React.Component {
@@ -37,7 +37,7 @@ class Courses extends React.Component {
       lastLesson: "",
       lastLessonLoader: true,
       width: "",
-      courses: ""
+      courses: "",
     };
   }
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -45,7 +45,7 @@ class Courses extends React.Component {
       let right = this.props.rightBar ? "" : "active";
       if (this._isMounted) {
         this.setState({
-          width: right
+          width: right,
         });
       }
     }
@@ -69,20 +69,20 @@ class Courses extends React.Component {
           });
           if (this._isMounted) {
             this.setState({
-              courses: i
+              courses: i,
             });
           }
         } else {
           if (this._isMounted) {
             this.setState({
-              courses: 0
+              courses: 0,
             });
           }
         }
       })
       .catch(err => {
         this.setState({
-          courses: "err"
+          courses: "err",
         });
         console.error(err);
       });
@@ -93,7 +93,7 @@ class Courses extends React.Component {
     let right = this.props.rightBar ? "" : "active";
     if (this._isMounted) {
       this.setState({
-        width: right
+        width: right,
       });
     }
     this.loadAllCourses();
@@ -128,7 +128,4 @@ class Courses extends React.Component {
     );
   }
 }
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Courses);
+export default connect(mapStateToProps, mapDispatchToProps)(Courses);

@@ -1,20 +1,20 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, {Component} from "react";
+import {Link} from "react-router-dom";
 import "firebase/firestore";
-import { auth } from "../auth";
+import {auth} from "../auth";
 import Loader from "../elements/Loader";
-import { Logo, Mask, Input } from "../_helpers";
+import {Logo, Mask, Input} from "../_helpers";
 
 class Register extends Component {
   _isMounted = false;
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       msg: "",
       loading: false,
       password: "",
       username: "",
-      email: ""
+      email: "",
     };
     this.handleRegisterUser = this.handleRegisterUser.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -22,19 +22,19 @@ class Register extends Component {
 
   handleRefPassword = ref => {
     this.setState({
-      password: ref
+      password: ref,
     });
   };
 
   handleRefUsername = ref => {
     this.setState({
-      username: ref
+      username: ref,
     });
   };
 
   handleRefEmail = ref => {
     this.setState({
-      email: ref
+      email: ref,
     });
   };
 
@@ -42,7 +42,7 @@ class Register extends Component {
     var re = /^(([^<>()\\.,;:\s@"]+(\.[^<>()\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (this._isMounted) {
       this.setState({
-        loading: true
+        loading: true,
       });
     }
     if (
@@ -56,7 +56,7 @@ class Register extends Component {
           if (this._isMounted) {
             this.setState({
               loading: false,
-              msg: "Register Successful"
+              msg: "Register Successful",
             });
           }
         })
@@ -64,7 +64,7 @@ class Register extends Component {
           if (this._isMounted) {
             this.setState({
               msg: "This email i already registered.",
-              loading: false
+              loading: false,
             });
           }
         });
@@ -73,7 +73,7 @@ class Register extends Component {
       if (this._isMounted) {
         this.setState({
           msg: "Password must have at least 6 characters",
-          loading: false
+          loading: false,
         });
       }
     }
@@ -81,7 +81,7 @@ class Register extends Component {
       if (this._isMounted) {
         this.setState({
           msg: "Wrong email adress",
-          loading: false
+          loading: false,
         });
       }
     }
@@ -136,10 +136,7 @@ class Register extends Component {
               <button
                 type="button"
                 className="form-btn"
-                onClick={event =>
-                  this.handleRegisterUser(event, this.props.role)
-                }
-              >
+                onClick={event => this.handleRegisterUser(event)}>
                 {this.state.loading ? <Loader /> : <span>SIGNUP</span>}
               </button>
             </div>

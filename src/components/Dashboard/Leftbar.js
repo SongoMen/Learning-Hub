@@ -1,13 +1,13 @@
 import React from "react";
-import { withRouter, NavLink } from "react-router-dom";
+import {withRouter, NavLink} from "react-router-dom";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import parse from "html-react-parser";
 
-import { Logo } from "../_helpers";
-import { ReactComponent as DashboardIcon } from "../../svgs/dashboardIcon.svg";
-import { ReactComponent as CoursesIcon } from "../../svgs/coursesIcon.svg";
-import { ReactComponent as DevIcon } from "../../svgs/devIcon.svg";
+import {Logo} from "../_helpers";
+import {ReactComponent as DashboardIcon} from "../../svgs/dashboardIcon.svg";
+import {ReactComponent as CoursesIcon} from "../../svgs/coursesIcon.svg";
+import {ReactComponent as DevIcon} from "../../svgs/devIcon.svg";
 
 const db = firebase.firestore();
 
@@ -19,13 +19,12 @@ class Leftbar extends React.Component {
     super();
     this.state = {
       loaded: false,
-      svg: ""
+      svg: "",
     };
   }
-  
+
   componentDidMount() {
     this._isMounted = true;
-
     let user = firebase.auth().currentUser.uid;
     if (typeof window.location.href.split("/")[4] !== "undefined") {
       db.collection("courses")
@@ -34,7 +33,7 @@ class Leftbar extends React.Component {
         .then(snapshot => {
           if (this._isMounted && typeof snapshot.data() !== "undefined")
             this.setState({
-              svg: snapshot.data()["svg"]
+              svg: snapshot.data()["svg"],
             });
         });
     }
@@ -46,10 +45,10 @@ class Leftbar extends React.Component {
           if (typeof doc.data() !== "undefined") {
             admin = doc.data()["admin"];
             this.setState({
-              loaded: true
+              loaded: true,
             });
           }
-        }.bind(this)
+        }.bind(this),
       );
   }
 
@@ -66,8 +65,7 @@ class Leftbar extends React.Component {
             <NavLink
               activeClassName="active"
               to="/dashboard"
-              aria-label="Main dashboard"
-            >
+              aria-label="Main dashboard">
               <DashboardIcon />
               <h4>Dashboard</h4>
             </NavLink>
@@ -88,7 +86,11 @@ class Leftbar extends React.Component {
           )}
           {this.state.svg !== "" && (
             <li className="Leftbar__course active">
-              <NavLink to={`/course/${window.location.href.split("/")[4].replace(/%20/gi, " ")}`} aria-label="Course">
+              <NavLink
+                to={`/course/${window.location.href
+                  .split("/")[4]
+                  .replace(/%20/gi, " ")}`}
+                aria-label="Course">
                 {parse(this.state.svg)}
                 <h4>Dev Panel</h4>
               </NavLink>

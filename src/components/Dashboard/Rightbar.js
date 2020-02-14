@@ -1,12 +1,13 @@
 import React from "react";
 import firebase from "firebase/app";
 import "firebase/storage";
-import {logout} from "../auth";
 import "firebase/firestore";
-import Loader from "../elements/Loader";
-import {setPopup} from "../../actions/actionsPanel";
 import {connect} from "react-redux";
 import parse from "html-react-parser";
+
+import Loader from "../elements/Loader";
+import {setPopup} from "../../actions/actionsPanel";
+import {logout} from "../auth";
 
 const mapStateToProps = state => ({
   rightBar: state.rightBar,

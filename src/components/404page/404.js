@@ -1,5 +1,7 @@
 import React from "react";
+
 import ErrorMessage from "../elements/ErrorMessage";
+
 const Page404 = () => {
   return (
     <div className="CoursePage__error">
@@ -7,4 +9,5 @@ const Page404 = () => {
     </div>
   );
 };
+
 export default Page404;

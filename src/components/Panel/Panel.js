@@ -59,15 +59,15 @@ let stats = {
   fullDates: [],
 };
 
-function QuickstartPanel(props) {
+function QuickstartPanel({svg, url, course, lastLesson}) {
   return (
-    <Link aria-label="Your last started course" to={props.url}>
+    <Link aria-label="Your last started course" to={url}>
       <div>
         <h5>QUICKSTART</h5>
         <div className="title">
-          <span className="courseLogo">{parse(props.svg)}</span>
-          <h3>{props.course}</h3>
-          <h4>Lesson: {ordinal(parseInt(props.lastLesson))}</h4>
+          <span className="courseLogo">{parse(svg)}</span>
+          <h3>{course}</h3>
+          <h4>Lesson: {ordinal(parseInt(lastLesson))}</h4>
         </div>
       </div>
     </Link>

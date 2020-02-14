@@ -1,15 +1,16 @@
 import React from "react";
-import { connect } from "react-redux";
-import { setPopup } from "../../actions/actionsPanel";
+import {connect} from "react-redux";
 import firebase from "firebase/app";
 import "firebase/storage";
 
+import {setPopup} from "../../actions/actionsPanel";
+
 const mapStateToProps = state => ({
-  ...state
+  ...state,
 });
 
 const mapDispatchToProps = dispatch => ({
-  setPopup: () => dispatch(setPopup(false))
+  setPopup: () => dispatch(setPopup(false)),
 });
 
 class PopupAvatar extends React.Component {
@@ -20,11 +21,10 @@ class PopupAvatar extends React.Component {
       uploading: false,
       msg: "",
       img: false,
-      imgSrc: ""
+      imgSrc: "",
     };
-    this.file = React.createRef()
-    this.preview = React.createRef()
-
+    this.file = React.createRef();
+    this.preview = React.createRef();
   }
 
   upload() {
@@ -47,7 +47,7 @@ class PopupAvatar extends React.Component {
     reader.readAsDataURL(this.file.current.files[0]);
     if (this._isMounted) {
       this.setState({
-        img: true
+        img: true,
       });
     }
   }
@@ -74,8 +74,7 @@ class PopupAvatar extends React.Component {
             strokeWidth="2"
             className="button"
             viewBox="0 0 24 24"
-            onClick={() => this.props.setPopup()}
-          >
+            onClick={() => this.props.setPopup()}>
             <path d="M18 6L6 18" />
             <path d="M6 6L18 18" />
           </svg>
@@ -87,14 +86,12 @@ class PopupAvatar extends React.Component {
               onChange={() => {
                 this.showPreview();
               }}
-              accept="image/jpeg, image/png"
-            ></input>
+              accept="image/jpeg, image/png"></input>
             <div
               className="upload"
               onClick={() => {
                 this.file.current.click();
-              }}
-            >
+              }}>
               {this.state.img === false ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -106,15 +103,18 @@ class PopupAvatar extends React.Component {
                   strokeLinejoin="round"
                   strokeWidth="2"
                   className="feather feather-file-plus"
-                  viewBox="0 0 24 24"
-                >
+                  viewBox="0 0 24 24">
                   <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
                   <path d="M14 2L14 8 20 8" />
                   <path d="M12 18L12 12" />
                   <path d="M9 15L15 15" />
                 </svg>
               ) : (
-                <img alt="preview" className="preview" ref={this.preview} id="preview"></img>
+                <img
+                  alt="preview"
+                  className="preview"
+                  ref={this.preview}
+                  id="preview"></img>
               )}
             </div>
             <h3>Upload profile picture</h3>
@@ -123,8 +123,7 @@ class PopupAvatar extends React.Component {
               onClick={() => {
                 this.upload();
               }}
-              className="form-btn" 
-            >
+              className="form-btn">
               SUBMIT
             </button>
           </div>
@@ -134,7 +133,4 @@ class PopupAvatar extends React.Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PopupAvatar);
+export default connect(mapStateToProps, mapDispatchToProps)(PopupAvatar);

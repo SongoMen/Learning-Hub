@@ -1,15 +1,16 @@
 import React from "react";
-import { connect } from "react-redux";
-import { setPopupDev } from "../../actions/actionsPanel";
+import {connect} from "react-redux";
 import firebase from "firebase/app";
 import "firebase/firestore";
 
+import {setPopupDev} from "../../actions/actionsPanel";
+
 const mapStateToProps = state => ({
-  ...state
+  ...state,
 });
 
 const mapDispatchToProps = dispatch => ({
-  setPopupDev: () => dispatch(setPopupDev(false))
+  setPopupDev: () => dispatch(setPopupDev(false)),
 });
 
 class PopupDev extends React.Component {
@@ -20,7 +21,7 @@ class PopupDev extends React.Component {
       uploading: false,
       msg: "",
       img: false,
-      imgSrc: ""
+      imgSrc: "",
     };
   }
   componentDidMount() {
@@ -39,12 +40,12 @@ class PopupDev extends React.Component {
         name: this.course.value,
         style: this.style.value,
         svg: this.svg.value,
-        length: 0
+        length: 0,
       })
       .then(() => {
         window.location.reload(false);
       })
-      .catch((err) => {
+      .catch(err => {
         console.error(err);
       });
   }
@@ -64,8 +65,7 @@ class PopupDev extends React.Component {
             strokeWidth="2"
             className="button"
             viewBox="0 0 24 24"
-            onClick={() => this.props.setPopupDev()}
-          >
+            onClick={() => this.props.setPopupDev()}>
             <path d="M18 6L6 18" />
             <path d="M6 6L18 18" />
           </svg>
@@ -77,8 +77,7 @@ class PopupDev extends React.Component {
                 name="course"
                 type="text"
                 required
-                ref={course => (this.course = course)}
-              ></input>
+                ref={course => (this.course = course)}></input>
             </div>
             <div className="form-line">
               <label htmlFor="course">Style name</label>
@@ -87,8 +86,7 @@ class PopupDev extends React.Component {
                 name="Style"
                 type="text"
                 required
-                ref={style => (this.style = style)}
-              ></input>
+                ref={style => (this.style = style)}></input>
             </div>
             <div className="form-line">
               <label htmlFor="course">SVG Icon</label>
@@ -97,8 +95,7 @@ class PopupDev extends React.Component {
                 name="svg"
                 type="text"
                 required
-                ref={svg => (this.svg = svg)}
-              ></input>
+                ref={svg => (this.svg = svg)}></input>
             </div>
             <input
               type="button"
@@ -106,8 +103,7 @@ class PopupDev extends React.Component {
               value="CREATE"
               onClick={() => {
                 this.newCourse();
-              }}
-            ></input>
+              }}></input>
           </div>
         </div>
       </div>
@@ -115,7 +111,4 @@ class PopupDev extends React.Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PopupDev);
+export default connect(mapStateToProps, mapDispatchToProps)(PopupDev);

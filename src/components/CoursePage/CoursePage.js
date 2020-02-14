@@ -1,27 +1,27 @@
 import React from "react";
 import "firebase/firestore";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import {connect} from "react-redux";
+import {withRouter} from "react-router-dom";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import Loader from "../elements/Loader";
 import parse from "html-react-parser";
-import { Link } from "react-router-dom";
-import ErrorMessage from "../elements/ErrorMessage";
-import { lessonsRef } from "../_helpers";
+import {Link} from "react-router-dom";
 
-import { ReactComponent as Tick } from "../../svgs/tick.svg";
-import { ReactComponent as Arrow } from "../../svgs/arrow.svg";
+import ErrorMessage from "../elements/ErrorMessage";
+import {lessonsRef} from "../_helpers";
+import {ReactComponent as Tick} from "../../svgs/tick.svg";
+import {ReactComponent as Arrow} from "../../svgs/arrow.svg";
 
 const mapStateToProps = state => ({
-  ...state
+  ...state,
 });
 
 let lessons = {
   id: [],
   name: [],
   content: [],
-  length: []
+  length: [],
 };
 
 const db = firebase.firestore();
@@ -36,7 +36,7 @@ class CoursePage extends React.Component {
       style: "",
       svg: "",
       started: "",
-      completedLessons: ""
+      completedLessons: "",
     };
     this.loadLessons = this.loadLessons.bind(this);
   }
@@ -67,11 +67,11 @@ class CoursePage extends React.Component {
         if (snapshot.docs.length > 0) {
           snapshot.forEach(doc => {
             if (doc.id === this.state.name && this._isMounted)
-              this.setState({ started: true });
+              this.setState({started: true});
           });
         } else if (this._isMounted) {
           this.setState({
-            started: false
+            started: false,
           });
         }
       })
@@ -83,7 +83,7 @@ class CoursePage extends React.Component {
             if (this._isMounted && typeof snapshot.data() !== "undefined")
               this.setState({
                 style: snapshot.data()["style"],
-                svg: snapshot.data()["svg"]
+                svg: snapshot.data()["svg"],
               });
             lessons.length.push(snapshot.data()["length"]);
           })
@@ -101,13 +101,13 @@ class CoursePage extends React.Component {
               .then(() => {
                 if (this._isMounted)
                   this.setState({
-                    loader: false
+                    loader: false,
                   });
               })
               .catch(err => {
                 if (this._isMounted)
                   this.setState({
-                    loader: "error"
+                    loader: "error",
                   });
                 console.error(err);
               });
@@ -115,7 +115,7 @@ class CoursePage extends React.Component {
           .catch(err => {
             if (this._isMounted)
               this.setState({
-                loader: "error"
+                loader: "error",
               });
             console.error(err);
           });
@@ -123,7 +123,7 @@ class CoursePage extends React.Component {
       .catch(err => {
         if (this._isMounted)
           this.setState({
-            loader: "error"
+            loader: "error",
           });
         console.error(err);
       });
@@ -136,7 +136,7 @@ class CoursePage extends React.Component {
       .collection("courses")
       .doc(this.state.name)
       .set({
-        lastLesson: 0
+        lastLesson: 0,
       })
       .then(() => {
         db.collection("users")
@@ -146,12 +146,12 @@ class CoursePage extends React.Component {
           .set({
             lastCourse: this.state.name,
             lastLesson: 0,
-            svg: this.state.svg
+            svg: this.state.svg,
           })
           .then(
             function() {
-              if (this._isMounted) this.setState({ started: true });
-            }.bind(this)
+              if (this._isMounted) this.setState({started: true});
+            }.bind(this),
           )
           .catch(error => {
             console.error(error);
@@ -173,7 +173,7 @@ class CoursePage extends React.Component {
       .get()
       .then(doc => {
         if (this._isMounted && typeof doc.data() !== "undefined")
-          this.setState({ completedLessons: doc.data()["completed"] });
+          this.setState({completedLessons: doc.data()["completed"]});
       })
       .catch(err => {
         console.error(err);
@@ -207,18 +207,15 @@ class CoursePage extends React.Component {
                   "/" +
                   lessons.id[parseInt(indx)]
                 }
-                key={indx}
-              >
+                key={indx}>
                 <div>
                   <div>
                     <h4>{val}</h4>
                     {this.state.completedLessons
                       .split(",")
-                      .indexOf(lessons.id[parseInt(indx)]) > -1 && (
-                        <Tick/>
-                    )}
+                      .indexOf(lessons.id[parseInt(indx)]) > -1 && <Tick />}
                   </div>
-<Arrow/>
+                  <Arrow />
                 </div>
               </Link>
             ))}
@@ -232,8 +229,7 @@ class CoursePage extends React.Component {
                 type="button"
                 className="form-btn"
                 value="start"
-                onClick={() => this.startCourse()}
-              ></input>
+                onClick={() => this.startCourse()}></input>
             </div>
           )
         )}

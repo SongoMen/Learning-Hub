@@ -65,32 +65,29 @@ function statCharts(stats, maxValue) {
   ));
 }
 
-const Stats = props => {
-  const {statsLoader, selectValue, changeWeek, stats, maxValue} = props;
-  return (
-    <div className="Stats">
-      {statsLoader ? (
-        <Loader />
-      ) : (
-        <div className="Stats__days">
-          <div className="Stats__title">
-            <h5>TIME SPENT ON LEARNING</h5>
-            <label htmlFor="select"></label>
-            <select
-              name="select"
-              value={selectValue}
-              onChange={changeWeek}
-              className="Stats__selectWeek">
-              <option value="This week">This week</option>
-              <option value="Last week">Last week</option>
-            </select>
-          </div>
-          <div className="Stats__chart">{statCharts(stats, maxValue)}</div>
+const Stats = ({statsLoader, selectValue, changeWeek, stats, maxValue}) => (
+  <div className="Stats">
+    {statsLoader ? (
+      <Loader />
+    ) : (
+      <div className="Stats__days">
+        <div className="Stats__title">
+          <h5>TIME SPENT ON LEARNING</h5>
+          <label htmlFor="select"></label>
+          <select
+            name="select"
+            value={selectValue}
+            onChange={changeWeek}
+            className="Stats__selectWeek">
+            <option value="This week">This week</option>
+            <option value="Last week">Last week</option>
+          </select>
         </div>
-      )}
-    </div>
-  );
-};
+        <div className="Stats__chart">{statCharts(stats, maxValue)}</div>
+      </div>
+    )}
+  </div>
+);
 
 Stats.propTypes = {
   statsLoader: PropTypes.bool,

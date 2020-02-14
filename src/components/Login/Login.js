@@ -1,19 +1,20 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { login } from "../auth";
+import {Link} from "react-router-dom";
+
+import {login} from "../auth";
 import Loader from "../elements/Loader";
-import { Logo, Mask, Input } from "../_helpers";
+import {Logo, Mask, Input} from "../_helpers";
 
 export default class Login extends React.Component {
   _isMounted = false;
 
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       msg: "",
       loading: false,
       password: "",
-      email: ""
+      email: "",
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -21,13 +22,13 @@ export default class Login extends React.Component {
 
   handleRefPassword = ref => {
     this.setState({
-      password: ref
+      password: ref,
     });
   };
 
   handleRefEmail = ref => {
     this.setState({
-      email: ref
+      email: ref,
     });
   };
 
@@ -35,14 +36,14 @@ export default class Login extends React.Component {
     if (this.state.loading === false) {
       if (this._isMounted) {
         this.setState({
-          loading: true
+          loading: true,
         });
       }
       login(this.state.email, this.state.password)
         .then(() => {
           if (this._isMounted) {
             this.setState({
-              loading: false
+              loading: false,
             });
           }
         })
@@ -50,7 +51,7 @@ export default class Login extends React.Component {
           if (this._isMounted) {
             this.setState({
               msg: "Wrong Email or password",
-              loading: false
+              loading: false,
             });
           }
         });
@@ -59,9 +60,9 @@ export default class Login extends React.Component {
   }
 
   handleKeyPress(target) {
-    if(target.charCode===13){
-      this.handleClick()    
-    } 
+    if (target.charCode === 13) {
+      this.handleClick();
+    }
   }
 
   componentDidMount() {
@@ -104,8 +105,7 @@ export default class Login extends React.Component {
               <button
                 type="button"
                 className="form-btn"
-                onClick={event => this.handleClick(event)}
-              >
+                onClick={event => this.handleClick(event)}>
                 {this.state.loading ? <Loader /> : <span>SIGN IN</span>}
               </button>
             </div>

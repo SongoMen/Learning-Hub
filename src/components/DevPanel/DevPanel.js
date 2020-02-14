@@ -1,26 +1,26 @@
 import React from "react";
 import "firebase/firestore";
 import firebase from "firebase/app";
-import { changeRightBar, setPopupDev } from "../../actions/actionsPanel";
-import { connect } from "react-redux";
-import PopupDev from "./PopupDev";
+import {connect} from "react-redux";
 import parse from "html-react-parser";
+
+import {changeRightBar, setPopupDev} from "../../actions/actionsPanel";
+import PopupDev from "./PopupDev";
 import Loader from "../elements/Loader";
 import TopPanel from "../Dashboard/Topbar";
-
-import { lessonsRef } from "../_helpers";
-import { ReactComponent as Refresh } from "../../svgs/refresh.svg";
-import { ReactComponent as X } from "../../svgs/x.svg";
+import {lessonsRef} from "../_helpers";
+import {ReactComponent as Refresh} from "../../svgs/refresh.svg";
+import {ReactComponent as X} from "../../svgs/x.svg";
 
 let status;
 
 const mapStateToProps = state => ({
-  ...state
+  ...state,
 });
 
 const mapDispatchToProps = dispatch => ({
   changeRightBar: () => dispatch(changeRightBar(status)),
-  setPopupDev: () => dispatch(setPopupDev(true))
+  setPopupDev: () => dispatch(setPopupDev(true)),
 });
 
 const db = firebase.firestore();
@@ -31,18 +31,18 @@ let courses = {
   name: [],
   length: [],
   style: [], //LOAD ALL COURSES
-  svg: []
+  svg: [],
 };
 
 let lessons = {
   name: [],
   content: [], //LOAD ALL LESSONS
-  id: []
+  id: [],
 };
 
 let content = {
   title: [],
-  content: [] // LOAD SPECIFIC LESSON FROM COURSE
+  content: [], // LOAD SPECIFIC LESSON FROM COURSE
 };
 
 class DevPanel extends React.Component {
@@ -62,7 +62,7 @@ class DevPanel extends React.Component {
       loaded: false,
       name: "",
       courseId: "",
-      lessonLoader: true
+      lessonLoader: true,
     };
   }
   rightBarChange() {
@@ -75,7 +75,7 @@ class DevPanel extends React.Component {
       let right = this.props.rightBar ? "" : "active";
       if (this._isMounted) {
         this.setState({
-          width: right
+          width: right,
         });
       }
     }
@@ -99,13 +99,13 @@ class DevPanel extends React.Component {
           });
           if (this._isMounted) {
             this.setState({
-              courses: i
+              courses: i,
             });
           }
         } else {
           if (this._isMounted) {
             this.setState({
-              courses: 0
+              courses: 0,
             });
           }
         }
@@ -113,7 +113,7 @@ class DevPanel extends React.Component {
       .catch(err => {
         console.error(err);
         this.setState({
-          courses: "err"
+          courses: "err",
         });
       });
   }
@@ -121,7 +121,7 @@ class DevPanel extends React.Component {
   loadAllLessonsFromCourse(name) {
     if (this._isMounted)
       this.setState({
-        courseName: name
+        courseName: name,
       });
     lessons.name = [];
     lessons.content = [];
@@ -136,11 +136,11 @@ class DevPanel extends React.Component {
             i++;
           });
           this.setState({
-            courses: i
+            courses: i,
           });
         } else if (this._isMounted) {
           this.setState({
-            lessons: 0
+            lessons: 0,
           });
         }
       })
@@ -157,7 +157,7 @@ class DevPanel extends React.Component {
     let right = this.props.rightBar ? "" : "active";
     if (this._isMounted) {
       this.setState({
-        width: right
+        width: right,
       });
     }
     db.collection("users")
@@ -167,10 +167,10 @@ class DevPanel extends React.Component {
           if (typeof doc.data() !== "undefined") {
             admin = doc.data()["admin"];
             this.setState({
-              loaded: true
+              loaded: true,
             });
           }
-        }.bind(this)
+        }.bind(this),
       );
   }
 
@@ -182,14 +182,14 @@ class DevPanel extends React.Component {
       this.setState({
         edit: true,
         name: courses.name[parseInt(id)],
-        courseId: id
+        courseId: id,
       });
     }
     this.loadAllLessonsFromCourse(courses.name[parseInt(id)]);
   }
 
   loadLessonContent(lesson, id) {
-    this.setState({ showLesson: true, edit: false, lessonLoader: true });
+    this.setState({showLesson: true, edit: false, lessonLoader: true});
     db.collection("courses")
       .doc(this.state.courseName)
       .collection("lessons")
@@ -198,10 +198,10 @@ class DevPanel extends React.Component {
       .then(doc => {
         content.content[parseInt(0)] = doc.data()["content"];
         content.title[parseInt(0)] = doc.data()["title"];
-        if (this._isMounted) this.setState({ lessonId: id });
+        if (this._isMounted) this.setState({lessonId: id});
       })
       .then(() => {
-        this.setState({ lessonLoader: false });
+        this.setState({lessonLoader: false});
       })
       .catch(err => {
         console.error(err);
@@ -221,7 +221,7 @@ class DevPanel extends React.Component {
           db.collection("courses")
             .doc(this.state.courseName)
             .update({
-              length: parseInt(lessonNumber) + 1
+              length: parseInt(lessonNumber) + 1,
             })
             .then(() => {
               db.collection("courses")
@@ -230,7 +230,7 @@ class DevPanel extends React.Component {
                 .doc()
                 .set({
                   title: this.title.value,
-                  content: this.text.value
+                  content: this.text.value,
                 })
                 .catch(error => {
                   console.log("Error getting document:", error);
@@ -259,8 +259,7 @@ class DevPanel extends React.Component {
                 <button
                   onClick={() => this.props.setPopupDev()}
                   type="button"
-                  className="form-btn"
-                >
+                  className="form-btn">
                   CREATE NEW COURSE
                 </button>
               </div>
@@ -278,8 +277,7 @@ class DevPanel extends React.Component {
                           }`}
                           onClick={() => {
                             this.courseView(indx);
-                          }}
-                        >
+                          }}>
                           {parse(courses.svg[parseInt(indx)])}
                           <div className="courses__info">
                             <h5>
@@ -297,8 +295,7 @@ class DevPanel extends React.Component {
                             strokeWidth="2"
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            className="courses__arrow"
-                          >
+                            className="courses__arrow">
                             <line x1="0" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
                           </svg>
@@ -315,11 +312,10 @@ class DevPanel extends React.Component {
             <Refresh
               onClick={() => {
                 this.loadAllLessonsFromCourse(this.state.courseName);
-              }}
-            ></Refresh>
+              }}></Refresh>
             <X
               onClick={() => {
-                if (this._isMounted) this.setState({ edit: false });
+                if (this._isMounted) this.setState({edit: false});
               }}
             />
             <div className="Dev-panel__lessons">
@@ -329,8 +325,7 @@ class DevPanel extends React.Component {
                   className="Dev-panel__lesson"
                   onClick={() =>
                     this.loadLessonContent(lessons.id[parseInt(indx)], indx)
-                  }
-                >
+                  }>
                   <h4>{val}</h4>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -342,19 +337,15 @@ class DevPanel extends React.Component {
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="lessons__arrow"
-                  >
+                    className="lessons__arrow">
                     <line x1="0" y1="12" x2="19" y2="12"></line>
                     <polyline points="12 5 19 12 12 19"></polyline>
                   </svg>
                 </div>
               ))}
               <div
-                onClick={() =>
-                  this.setState({ addNewLesson: true, edit: false })
-                }
-                className="form-btn"
-              >
+                onClick={() => this.setState({addNewLesson: true, edit: false})}
+                className="form-btn">
                 <h4>Add new Lesson</h4>
               </div>
             </div>
@@ -365,7 +356,7 @@ class DevPanel extends React.Component {
             <X
               onClick={() => {
                 if (this._isMounted)
-                  this.setState({ edit: false, showLesson: false });
+                  this.setState({edit: false, showLesson: false});
               }}
             />
             {!this.state.lessonLoader && (
@@ -384,7 +375,7 @@ class DevPanel extends React.Component {
                   this.setState({
                     edit: true,
                     showLesson: false,
-                    addNewLesson: false
+                    addNewLesson: false,
                   });
               }}
             />
@@ -392,12 +383,10 @@ class DevPanel extends React.Component {
               <input
                 type="text"
                 placeholder="Title"
-                ref={title => (this.title = title)}
-              ></input>
+                ref={title => (this.title = title)}></input>
               <textarea
                 placeholder="Text"
-                ref={text => (this.text = text)}
-              ></textarea>
+                ref={text => (this.text = text)}></textarea>
             </div>
             <br />
             <button
@@ -405,8 +394,7 @@ class DevPanel extends React.Component {
               className="form-btn"
               onClick={() => {
                 this.addNewLesson();
-              }}
-            >
+              }}>
               ADD LESSON
             </button>
           </div>

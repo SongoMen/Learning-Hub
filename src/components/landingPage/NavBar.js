@@ -4,7 +4,7 @@ import {firebaseAuth} from "../auth";
 import {Logo} from "../_helpers";
 import PropTypes from "prop-types";
 
-const NavBar = props => {
+const NavBar = ({menu}) => {
   let isMounted = "";
   const [logged, setUser] = useState(null);
   function userCheck() {
@@ -29,7 +29,7 @@ const NavBar = props => {
   return (
     <nav className="Nav-bar">
       <Logo class="Nav-bar__logo" />
-      {typeof props.menu === "undefined" && (
+      {typeof menu === "undefined" && (
         <div className="Nav-bar__menu">
           {!logged ? (
             <ul>
