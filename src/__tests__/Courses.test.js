@@ -7,7 +7,6 @@ import Adapter from "enzyme-adapter-react-16";
 import config from "../components/firebaseAuth";
 import * as firebase from "firebase/app";
 
-firebase.initializeApp(config);
 configure({adapter: new Adapter()});
 
 describe("Test courses page", () => {
