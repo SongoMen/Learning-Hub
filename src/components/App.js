@@ -15,7 +15,8 @@ import Dashboard from "./Dashboard/Dashboard";
 import CourseContainer from "./CoursePage/CourseContainer";
 import Page404 from "./404page/404";
 import ErrorBoundary from "../ErrorBoundary";
-function PrivateRoute({ component: Component, authed, ...rest }) {
+
+export function PrivateRoute({ component: Component, authed, ...rest }) {
   return (
     <Route
       {...rest}
@@ -32,7 +33,7 @@ function PrivateRoute({ component: Component, authed, ...rest }) {
   );
 }
 
-function PublicRoute({ component: Component, authed, ...rest }) {
+export function PublicRoute({ component: Component, authed, ...rest }) {
   return (
     <Route
       {...rest}
