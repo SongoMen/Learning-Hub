@@ -55,7 +55,7 @@ class LessonPage extends React.Component {
         window.location.pathname.split("/")[2].replace(/%20/gi, " "),
         window.location.pathname.split("/")[3],
       );
-    }, 30000));
+    }, 20000));
 
   _isMounted = false;
 
