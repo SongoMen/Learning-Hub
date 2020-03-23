@@ -136,9 +136,8 @@ class Topbar extends React.Component {
             if (a === 0) {
               results.style.display = "flex";
               let el = document.createElement("li");
-              el.innerHTML = `<a href=course/${courses.name[
-                parseInt(i)
-              ].replace(" ", "%20")}>${courses.svg[parseInt(i)]}<h4>${
+              let encodedCourseName = escape(courses.name[parseInt(i)].replace(" ", "%20"))
+              el.innerHTML = `<a href=course/${encodedCourseName}>${courses.svg[parseInt(i)]}<h4>${
                 courses.name[parseInt(i)]
               }</h4></a>`;
               results.appendChild(el);

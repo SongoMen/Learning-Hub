@@ -204,10 +204,12 @@ class Rightbar extends React.Component {
                 {courses.name.map((val, indx) => {
                   return (
                     <div key={indx} className={"Rightbar__course"}>
-                      {parse(String(courses.svg[parseInt(indx)]))}
-                      <div>
-                        <h5>{val}</h5>
-                        <h5>Total lessons: {courses.length[parseInt(indx)]}</h5>
+                      <div className="Rightbar__leftside">
+                        {parse(String(courses.svg[parseInt(indx)]))}
+                        <div className="Rightbar__info">
+                          <h5>{val}</h5>
+                          <h5>Total lessons: {courses.length[parseInt(indx)]}</h5>
+                        </div>
                       </div>
                       <span className="Rightbar__slider">
                         <span

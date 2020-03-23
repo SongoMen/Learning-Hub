@@ -246,10 +246,27 @@ class LessonPage extends React.Component {
             userLastLessons
               .collection("lastcourse")
               .doc(courseName)
-              .update({
-                lastLesson: this.state.title.split(".")[0],
-                lessonId: window.location.pathname.split("/")[3],
-              });
+              .get()
+              .then(docSnapshot => {
+                if (docSnapshot.exists) {
+                  userLastLessons
+                    .collection("lastcourse")
+                    .doc(courseName)
+                    .update({
+                      lastLesson: this.state.title.split(".")[0],
+                      lessonId: window.location.pathname.split("/")[3],
+                    });
+                }
+                else {
+                  userLastLessons
+                    .collection("lastcourse")
+                    .doc(courseName)
+                    .set({
+                      lastLesson: this.state.title.split(".")[0],
+                      lessonId: window.location.pathname.split("/")[3]
+                    });
+                }
+              })
             if (this._isMounted) this.setState({timer: 0});
           });
       }
