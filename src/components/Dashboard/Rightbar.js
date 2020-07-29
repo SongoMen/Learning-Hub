@@ -147,11 +147,11 @@ class Rightbar extends React.Component {
   render() {
     let user = firebase.auth().currentUser.displayName;
     let useruid = firebase.auth().currentUser.uid;
-
-    if (user.length > 24) {
-      user = user.substring(0, 24) + "...";
+    if(user) {
+      if (user.length > 24) {
+        user = user.substring(0, 24) + "...";
+      }
     }
-
     return (
       <div style={{width: this.state.width}} className="Rightbar" id="RightBar">
         {this.state.show && (

@@ -450,8 +450,10 @@ class Panel extends React.Component {
 
   render() {
     let user = firebase.auth().currentUser.displayName;
-    if (user.length > 13) {
-      user = user.substring(0, 13) + "...";
+    if(user) {
+      if (user.length > 13) {
+        user = user.substring(0, 13) + "...";
+      }
     }
     return (
       <div className={`Panel ${this.state.width}`} id="Panel">
