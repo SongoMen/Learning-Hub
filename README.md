@@ -37,7 +37,6 @@ const config = {
   appId: "XXX",
   measurementId: "XXX"
 };
-
 export default config;
 ```
 2. Install required modules:
