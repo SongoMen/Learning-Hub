@@ -5,7 +5,7 @@
   "homepage": "https://learning-a4a51.web.app/",
   "dependencies": {
     "codacy-coverage": "^3.4.0",
-    "date-and-time": "^0.10.0",
+    "date-and-time": "^0.14.2",
     "dotenv": "^8.2.0",
     "firebase": "^7.17.1",
     "html-react-parser": "^0.9.2",
