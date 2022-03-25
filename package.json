@@ -24,14 +24,16 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "sinon": "^8.1.1",
-    "snyk": "^1.369.1"
+    "@snyk/protect": "latest"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --coverage --watchAll",
     "eject": "react-scripts eject",
-    "test:watch": "npm run test --watch"
+    "test:watch": "npm run test --watch",
+    "prepare": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect"
   },
   "engines": {
     "node": "8"
@@ -74,5 +76,6 @@
     "firebase-mock": "^2.3.2",
     "jest-transform-stub": "^2.0.0",
     "react-test-renderer": "^16.13.1"
-  }
+  },
+  "snyk": true
 }

@@ -1,0 +1,52 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.22.1
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  SNYK-JS-LODASH-567746:
+    - codacy-coverage > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - node-sass > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - node-sass > sass-graph > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - react-scripts > @babel/core > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - react-scripts > eslint > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - react-scripts > eslint-plugin-flowtype > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - react-scripts > html-webpack-plugin > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - react-scripts > webpack-manifest-plugin > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - codacy-coverage > request-promise > request-promise-core > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - node-sass > gaze > globule > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - react-scripts > @typescript-eslint/parser > @typescript-eslint/typescript-estree > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - nyc > istanbul-lib-instrument > @babel/core > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - react-scripts > eslint > inquirer > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - react-scripts > eslint > table > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - react-scripts > optimize-css-assets-webpack-plugin > last-call-webpack-plugin > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - react-scripts > react-dev-utils > inquirer > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - react-scripts > webpack-dev-server > http-proxy-middleware > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - nyc > istanbul-lib-instrument > @babel/core > @babel/helper-module-transforms > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - react-scripts > babel-jest > @types/babel__core > @babel/types > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - react-scripts > webpack-dev-server > portfinder > async > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - react-scripts > jest-environment-jsdom-fourteen > jsdom > request-promise-native > request-promise-core > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - react-scripts > @svgr/webpack > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-define-map > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
+    - react-scripts > babel-jest > babel-plugin-istanbul > istanbul-lib-instrument > @babel/traverse > lodash:
+        patched: '2022-03-25T17:28:20.036Z'
